@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</title>
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --secondary: #2e7d32;
+            --accent: #fbc02d;
+            --bg-light: #f4f7f6;
+            --text-dark: #222222;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        body {
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+        .top-bar {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 6px 5%;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            background-color: var(--primary);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .logo-text h1 {
+            font-size: 1rem;
+            color: var(--primary);
+            line-height: 1.3;
+        }
+        .logo-text p {
+            font-size: 0.78rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            padding: 60px 5%;
+        }
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 1rem;
+            max-width: 750px;
+            margin: 0 auto 25px auto;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        section {
+            padding: 50px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section-title h2 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .underline {
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--bg-light);
+            padding: 22px;
+            border-radius: 6px;
+            border-top: 3px solid var(--primary);
+        }
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .bg-alt {
+            background-color: var(--bg-light);
+            max-width: 100%;
+        }
+        .bg-alt .inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .white-card {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .news-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 2px 8px;
+            font-size: 0.78rem;
+            border-radius: 3px;
+            margin-bottom: 8px;
+        }
+        .doc-item {
+            background: var(--white);
+            padding: 14px 18px;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .doc-item a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        footer {
+            background-color: #1a237e;
+            color: var(--white);
+            padding: 35px 5% 15px 5%;
+            font-size: 0.9rem;
+        }
+        .footer-grid {
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .footer-grid h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .footer-grid a {
+            color: #eee;
+            text-decoration: none;
+        }
+        .copyright {
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 15px;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 65px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 15px 5%;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .hero h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <span>📍 ካማሺ ከተማ፣ ቤኒሻንጉል ጉሙዝ ክልል</span>
+        <span>📞 +251 57 771 XXXX | ሰኞ - አርብ: 2:30 - 11:30</span>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <div class="logo-text">
+                    <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+                    <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
+                </div>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" onclick="toggleMenu()">መነሻ</a></li>
+                <li><a href="#about" onclick="toggleMenu()">ስለ መምሪያው</a></li>
+                <li><a href="#services" onclick="toggleMenu()">አገልግሎቶች</a></li>
+                <li><a href="#news" onclick="toggleMenu()">ዜናና ማስታወቂያ</a></li>
+                <li><a href="#docs" onclick="toggleMenu()">ሰነዶች</a></li>
+                <li><a href="#contact" onclick="toggleMenu()">ያግኙን</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero" id="home">
+        <h2>ጥራት ያለው ትምህርትና ብቁ ሲቪል ሰርቪስ ለዞናችን ልማት!</h2>
+        <p>የካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ በዞኑ ውስጥ ፍትሃዊና ጥራት ያለው ትምህርትን በማስፋፋት እንዲሁም ቀልጣፋ የመንግስት አገልግሎት በመገንባት የህዝቡን ተጠቃሚነት ያረጋግጣል።</p>
+        <a href="#services" class="btn">አገልግሎቶቻችንን ይመልከቱ</a>
+    </div>
+
+    <section id="about">
+        <div class="section-title">
+            <h2>ስለ መምሪያው</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h3>👁️ ራዕይ</h3>
+                <p>በካማሺ ዞን ጥራት ያለው ትምህርት ተረጋግጦ፣ በስነ-ምግባር የታነፀ ብቁ ዜጋ ተፈጥሮ እና ዘመናዊና ቀልጣፋ የሲቪል ሰርቪስ አገልግሎት ሰፍኖ ማየት።</p>
+            </div>
+            <div class="card">
+                <h3>🎯 ተልዕኮ</h3>
+                <p>የትምህርት ተደራሽነትንና ጥራትን በማሳደግ፣ የመንግስት ሰራተኞችን አቅም በመገንባት እና የሲቪል ሰርቪስ ማሻሻያ ፕሮግራሞችን በመተግበር ለዞኑ ዕድገት አስተዋጽኦ ማበርከት።</p>
+            </div>
+            <div class="card">
+                <h3>💎 እሴቶቻችን</h3>
+                <p>ግልጽነትና ተጠያቂነት፣ ፍትሃዊነት፣ ለለውጥ ዝግጁነት፣ የላቀ የህዝብ አገልጋይነት ስሜት እና በቡድን የመስራት ባህል።</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-alt" id="services">
+        <section class="inner">
+            <div class="section-title">
+                <h2>ዋና ዋና አገልግሎቶቻችን</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="grid">
+                <div class="white-card">
+                    <h3>📚 የትምህርት ጥራትና ተደራሽነት</h3>
+                    <p>በዞኑ ወረዳዎች የሚገኙ ትምህርት ቤቶችን ደረጃ ማሻሻል፣ የመማር ማስተማር ሂደቱን መከታተልና ፈተናዎችን መምራት።</p>
+                </div>
+                <div class="white-card">
+                    <h3>👥 የሰው ሀብት ልማትና አቅም ግንባታ</h3>
+                    <p>ለመምህራን፣ ለትምህርት አመራሮችና ለመንግስት ሰራተኞች የአጭርና የረጅም ጊዜ ስልጠናዎችን ማመቻቸት።</p>
+                </div>
+                <div class="white-card">
+                    <h3>⚖️ የሲቪል ሰርቪስ ሪፎርም</h3>
+                    <p>የመንግስት ሰራተኞች ምልመላ፣ ምደባ፣ ዝውውር እና ጥቅማጥቅም በህግና መመሪያ መሰረት መፈጸሙን መቆጣጠር።</p>
+                </div>
+                <div class="white-card">
+                    <h3>🏫 የመምህራንና አመራሮች ልማት</h3>
+                    <p>የመምህራንን የሙያ ብቃት ምዘና እና የደረጃ እድገት በማረጋገጥ የትምህርት ውጤታማነትን ማሳደግ።</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section id="news">
+        <div class="section-title">
+            <h2>ዜናዎች እና ማስታወቂያዎች</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <span class="news-tag">📢 የስራ ማስታወቂያ</span>
+                <h3>ክፍት የመምህራን እና የሲቪል ሰርቪስ የስራ መደቦች</h3>
+                <p>በካማሺ ዞን ስር በሚገኙ ወረዳዎች በተለያዩ የትምህርት ዓይነቶች መምህራንን አወዳድሮ መቅጠር ይፈልጋል።</p>
+            </div>
+            <div class="card">
+                <span class="news-tag">📰 ዜና</span>
+                <h3>የዞኑ ትምህርት ቤቶች የመማር ማስተማር ግምገማ ተካሄደ</h3>
+                <p>መምሪያው ከሁሉም ወረዳ ትምህርት ጽህፈት ቤት ኃላፊዎች ጋር በትምህርት ጥራት ማሻሻያ ዙሪያ ውይይት አድርጓል።</p>
+            </div>
+            <div class="card">
+                <span class="news-tag">🎓 ስልጠና</span>
+                <h3>ለመንግስት ሰራተኞች የአገልግሎት አሰጣጥ ስልጠና ተሰጠ</h3>
+                <p>ተገልጋይ ተኮር አገልግሎት አሰጣጥን ለማጠናከር ያለመ ስልጠና በካማሺ ከተማ ለባለሙያዎች ተሰጥቷል።</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bg-alt" id="docs">
+        <section class="inner">
+            <div class="section-title">
+                <h2>መመሪያዎች እና ቅጾች</h2>
+                <div class="underline"></div>
+            </div>
+            <div class="doc-item">
+                <span>📄 የመንግስት ሰራተኞች አዋጅና መመሪያ</span>
+                <a href="#" onclick="alert('ሰነዱ በመውረድ ላይ ነው...'); return false;">አውርድ ↓</a>
+            </div>
+            <div class="doc-item">
+                <span>📄 የመምህራን ዝውውር እና ምደባ መመሪያ</span>
+                <a href="#" onclick="alert('ሰነዱ በመውረድ ላይ ነው...'); return false;">አውርድ ↓</a>
+            </div>
+            <div class="doc-item">
+                <span>📄 የስራ መደብ ማመልከቻ ቅጽ</span>
+                <a href="#" onclick="alert('ሰነዱ በመውረድ ላይ ነው...'); return false;">አውርድ ↓</a>
+            </div>
+        </section>
+    </div>
+
+    <section id="contact">
+        <div class="section-title">
+            <h2>ያግኙን / አስተያየት ይስጡ</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid">
+            <div>
+                <p><strong>📍 አድራሻ:</strong> ቤኒሻንጉል ጉሙዝ ክልል፣ ካማሺ ዞን አስተዳደር ግቢ አጠገብ፣ ካማሺ ከተማ</p><br>
+                <p><strong>📞 ስልክ:</strong> +251 57 771 XXXX</p><br>
+                <p><strong>✉️ ኢሜይል:</strong> info@kamashieducivil.gov.et</p>
+            </div>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('መልዕክትዎ በተሳካ ሁኔታ ተልኳል!'); this.reset();">
+                <input type="text" placeholder="ሙሉ ስምዎ" required>
+                <input type="text" placeholder="ስልክ ቁጥር ወይም ኢሜይል" required>
+                <textarea rows="3" placeholder="ጥያቄዎን ወይም አስተያየትዎን እዚህ ይጻፉ..." required></textarea>
+                <button type="submit" class="btn" style="width:100%;">መልዕክቱን ይላኩ</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h4>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h4>
+                <p>በቤኒሻንጉል ጉሙዝ ክልል ካማሺ ዞን የትምህርት ጥራትን እና የሲቪል ሰርቪስ አገልግሎትን ለማዘመን የሚሰራ ተቋም።</p>
+            </div>
+            <div>
+                <h4>ፈጣን ማውጫ</h4>
+                <p><a href="#home">መነሻ ገጽ</a></p>
+                <p><a href="#about">ስለ መምሪያው</a></p>
+                <p><a href="#services">አገልግሎቶች</a></p>
+                <p><a href="#news">ዜናና ማስታወቂያ</a></p>
+            </div>
+            <div>
+                <h4>የስራ ሰዓት</h4>
+                <p>ሰኞ - ሐሙስ: 2:30 - 6:30 እና 7:30 - 11:30</p>
+                <p>አርብ: 2:30 - 5:30 እና 7:30 - 11:30</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2019 ዓ.ም ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ።
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
