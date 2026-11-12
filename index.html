@@ -3,155 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የአስተዳዳሪ ዳሽቦርድ - ካማሺ ዞን ትምህርት መምሪያ</title>
+    <title>የዞንና የወረዳዎች የመረጃ መለዋወጫ ፖርታል - ካማሺ ዞን</title>
     <style>
         :root { --primary: #0d47a1; --secondary: #2e7d32; --accent: #fbc02d; --bg: #f0f4f8; --white: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-        body { background: var(--bg); color: #222; }
-        .login-box { max-width: 380px; margin: 60px auto; background: var(--white); padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
-        .login-box h2 { color: var(--primary); margin-bottom: 10px; }
-        input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
-        .btn { width: 100%; padding: 12px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: #222; line-height: 1.5; }
+
+        .brand-header { background: var(--white); padding: 12px 5%; box-shadow: 0 2px 6px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; }
+        .logo-circle { background: var(--primary); color: var(--white); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .logo-titles h1 { font-size: 0.98rem; color: var(--primary); }
+        .logo-titles p { font-size: 0.78rem; color: var(--secondary); font-weight: bold; }
+
+        .login-box { max-width: 400px; margin: 45px auto; background: var(--white); padding: 28px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid var(--primary); }
+        input[type="text"], input[type="password"], select { width: 100%; padding: 11px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
+        .btn { width: 100%; padding: 11px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
         .btn-green { background: var(--secondary); }
-        .btn-red { background: #c62828; width: auto; padding: 6px 12px; font-size: 0.85rem; }
+        .btn-gold { background: var(--accent); color: #222; }
+        .btn-red { background: #c62828; width: auto; padding: 5px 10px; font-size: 0.8rem; }
+
         #dashboard { display: none; }
-        .topbar { background: var(--primary); color: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
-        .toolbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .tool-btn { background: var(--white); border: 2px solid var(--primary); color: var(--primary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .sub-bar { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .container { max-width: 1050px; margin: 20px auto; padding: 0 12px; }
+        .toolbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; margin-bottom: 18px; }
+        .tool-btn { background: var(--white); border: 2px solid var(--primary); color: var(--primary); padding: 10px 6px; border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer; }
         .tool-btn.active { background: var(--primary); color: var(--white); }
-        .panel { display: none; background: var(--white); padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+        .panel { display: none; background: var(--white); padding: 18px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
         .panel.active { display: block; }
-        .panel h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; }
-        .item-card { background: var(--bg); padding: 15px; border-radius: 6px; margin-bottom: 12px; border-left: 4px solid var(--secondary); }
-        .badge { display: inline-block; background: var(--accent); padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; }
+        .panel h3 { color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
+
+        .word-toolbar { display: flex; flex-wrap: wrap; gap: 5px; background: #e3f2fd; padding: 8px; border: 1px solid #90caf9; border-bottom: none; border-radius: 6px 6px 0 0; }
+        .word-btn { background: var(--white); border: 1px solid #bbb; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .word-editor { min-height: 150px; border: 1px solid #90caf9; border-radius: 0 0 6px 6px; padding: 12px; background: var(--white); margin-bottom: 14px; outline: none; }
+
+        .media-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #2e7d32; }
+        .media-item { display: flex; flex-direction: column; align-items: center; background: var(--white); border: 1px solid #ddd; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: bold; color: var(--primary); }
+
+        .excel-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        .excel-wrapper { overflow-x: auto; margin-bottom: 15px; border: 1px solid #ccc; }
+        table.excel-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        table.excel-table th, table.excel-table td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 0.9rem; }
+        table.excel-table th { background: #2e7d32; color: var(--white); }
+        table.excel-table td { background: #fff; outline: none; }
+
+        .item-card { background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
+        .badge { display: inline-block; background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px; }
+        .share-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .share-link { padding: 4px 10px; border-radius: 4px; color: #fff; text-decoration: none; font-size: 0.78rem; font-weight: bold; }
+        .dev-footer { text-align: center; padding: 20px; font-size: 0.82rem; color: #444; margin-top: 30px; border-top: 1px solid #ddd; background: #fff; }
     </style>
 </head>
 <body>
 
+    <div class="brand-header">
+        <div class="logo-circle">🎓</div>
+        <div class="logo-titles">
+            <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+            <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት — የመረጃ መለዋወጫ ሲስተም</p>
+        </div>
+    </div>
+
     <div id="loginScreen" class="login-box">
-        <h2>🔐 የአስተዳዳሪ መግቢያ</h2>
-        <p style="margin-bottom:20px; color:#555;">ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</p>
-        <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)" autocapitalize="none">
-        <input type="password" id="password" placeholder="የይለፍ ቃል (kamashi2026)">
-        <button type="button" class="btn" id="loginBtn">ግባ (Login)</button>
-        <p id="loginError" style="color:red; margin-top:12px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+        <h3 style="color:var(--primary); margin-bottom:15px;">🔐 የዞንና የወረዳዎች መግቢያ</h3>
+        <input type="text" id="loginUser" placeholder="የተጠቃሚ ስም (ለዞን: admin)" autocapitalize="none">
+        <input type="password" id="loginPass" placeholder="የይለፍ ቃል (ለዞን: kamashi2026)">
+        <button type="button" class="btn" onclick="handleLogin()">ግባ (Login)</button>
+        <p id="loginErr" style="color:red; margin-top:10px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
     </div>
 
     <div id="dashboard">
-        <div class="topbar">
-            <strong>📊 የመምሪያው ዳሽቦርድ</strong>
+        <div class="sub-bar">
+            <span id="welcomeUser"><strong>👤 እንኳን ደህና መጡ</strong></span>
             <div>
-                <a href="index.html" style="color:#fbc02d; margin-right:15px; text-decoration:none; font-weight:bold;">🌐 ዋናው ገጽ</a>
-                <button type="button" class="btn btn-red" id="logoutBtn">ውጣ</button>
+                <a href="index.html" style="color:#fbc02d; margin-right:12px; text-decoration:none; font-weight:bold;">🌐 ዋናው ገጽ</a>
+                <button type="button" class="btn btn-red" onclick="location.reload()">ውጣ</button>
             </div>
         </div>
 
         <div class="container">
             <div class="toolbox">
-                <button type="button" class="tool-btn active" onclick="openTab('postTab', this)">✍️ መጻፊያና መፖሰቻ</button>
-                <button type="button" class="tool-btn" onclick="openTab('gmailTab', this)">📧 ጂሜይል ማስቀመጫ</button>
-                <button type="button" class="tool-btn" onclick="openTab('feedbackTab', this)">📩 ግብረ መልስ</button>
+                <button type="button" class="tool-btn active" onclick="switchTab('wordTab', this)">📝 ወርድ (Word) መጻፊያ</button>
+                <button type="button" class="tool-btn" onclick="switchTab('excelTab', this)">📊 ኤክሴል (Excel) መስሪያ</button>
+                <button type="button" class="tool-btn" onclick="switchTab('feedbackTab', this)">💬 ግብረ መልስ መለዋወጫ</button>
+                <button type="button" class="tool-btn" id="woredaTabBtn" onclick="switchTab('woredaTab', this)">🏢 የወረዳዎች አካውንት</button>
             </div>
 
-            <div id="postTab" class="panel active">
-                <h3>✍️ አዲስ ዜና ወይም ማስታወቂያ መፖሰቻ</h3>
-                <select id="postCategory">
+            <div id="wordTab" class="panel active">
+                <h3>📝 መጻፊያ፣ ዜና መለጠፊያና ሚዲያ (MS Word & Media)</h3>
+                <select id="docCategory">
                     <option value="📢 የስራ ማስታወቂያ">📢 የስራ ማስታወቂያ</option>
                     <option value="📰 የተሰራ ሥራ / ዜና">📰 የተሰራ ሥራ / ዜና</option>
-                    <option value="🎓 ስልጠና">🎓 ስልጠና</option>
+                    <option value="📄 ኦፊሴላዊ ደብዳቤ / መመሪያ">📄 ኦፊሴላዊ ደብዳቤ / መመሪያ</option>
                 </select>
-                <input type="text" id="postTitle" placeholder="የማስታወቂያው ርዕስ...">
-                <textarea id="postBody" rows="4" placeholder="ዝርዝር መግለጫውን እዚህ ይጻፉ..."></textarea>
-                <button type="button" class="btn btn-green" onclick="publishPost()">ፖስት አድርግ (Publish)</button>
-                <h3 style="margin-top:25px;">📋 የተፖሰቱ መረጃዎች</h3>
-                <div id="postsList"></div>
+                <input type="text" id="docTitle" placeholder="የዜናው ወይም የሰነዱ ርዕስ...">
+
+                <div class="word-toolbar">
+                    <button type="button" class="word-btn" onclick="formatDoc('bold')"><b>B</b></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('italic')"><i>I</i></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('underline')"><u>U</u></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('insertUnorderedList')">• ዝርዝር</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('justifyLeft')">ግራ</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('justifyCenter')">መሃል</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#0d47a1')">ሰማያዊ</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#c62828')">ቀይ</button>
+                </div>
+                <div id="wordEditor" class="word-editor" contenteditable="true">ጽሑፍዎን ልክ እንደ ማይክሮሶፍት ወርድ እዚህ ይጻፉ...</div>
+
+                <div class="media-bar">
+                    <label class="media-item">📷 ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="attachMedia(this, '📷 ካሜራ ፎቶ')"></label>
+                    <label class="media-item">🖼️ ፎቶግራፍ<input type="file" accept="image/*" style="display:none;" onchange="attachMedia(this, '🖼️ ፎቶ')"></label>
+                    <label class="media-item">🎥 ቪዲዮ<input type="file" accept="video/*" style="display:none;" onchange="attachMedia(this, '🎥 ቪዲዮ')"></label>
+                    <label class="media-item">📕 PDF ሰነድ<input type="file" accept=".pdf" style="display:none;" onchange="attachMedia(this, '📕 PDF ፋይል')"></label>
+                </div>
+                <p id="mediaStatus" style="color:#2e7d32; font-weight:bold; font-size:0.85rem; margin-bottom:10px;"></p>
+                <button type="button" class="btn btn-green" onclick="savePost()">ዜናውን / መረጃውን ፖስት አድርግ (Publish)</button>
+
+                <h3 style="margin-top:25px;">📋 የተለጠፉ ዜናዎችና የማጋሪያ ሊንኮች</h3>
+                <div id="feedList"></div>
             </div>
 
-            <div id="gmailTab" class="panel">
-                <h3>📧 ግብረ መልስ መቀበያ ጂሜይል ማስቀመጫ</h3>
-                <input type="email" id="adminGmail" placeholder="የመምሪያው Gmail (ለምሳሌ: kamashiedu@gmail.com)">
-                <input type="tel" id="adminPhone" placeholder="የመምሪያው ስልክ ቁጥር (+251...)">
-                <button type="button" class="btn" onclick="saveSettings()">አስቀምጥ (Save)</button>
-                <p id="savedMsg" style="color:green; margin-top:10px; display:none; font-weight:bold;">✅ በትክክል ተቀምጧል!</p>
-            </div>
-
-            <div id="feedbackTab" class="panel">
-                <h3>📩 የተገልጋዮች ግብረ መልስ መመሪያ</h3>
-                <p>ተገልጋዮች በዋናው ገጽ ላይ መልእክት ሲልኩ በቀጥታ እርስዎ ወዳስቀመጡት <strong>Gmail</strong> ይላካል።</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('loginBtn').addEventListener('click', function() {
-            const user = document.getElementById('username').value.trim().toLowerCase();
-            const pass = document.getElementById('password').value.trim();
-            if (user === 'admin' && pass === 'kamashi2026') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                loadPosts();
-                loadSettings();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'block';
-        });
-
-        function openTab(tabId, btn) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        function publishPost() {
-            const cat = document.getElementById('postCategory').value;
-            const title = document.getElementById('postTitle').value.trim();
-            const body = document.getElementById('postBody').value.trim();
-            if (!title || !body) { alert('እባክዎ ርዕስ እና ዝርዝር መግለጫ ይጻፉ!'); return; }
-            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
-            posts.unshift({ cat, title, body, date: new Date().toLocaleDateString() });
-            localStorage.setItem('kamashiPosts', JSON.stringify(posts));
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postBody').value = '';
-            loadPosts();
-            alert('✅ መረጃው በትክክል ተፖስቷል!');
-        }
-
-        function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
-            const list = document.getElementById('postsList');
-            list.innerHTML = posts.length === 0 ? '<p style="color:#666;">ገና የተፖሰተ መረጃ የለም።</p>' : '';
-            posts.forEach((p, index) => {
-                list.innerHTML += `<div class="item-card"><span class="badge">${p.cat} - ${p.date}</span><h4>${p.title}</h4><p>${p.body}</p><button type="button" class="btn btn-red" style="margin-top:8px;" onclick="deletePost(${index})">አጥፋ</button></div>`;
-            });
-        }
-
-        function deletePost(index) {
-            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
-            posts.splice(index, 1);
-            localStorage.setItem('kamashiPosts', JSON.stringify(posts));
-            loadPosts();
-        }
-
-        function saveSettings() {
-            const gmail = document.getElementById('adminGmail').value.trim();
-            const phone = document.getElementById('adminPhone').value.trim();
-            localStorage.setItem('kamashiSettings', JSON.stringify({ gmail, phone }));
-            document.getElementById('savedMsg').style.display = 'block';
-            setTimeout(() => document.getElementById('savedMsg').style.display = 'none', 3000);
-        }
-
-        function loadSettings() {
-            const settings = JSON.parse(localStorage.getItem('kamashiSettings') || '{}');
-            if (settings.gmail) document.getElementById('adminGmail').value = settings.gmail;
-            if (settings.phone) document.getElementById('adminPhone').value = settings.phone;
-        }
-    </script>
-</body>
-</html>
+            <div id="excelTab" class="panel">
+                <h3>📊 የኤክሴል ሰንጠረዥ ማዘጋጃና ማስተካከያ (Excel Editor)</h3>
+                <div class="excel-controls">
+                    <button type="button" class="btn btn-green" style="width:auto;" onclick="addExcelRow()">+ ረድፍ ጨምር</button>
