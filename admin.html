@@ -120,84 +120,131 @@
 </head>
 <body>
 
-    <!-- 1. የመግቢያ ገጽ ከበፊቱ ሎጎ ጋር -->
-    <div id="loginScreen" class="login-box">
-        <div class="logo-box login-logo">
-            <div class="logo-circle">🎓</div>
-            <div class="logo-titles">
-                <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
-                <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
-            </div>
+    <!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የዞንና የወረዳዎች የመረጃ መለዋወጫ ፖርታል - ካማሺ ዞን</title>
+    <style>
+        :root { --primary: #0d47a1; --secondary: #2e7d32; --accent: #fbc02d; --bg: #f0f4f8; --white: #ffffff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: #222; line-height: 1.5; }
+
+        .brand-header { background: var(--white); padding: 12px 5%; box-shadow: 0 2px 6px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; }
+        .logo-circle { background: var(--primary); color: var(--white); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .logo-titles h1 { font-size: 0.98rem; color: var(--primary); }
+        .logo-titles p { font-size: 0.78rem; color: var(--secondary); font-weight: bold; }
+
+        .login-box { max-width: 400px; margin: 45px auto; background: var(--white); padding: 28px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid var(--primary); }
+        input[type="text"], input[type="password"], select { width: 100%; padding: 11px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
+        .btn { width: 100%; padding: 11px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
+        .btn-green { background: var(--secondary); }
+        .btn-gold { background: var(--accent); color: #222; }
+        .btn-red { background: #c62828; width: auto; padding: 5px 10px; font-size: 0.8rem; }
+
+        #dashboard { display: none; }
+        .sub-bar { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+        .container { max-width: 1050px; margin: 20px auto; padding: 0 12px; }
+        .toolbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; margin-bottom: 18px; }
+        .tool-btn { background: var(--white); border: 2px solid var(--primary); color: var(--primary); padding: 10px 6px; border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer; }
+        .tool-btn.active { background: var(--primary); color: var(--white); }
+
+        .panel { display: none; background: var(--white); padding: 18px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+        .panel.active { display: block; }
+        .panel h3 { color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
+
+        .word-toolbar { display: flex; flex-wrap: wrap; gap: 5px; background: #e3f2fd; padding: 8px; border: 1px solid #90caf9; border-bottom: none; border-radius: 6px 6px 0 0; }
+        .word-btn { background: var(--white); border: 1px solid #bbb; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+        .word-editor { min-height: 150px; border: 1px solid #90caf9; border-radius: 0 0 6px 6px; padding: 12px; background: var(--white); margin-bottom: 14px; outline: none; }
+
+        .media-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #2e7d32; }
+        .media-item { display: flex; flex-direction: column; align-items: center; background: var(--white); border: 1px solid #ddd; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: bold; color: var(--primary); }
+
+        .excel-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        .excel-wrapper { overflow-x: auto; margin-bottom: 15px; border: 1px solid #ccc; }
+        table.excel-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        table.excel-table th, table.excel-table td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 0.9rem; }
+        table.excel-table th { background: #2e7d32; color: var(--white); }
+        table.excel-table td { background: #fff; outline: none; }
+
+        .item-card { background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
+        .badge { display: inline-block; background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px; }
+        .share-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .share-link { padding: 4px 10px; border-radius: 4px; color: #fff; text-decoration: none; font-size: 0.78rem; font-weight: bold; }
+        .dev-footer { text-align: center; padding: 20px; font-size: 0.82rem; color: #444; margin-top: 30px; border-top: 1px solid #ddd; background: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="brand-header">
+        <div class="logo-circle">🎓</div>
+        <div class="logo-titles">
+            <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+            <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት — የመረጃ መለዋወጫ ሲስተም</p>
         </div>
-        <h3 style="color:#333; margin-bottom:15px;">🔐 የአስተዳዳሪ መግቢያ</h3>
-        <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)" autocapitalize="none">
-        <input type="password" id="password" placeholder="የይለፍ ቃል (kamashi2026)">
-        <button type="button" class="btn" id="loginBtn">ግባ (Login)</button>
-        <p id="loginError" style="color:red; margin-top:12px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
     </div>
 
-    <!-- 2. ዳሽቦርድ ከበፊቱ ሎጎ ጋር -->
-    <div id="dashboard">
-        <div class="brand-header">
-            <div class="logo-box">
-                <div class="logo-circle">🎓</div>
-                <div class="logo-titles">
-                    <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
-                    <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
-                </div>
-            </div>
-        </div>
+    <div id="loginScreen" class="login-box">
+        <h3 style="color:var(--primary); margin-bottom:15px;">🔐 የዞንና የወረዳዎች መግቢያ</h3>
+        <input type="text" id="loginUser" placeholder="የተጠቃሚ ስም (ለዞን: admin)" autocapitalize="none">
+        <input type="password" id="loginPass" placeholder="የይለፍ ቃል (ለዞን: kamashi2026)">
+        <button type="button" class="btn" onclick="handleLogin()">ግባ (Login)</button>
+        <p id="loginErr" style="color:red; margin-top:10px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+    </div>
 
+    <div id="dashboard">
         <div class="sub-bar">
-            <strong>📊 የመምሪያው አስተዳዳሪ ዳሽቦርድ</strong>
+            <span id="welcomeUser"><strong>👤 እንኳን ደህና መጡ</strong></span>
             <div>
                 <a href="index.html" style="color:#fbc02d; margin-right:12px; text-decoration:none; font-weight:bold;">🌐 ዋናው ገጽ</a>
-                <button type="button" class="btn btn-red" id="logoutBtn">ውጣ</button>
+                <button type="button" class="btn btn-red" onclick="location.reload()">ውጣ</button>
             </div>
         </div>
 
         <div class="container">
             <div class="toolbox">
-                <button type="button" class="tool-btn active" onclick="openTab('postTab', this)">✍️ መጻፊያና መፖሰቻ</button>
-                <button type="button" class="tool-btn" onclick="openTab('gmailTab', this)">📧 ጂሜይል ማስቀመጫ</button>
-                <button type="button" class="tool-btn" onclick="openTab('feedbackTab', this)">📩 ግብረ መልስ</button>
+                <button type="button" class="tool-btn active" onclick="switchTab('wordTab', this)">📝 ወርድ (Word) መጻፊያ</button>
+                <button type="button" class="tool-btn" onclick="switchTab('excelTab', this)">📊 ኤክሴል (Excel) መስሪያ</button>
+                <button type="button" class="tool-btn" onclick="switchTab('feedbackTab', this)">💬 ግብረ መልስ መለዋወጫ</button>
+                <button type="button" class="tool-btn" id="woredaTabBtn" onclick="switchTab('woredaTab', this)">🏢 የወረዳዎች አካውንት</button>
             </div>
 
-            <!-- መጻፊያና መፖሰቻ ከሚዲያ ማስዋቢያዎች ጋር -->
-            <div id="postTab" class="panel active">
-                <h3>✍️ አዲስ ዜና ወይም ማስታወቂያ መፖሰቻ</h3>
-                <select id="postCategory">
+            <div id="wordTab" class="panel active">
+                <h3>📝 መጻፊያ፣ ዜና መለጠፊያና ሚዲያ (MS Word & Media)</h3>
+                <select id="docCategory">
                     <option value="📢 የስራ ማስታወቂያ">📢 የስራ ማስታወቂያ</option>
                     <option value="📰 የተሰራ ሥራ / ዜና">📰 የተሰራ ሥራ / ዜና</option>
-                    <option value="🎓 ስልጠና">🎓 ስልጠና</option>
-                    <option value="📄 መመሪያና ቅጽ">📄 መመሪያና ቅጽ</option>
+                    <option value="📄 ኦፊሴላዊ ደብዳቤ / መመሪያ">📄 ኦፊሴላዊ ደብዳቤ / መመሪያ</option>
                 </select>
-                <input type="text" id="postTitle" placeholder="የማስታወቂያው ርዕስ...">
-                <textarea id="postBody" rows="4" placeholder="ዝርዝር መግለጫውን እዚህ ይጻፉ..."></textarea>
+                <input type="text" id="docTitle" placeholder="የዜናው ወይም የሰነዱ ርዕስ...">
 
-                <!-- 5 የማስዋቢያ እና ፋይል መጫኛ ቁልፎች -->
-                <div class="media-toolbar">
-                    <label class="media-btn">
-                        <span class="icon">📷</span>
-                        <span>Camera</span>
-                        <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleFile(this, '📷 ካሜራ ፎቶ')">
-                    </label>
-                    <label class="media-btn">
-                        <span class="icon">🖼️</span>
-                        <span>Photo</span>
-                        <input type="file" accept="image/*" style="display:none;" onchange="handleFile(this, '🖼️ ፎቶ')">
-                    </label>
-                    <label class="media-btn">
-                        <span class="icon">🎥</span>
-                        <span>Video</span>
-                        <input type="file" accept="video/*" style="display:none;" onchange="handleFile(this, '🎥 ቪዲዮ')">
-                    </label>
-                    <label class="media-btn">
-                        <span class="icon">📄</span>
-                        <span>Document</span>
-                        <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" style="display:none;" onchange="handleFile(this, '📄 ሰነድ (Document)')">
-                    </label>
-                    <label class="media-btn">
-                        <span class="icon">📠</span>
-                        <span>Scan</span>
-                        <input type="file" accept="image/*,.pdf" capture="environment" style="display:none;" onchange="handleFile(this, '📠 ስካን የተደረገ ሰነድ')">
+                <div class="word-toolbar">
+                    <button type="button" class="word-btn" onclick="formatDoc('bold')"><b>B</b></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('italic')"><i>I</i></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('underline')"><u>U</u></button>
+                    <button type="button" class="word-btn" onclick="formatDoc('insertUnorderedList')">• ዝርዝር</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('justifyLeft')">ግራ</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('justifyCenter')">መሃል</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#0d47a1')">ሰማያዊ</button>
+                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#c62828')">ቀይ</button>
+                </div>
+                <div id="wordEditor" class="word-editor" contenteditable="true">ጽሑፍዎን ልክ እንደ ማይክሮሶፍት ወርድ እዚህ ይጻፉ...</div>
+
+                <div class="media-bar">
+                    <label class="media-item">📷 ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="attachMedia(this, '📷 ካሜራ ፎቶ')"></label>
+                    <label class="media-item">🖼️ ፎቶግራፍ<input type="file" accept="image/*" style="display:none;" onchange="attachMedia(this, '🖼️ ፎቶ')"></label>
+                    <label class="media-item">🎥 ቪዲዮ<input type="file" accept="video/*" style="display:none;" onchange="attachMedia(this, '🎥 ቪዲዮ')"></label>
+                    <label class="media-item">📕 PDF ሰነድ<input type="file" accept=".pdf" style="display:none;" onchange="attachMedia(this, '📕 PDF ፋይል')"></label>
+                </div>
+                <p id="mediaStatus" style="color:#2e7d32; font-weight:bold; font-size:0.85rem; margin-bottom:10px;"></p>
+                <button type="button" class="btn btn-green" onclick="savePost()">ዜናውን / መረጃውን ፖስት አድርግ (Publish)</button>
+
+                <h3 style="margin-top:25px;">📋 የተለጠፉ ዜናዎችና የማጋሪያ ሊንኮች</h3>
+                <div id="feedList"></div>
+            </div>
+
+            <div id="excelTab" class="panel">
+                <h3>📊 የኤክሴል ሰንጠረዥ ማዘጋጃና ማስተካከያ (Excel Editor)</h3>
+                <div class="excel-controls">
+                    <button type="button" class="btn btn-green" style="width:auto;" onclick="addExcelRow()">+ ረድፍ ጨምር</button>
