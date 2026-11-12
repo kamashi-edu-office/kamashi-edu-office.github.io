@@ -15,18 +15,39 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); }
-        
+
+        /* የበፊቱ የመምሪያው ሎጎ (Original Logo Design) */
+        .brand-header {
+            background: var(--white);
+            padding: 12px 5%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .logo-box { display: flex; align-items: center; gap: 12px; text-align: left; }
+        .logo-circle {
+            background: var(--primary); color: var(--white);
+            width: 46px; height: 46px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(13, 71, 161, 0.3);
+        }
+        .logo-titles h1 { font-size: 1rem; color: var(--primary); line-height: 1.3; font-weight: 700; }
+        .logo-titles p { font-size: 0.8rem; color: var(--secondary); font-weight: 700; }
+
         /* Login Screen */
         .login-box {
-            max-width: 380px; margin: 80px auto; background: var(--white);
-            padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
+            max-width: 400px; margin: 45px auto; background: var(--white);
+            padding: 28px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center; border-top: 4px solid var(--primary);
         }
-        .login-box h2 { color: var(--primary); margin-bottom: 10px; }
-        .login-box p { font-size: 0.9rem; color: #555; margin-bottom: 20px; }
-        input, textarea, select {
-            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
-            border-radius: 6px; font-size: 1rem;
+        .login-logo { justify-content: center; margin-bottom: 18px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        input[type="text"], input[type="password"], input[type="email"], input[type="tel"], textarea, select {
+            width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #ccc;
+            border-radius: 6px; font-size: 0.95rem;
         }
         .btn {
             width: 100%; padding: 12px; background: var(--primary); color: var(--white);
@@ -35,181 +56,148 @@
         .btn-green { background: var(--secondary); }
         .btn-red { background: #c62828; width: auto; padding: 6px 12px; font-size: 0.85rem; }
 
-        /* Dashboard Layout */
+        /* Dashboard & Topbar */
         #dashboard { display: none; }
-        .topbar {
-            background: var(--primary); color: var(--white); padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
+        .sub-bar {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--white); padding: 10px 5%;
+            display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;
         }
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
-        
+        .container { max-width: 920px; margin: 20px auto; padding: 0 15px; }
+
         /* Toolbox Navigation */
-        .toolbox {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px; margin-bottom: 20px;
-        }
+        .toolbox { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
         .tool-btn {
             background: var(--white); border: 2px solid var(--primary); color: var(--primary);
-            padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center;
+            padding: 10px 6px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
         }
         .tool-btn.active { background: var(--primary); color: var(--white); }
 
         /* Panels */
         .panel {
             display: none; background: var(--white); padding: 20px;
-            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
         }
         .panel.active { display: block; }
-        .panel h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; }
+        .panel h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
 
-        /* Cards for Posts & Feedback */
+        /* Media & Scan Attachment Bar (ማስዋቢያዎች) */
+        .media-toolbar {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+            margin-bottom: 15px; background: #f8fafc; padding: 10px;
+            border-radius: 8px; border: 1px dashed #90caf9;
+        }
+        .media-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--white); border: 1px solid #dce4ec; border-radius: 8px;
+            padding: 8px 4px; cursor: pointer; font-size: 0.78rem; font-weight: 600; color: var(--primary);
+            transition: 0.2s;
+        }
+        .media-btn:hover { background: #e3f2fd; border-color: var(--primary); }
+        .media-btn span.icon { font-size: 1.3rem; margin-bottom: 3px; }
+        
+        /* Attachment Preview Box */
+        #attachmentPreview {
+            display: none; background: #e8f5e9; border: 1px solid #a5d6a7;
+            padding: 10px; border-radius: 6px; margin-bottom: 14px; font-size: 0.85rem;
+        }
+        #attachmentPreview img { max-width: 100%; max-height: 180px; border-radius: 6px; margin-top: 8px; display: block; }
+
+        /* Cards */
         .item-card {
-            background: var(--bg); padding: 15px; border-radius: 6px;
+            background: var(--bg); padding: 15px; border-radius: 8px;
             margin-bottom: 12px; border-left: 4px solid var(--secondary);
         }
         .badge {
             display: inline-block; background: var(--accent); padding: 3px 8px;
-            border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;
+            border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 6px;
+        }
+        .media-tag {
+            display: inline-block; background: #e3f2fd; color: var(--primary);
+            padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-top: 8px;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. የመግቢያ ገጽ (Login Page) -->
+    <!-- 1. የመግቢያ ገጽ ከበፊቱ ሎጎ ጋር -->
     <div id="loginScreen" class="login-box">
-        <h2>🔐 የአስተዳዳሪ መግቢያ</h2>
-        <p>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</p>
-        <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)">
+        <div class="logo-box login-logo">
+            <div class="logo-circle">🎓</div>
+            <div class="logo-titles">
+                <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+                <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
+            </div>
+        </div>
+        <h3 style="color:#333; margin-bottom:15px;">🔐 የአስተዳዳሪ መግቢያ</h3>
+        <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)" autocapitalize="none">
         <input type="password" id="password" placeholder="የይለፍ ቃል (kamashi2026)">
-        <button class="btn" onclick="login()">ግባ (Login)</button>
-        <p id="loginError" style="color:red; margin-top:10px; display:none;">የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+        <button type="button" class="btn" id="loginBtn">ግባ (Login)</button>
+        <p id="loginError" style="color:red; margin-top:12px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
     </div>
 
-    <!-- 2. ዳሽቦርድ (Admin Dashboard) -->
+    <!-- 2. ዳሽቦርድ ከበፊቱ ሎጎ ጋር -->
     <div id="dashboard">
-        <div class="topbar">
-            <div>
-                <strong>📊 የመምሪያው ዳሽቦርድ</strong>
+        <div class="brand-header">
+            <div class="logo-box">
+                <div class="logo-circle">🎓</div>
+                <div class="logo-titles">
+                    <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+                    <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
+                </div>
             </div>
-            <button class="btn btn-red" onclick="logout()">ውጣ (Logout)</button>
+        </div>
+
+        <div class="sub-bar">
+            <strong>📊 የመምሪያው አስተዳዳሪ ዳሽቦርድ</strong>
+            <div>
+                <a href="index.html" style="color:#fbc02d; margin-right:12px; text-decoration:none; font-weight:bold;">🌐 ዋናው ገጽ</a>
+                <button type="button" class="btn btn-red" id="logoutBtn">ውጣ</button>
+            </div>
         </div>
 
         <div class="container">
-            <!-- 3. የመስሪያ ቱል ቦክስ (Toolbox) -->
             <div class="toolbox">
-                <button class="tool-btn active" onclick="openTab('postTab', this)">✍️ መጻፊያና መፖሰቻ</button>
-                <button class="tool-btn" onclick="openTab('feedbackTab', this)">📩 ግብረ መልስ መቀበያ</button>
-                <button class="tool-btn" onclick="openTab('gmailTab', this)">📧 ጂሜይል ማስቀመጫ</button>
-                <button class="tool-btn" onclick="openTab('guideTab', this)">ℹ️ አጠቃቀም መመሪያ</button>
+                <button type="button" class="tool-btn active" onclick="openTab('postTab', this)">✍️ መጻፊያና መፖሰቻ</button>
+                <button type="button" class="tool-btn" onclick="openTab('gmailTab', this)">📧 ጂሜይል ማስቀመጫ</button>
+                <button type="button" class="tool-btn" onclick="openTab('feedbackTab', this)">📩 ግብረ መልስ</button>
             </div>
 
-            <!-- 4. መጻፊያና መፖሰቻ ገጽ (Post Publisher) -->
+            <!-- መጻፊያና መፖሰቻ ከሚዲያ ማስዋቢያዎች ጋር -->
             <div id="postTab" class="panel active">
                 <h3>✍️ አዲስ ዜና ወይም ማስታወቂያ መፖሰቻ</h3>
                 <select id="postCategory">
                     <option value="📢 የስራ ማስታወቂያ">📢 የስራ ማስታወቂያ</option>
                     <option value="📰 የተሰራ ሥራ / ዜና">📰 የተሰራ ሥራ / ዜና</option>
                     <option value="🎓 ስልጠና">🎓 ስልጠና</option>
-                    <option value="📄 መመሪያ">📄 መመሪያ</option>
+                    <option value="📄 መመሪያና ቅጽ">📄 መመሪያና ቅጽ</option>
                 </select>
-                <input type="text" id="postTitle" placeholder="የማስታወቂያው ወይም የሥራው ርዕስ...">
+                <input type="text" id="postTitle" placeholder="የማስታወቂያው ርዕስ...">
                 <textarea id="postBody" rows="4" placeholder="ዝርዝር መግለጫውን እዚህ ይጻፉ..."></textarea>
-                <button class="btn btn-green" onclick="publishPost()">ፖስት አድርግ (Publish)</button>
 
-                <h3 style="margin-top:25px;">📋 የተፖሰቱ መረጃዎች</h3>
-                <div id="postsList"></div>
-            </div>
-
-            <!-- 5. ግብረ መልስ መቀበያ (Feedback Inbox) -->
-            <div id="feedbackTab" class="panel">
-                <h3>📩 ከተገልጋዮች የመጡ ግብረ መልሶች</h3>
-                <div id="feedbackList">
-                    <div class="item-card">
-                        <span class="badge">ናሙና መልእክት</span>
-                        <h4>አቶ ዳንኤል በቀለ (kamashi@gmail.com)</h4>
-                        <p>የመምህራን ዝውውር መመሪያ በድረ-ገጹ ላይ በመለቀቁ በጣም እናመሰግናለን።</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 6. ጂሜይል ማስቀመጫ (Gmail Settings) -->
-            <div id="gmailTab" class="panel">
-                <h3>📧 ግብረ መልስ መቀበያ ጂሜይል ማስቀመጫ</h3>
-                <p style="margin-bottom:10px; font-size:0.9rem;">ተገልጋዮች የሚልኩት አስተያየት እና ሪፖርት የሚደርስበትን ትክክለኛ Gmail አድራሻ እዚህ ያስቀምጡ፦</p>
-                <input type="email" id="adminGmail" placeholder="ለምሳሌ፦ kamashieducation@gmail.com">
-                <input type="tel" id="adminPhone" placeholder="የመምሪያው ስልክ ቁጥር (+251...)">
-                <button class="btn" onclick="saveSettings()">አስቀምጥ (Save Settings)</button>
-                <p id="savedMsg" style="color:green; margin-top:10px; display:none;">✅ መረጃው በትክክል ተቀምጧል!</p>
-            </div>
-
-            <!-- 7. የተጠቃሚ ቀላል መመሪያ -->
-            <div id="guideTab" class="panel">
-                <h3>ℹ️ ቀላል የአጠቃቀም መመሪያ</h3>
-                <p style="margin-bottom:10px;">1. <strong>መግቢያ፦</strong> በተጠቃሚ ስም <code>admin</code> እና በይለፍ ቃል <code>kamashi2026</code> ይግቡ።</p>
-                <p style="margin-bottom:10px;">2. <strong>መፖሰቻ፦</strong> አዲስ ሥራ ሲሰራ ርዕስና ዝርዝር ጽፈው "ፖስት አድርግ" ሲሉ ወዲያውኑ ይቀመጣል።</p>
-                <p>3. <strong>ጂሜይል፦</strong> የተገልጋዮች መልእክት እንዲደርስዎት የመምሪያውን Gmail አስገብተው ያስቀምጡ።</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Default Login Credentials
-        function login() {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value.trim();
-            if (user === 'admin' && pass === 'kamashi2026') {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                loadPosts();
-                loadSettings();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        }
-
-        function logout() {
-            document.getElementById('dashboard').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'block';
-        }
-
-        // Switch Toolbox Tabs
-        function openTab(tabId, btn) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        // Publish & Load Posts
-        function publishPost() {
-            const cat = document.getElementById('postCategory').value;
-            const title = document.getElementById('postTitle').value.trim();
-            const body = document.getElementById('postBody').value.trim();
-            if (!title || !body) { alert('እባክዎ ርዕስ እና ዝርዝር መግለጫ ይጻፉ!'); return; }
-
-            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
-            posts.unshift({ cat, title, body, date: new Date().toLocaleDateString() });
-            localStorage.setItem('kamashiPosts', JSON.stringify(posts));
-
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postBody').value = '';
-            loadPosts();
-            alert('✅ መረጃው በትክክል ተፖስቷል!');
-        }
-
-        function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
-            const list = document.getElementById('postsList');
-            list.innerHTML = posts.length === 0 ? '<p style="color:#666;">ገና የተፖሰተ መረጃ የለም።</p>' : '';
-            posts.forEach((p, index) => {
-                list.innerHTML += `
-                    <div class="item-card">
-                        <span class="badge">${p.cat} - ${p.date}</span>
-                        <h4>${p.title}</h4>
-                        <p>${p.body}</p>
-                        <button class="btn btn-red" style="margin-top:8px;" onclick="deletePost(${index})">አጥፋ</button>
-                    </div>`;
-            });
-        }
-
-        function deletePost(index) {
+                <!-- 5 የማስዋቢያ እና ፋይል መጫኛ ቁልፎች -->
+                <div class="media-toolbar">
+                    <label class="media-btn">
+                        <span class="icon">📷</span>
+                        <span>Camera</span>
+                        <input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleFile(this, '📷 ካሜራ ፎቶ')">
+                    </label>
+                    <label class="media-btn">
+                        <span class="icon">🖼️</span>
+                        <span>Photo</span>
+                        <input type="file" accept="image/*" style="display:none;" onchange="handleFile(this, '🖼️ ፎቶ')">
+                    </label>
+                    <label class="media-btn">
+                        <span class="icon">🎥</span>
+                        <span>Video</span>
+                        <input type="file" accept="video/*" style="display:none;" onchange="handleFile(this, '🎥 ቪዲዮ')">
+                    </label>
+                    <label class="media-btn">
+                        <span class="icon">📄</span>
+                        <span>Document</span>
+                        <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" style="display:none;" onchange="handleFile(this, '📄 ሰነድ (Document)')">
+                    </label>
+                    <label class="media-btn">
+                        <span class="icon">📠</span>
+                        <span>Scan</span>
+                        <input type="file" accept="image/*,.pdf" capture="environment" style="display:none;" onchange="handleFile(this, '📠 ስካን የተደረገ ሰነድ')">
