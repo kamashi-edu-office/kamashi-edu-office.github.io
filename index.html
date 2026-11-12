@@ -446,3 +446,53 @@
 
 <p id="formStatus" style="color:green; font-weight:bold; margin-top:10px;"></p>
 
+<script>
+    // 1. በዳሽቦርድ (admin.html) የተፖሰቱ ዜናዎችን ወደ ዋናው ገጽ ማምጣት
+    window.addEventListener('DOMContentLoaded', function() {
+        const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
+        const newsGrid = document.querySelector('#news .grid') || document.querySelectorAll('.grid')[2];
+        
+        if (newsGrid && posts.length > 0) {
+            posts.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'white-card';
+                card.innerHTML = `
+                    <span class="news-tag">${p.cat} (${p.date})</span>
+                    <h3>${p.title}</h3>
+                    <p>${p.body}</p>
+                `;
+                newsGrid.prepend(card);
+            });
+        }
+
+        // 2. የተቀመጠውን የመምሪያውን ስልክ እና Gmail በገጹ ላይ ማዘመን
+        const settings = JSON.parse(localStorage.getItem('kamashiSettings') || '{}');
+        if (settings.gmail) {
+            document.body.innerHTML = document.body.innerHTML.replace(/info@kamashieducivil\.gov\.et/g, settings.gmail);
+        }
+        if (settings.phone) {
+            document.body.innerHTML = document.body.innerHTML.replace(/\+251 57 771 XXXX/g, settings.phone);
+        }
+    });
+
+    // 3. የተገልጋዮችን ግብረ መልስ ወደ ተቀመጠው Gmail መላክ
+    const contactForm = document.querySelector('form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const settings = JSON.parse(localStorage.getItem('kamashiSettings') || '{}');
+            const targetEmail = settings.gmail || 'info@kamashieducivil.gov.et';
+            
+            const inputs = contactForm.querySelectorAll('input, textarea');
+            const name = inputs[0] ? inputs[0].value : '';
+            const contact = inputs[1] ? inputs[1].value : '';
+            const message = inputs[2] ? inputs[2].value : '';
+
+            // መልእክቱን በGmail መተግበሪያ በቀጥታ እንዲከፍት ማድረግ
+            const subject = encodeURIComponent('ከድረ-ገጽ የተላከ ግብረ መልስ - ' + name);
+            const body = encodeURIComponent('ስም: ' + name + '\nአድራሻ: ' + contact + '\n\nመልእክት:\n' + message);
+            window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+        });
+    }
+</script>
+
