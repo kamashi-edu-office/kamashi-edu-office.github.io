@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የአስተዳዳሪ ዳሽቦርድ - ካማሺ ዞን ትምህርት መምሪያ</title>
+    <style>
+        :root {
+            --primary: #0d47a1;
+            --secondary: #2e7d32;
+            --accent: #fbc02d;
+            --bg: #f0f4f8;
+            --white: #ffffff;
+            --text: #222222;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+        body { background: var(--bg); color: var(--text); }
+        
+        /* Login Screen */
+        .login-box {
+            max-width: 380px; margin: 80px auto; background: var(--white);
+            padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .login-box h2 { color: var(--primary); margin-bottom: 10px; }
+        .login-box p { font-size: 0.9rem; color: #555; margin-bottom: 20px; }
+        input, textarea, select {
+            width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc;
+            border-radius: 6px; font-size: 1rem;
+        }
+        .btn {
+            width: 100%; padding: 12px; background: var(--primary); color: var(--white);
+            border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer;
+        }
+        .btn-green { background: var(--secondary); }
+        .btn-red { background: #c62828; width: auto; padding: 6px 12px; font-size: 0.85rem; }
+
+        /* Dashboard Layout */
+        #dashboard { display: none; }
+        .topbar {
+            background: var(--primary); color: var(--white); padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 15px; }
+        
+        /* Toolbox Navigation */
+        .toolbox {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px; margin-bottom: 20px;
+        }
+        .tool-btn {
+            background: var(--white); border: 2px solid var(--primary); color: var(--primary);
+            padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center;
+        }
+        .tool-btn.active { background: var(--primary); color: var(--white); }
+
+        /* Panels */
+        .panel {
+            display: none; background: var(--white); padding: 20px;
+            border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .panel.active { display: block; }
+        .panel h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; }
+
+        /* Cards for Posts & Feedback */
+        .item-card {
+            background: var(--bg); padding: 15px; border-radius: 6px;
+            margin-bottom: 12px; border-left: 4px solid var(--secondary);
+        }
+        .badge {
+            display: inline-block; background: var(--accent); padding: 3px 8px;
+            border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. የመግቢያ ገጽ (Login Page) -->
+    <div id="loginScreen" class="login-box">
+        <h2>🔐 የአስተዳዳሪ መግቢያ</h2>
+        <p>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</p>
+        <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)">
+        <input type="password" id="password" placeholder="የይለፍ ቃል (kamashi2026)">
+        <button class="btn" onclick="login()">ግባ (Login)</button>
+        <p id="loginError" style="color:red; margin-top:10px; display:none;">የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+    </div>
+
+    <!-- 2. ዳሽቦርድ (Admin Dashboard) -->
+    <div id="dashboard">
+        <div class="topbar">
+            <div>
+                <strong>📊 የመምሪያው ዳሽቦርድ</strong>
+            </div>
+            <button class="btn btn-red" onclick="logout()">ውጣ (Logout)</button>
+        </div>
+
+        <div class="container">
+            <!-- 3. የመስሪያ ቱል ቦክስ (Toolbox) -->
+            <div class="toolbox">
+                <button class="tool-btn active" onclick="openTab('postTab', this)">✍️ መጻፊያና መፖሰቻ</button>
+                <button class="tool-btn" onclick="openTab('feedbackTab', this)">📩 ግብረ መልስ መቀበያ</button>
+                <button class="tool-btn" onclick="openTab('gmailTab', this)">📧 ጂሜይል ማስቀመጫ</button>
+                <button class="tool-btn" onclick="openTab('guideTab', this)">ℹ️ አጠቃቀም መመሪያ</button>
+            </div>
+
+            <!-- 4. መጻፊያና መፖሰቻ ገጽ (Post Publisher) -->
+            <div id="postTab" class="panel active">
+                <h3>✍️ አዲስ ዜና ወይም ማስታወቂያ መፖሰቻ</h3>
+                <select id="postCategory">
+                    <option value="📢 የስራ ማስታወቂያ">📢 የስራ ማስታወቂያ</option>
+                    <option value="📰 የተሰራ ሥራ / ዜና">📰 የተሰራ ሥራ / ዜና</option>
+                    <option value="🎓 ስልጠና">🎓 ስልጠና</option>
+                    <option value="📄 መመሪያ">📄 መመሪያ</option>
+                </select>
+                <input type="text" id="postTitle" placeholder="የማስታወቂያው ወይም የሥራው ርዕስ...">
+                <textarea id="postBody" rows="4" placeholder="ዝርዝር መግለጫውን እዚህ ይጻፉ..."></textarea>
+                <button class="btn btn-green" onclick="publishPost()">ፖስት አድርግ (Publish)</button>
+
+                <h3 style="margin-top:25px;">📋 የተፖሰቱ መረጃዎች</h3>
+                <div id="postsList"></div>
+            </div>
+
+            <!-- 5. ግብረ መልስ መቀበያ (Feedback Inbox) -->
+            <div id="feedbackTab" class="panel">
+                <h3>📩 ከተገልጋዮች የመጡ ግብረ መልሶች</h3>
+                <div id="feedbackList">
+                    <div class="item-card">
+                        <span class="badge">ናሙና መልእክት</span>
+                        <h4>አቶ ዳንኤል በቀለ (kamashi@gmail.com)</h4>
+                        <p>የመምህራን ዝውውር መመሪያ በድረ-ገጹ ላይ በመለቀቁ በጣም እናመሰግናለን።</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. ጂሜይል ማስቀመጫ (Gmail Settings) -->
+            <div id="gmailTab" class="panel">
+                <h3>📧 ግብረ መልስ መቀበያ ጂሜይል ማስቀመጫ</h3>
+                <p style="margin-bottom:10px; font-size:0.9rem;">ተገልጋዮች የሚልኩት አስተያየት እና ሪፖርት የሚደርስበትን ትክክለኛ Gmail አድራሻ እዚህ ያስቀምጡ፦</p>
+                <input type="email" id="adminGmail" placeholder="ለምሳሌ፦ kamashieducation@gmail.com">
+                <input type="tel" id="adminPhone" placeholder="የመምሪያው ስልክ ቁጥር (+251...)">
+                <button class="btn" onclick="saveSettings()">አስቀምጥ (Save Settings)</button>
+                <p id="savedMsg" style="color:green; margin-top:10px; display:none;">✅ መረጃው በትክክል ተቀምጧል!</p>
+            </div>
+
+            <!-- 7. የተጠቃሚ ቀላል መመሪያ -->
+            <div id="guideTab" class="panel">
+                <h3>ℹ️ ቀላል የአጠቃቀም መመሪያ</h3>
+                <p style="margin-bottom:10px;">1. <strong>መግቢያ፦</strong> በተጠቃሚ ስም <code>admin</code> እና በይለፍ ቃል <code>kamashi2026</code> ይግቡ።</p>
+                <p style="margin-bottom:10px;">2. <strong>መፖሰቻ፦</strong> አዲስ ሥራ ሲሰራ ርዕስና ዝርዝር ጽፈው "ፖስት አድርግ" ሲሉ ወዲያውኑ ይቀመጣል።</p>
+                <p>3. <strong>ጂሜይል፦</strong> የተገልጋዮች መልእክት እንዲደርስዎት የመምሪያውን Gmail አስገብተው ያስቀምጡ።</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default Login Credentials
+        function login() {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value.trim();
+            if (user === 'admin' && pass === 'kamashi2026') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadPosts();
+                loadSettings();
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+
+        // Switch Toolbox Tabs
+        function openTab(tabId, btn) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // Publish & Load Posts
+        function publishPost() {
+            const cat = document.getElementById('postCategory').value;
+            const title = document.getElementById('postTitle').value.trim();
+            const body = document.getElementById('postBody').value.trim();
+            if (!title || !body) { alert('እባክዎ ርዕስ እና ዝርዝር መግለጫ ይጻፉ!'); return; }
+
+            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
+            posts.unshift({ cat, title, body, date: new Date().toLocaleDateString() });
+            localStorage.setItem('kamashiPosts', JSON.stringify(posts));
+
+            document.getElementById('postTitle').value = '';
+            document.getElementById('postBody').value = '';
+            loadPosts();
+            alert('✅ መረጃው በትክክል ተፖስቷል!');
+        }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('kamashiPosts') || '[]');
+            const list = document.getElementById('postsList');
+            list.innerHTML = posts.length === 0 ? '<p style="color:#666;">ገና የተፖሰተ መረጃ የለም።</p>' : '';
+            posts.forEach((p, index) => {
+                list.innerHTML += `
+                    <div class="item-card">
+                        <span class="badge">${p.cat} - ${p.date}</span>
+                        <h4>${p.title}</h4>
+                        <p>${p.body}</p>
+                        <button class="btn btn-red" style="margin-top:8px;" onclick="deletePost(${index})">አጥፋ</button>
+                    </div>`;
+            });
+        }
+
+        function deletePost(index) {
