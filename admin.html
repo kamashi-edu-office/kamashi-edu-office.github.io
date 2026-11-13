@@ -3,128 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የአስተዳዳሪ ዳሽቦርድ - ካማሺ ዞን ትምህርት መምሪያ</title>
-    <style>
-        :root {
-            --primary: #0d47a1;
-            --secondary: #2e7d32;
-            --accent: #fbc02d;
-            --bg: #f0f4f8;
-            --white: #ffffff;
-            --text: #222222;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background: var(--bg); color: var(--text); }
-
-        /* የበፊቱ የመምሪያው ሎጎ (Original Logo Design) */
-        .brand-header {
-            background: var(--white);
-            padding: 12px 5%;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .logo-box { display: flex; align-items: center; gap: 12px; text-align: left; }
-        .logo-circle {
-            background: var(--primary); color: var(--white);
-            width: 46px; height: 46px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(13, 71, 161, 0.3);
-        }
-        .logo-titles h1 { font-size: 1rem; color: var(--primary); line-height: 1.3; font-weight: 700; }
-        .logo-titles p { font-size: 0.8rem; color: var(--secondary); font-weight: 700; }
-
-        /* Login Screen */
-        .login-box {
-            max-width: 400px; margin: 45px auto; background: var(--white);
-            padding: 28px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center; border-top: 4px solid var(--primary);
-        }
-        .login-logo { justify-content: center; margin-bottom: 18px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        input[type="text"], input[type="password"], input[type="email"], input[type="tel"], textarea, select {
-            width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #ccc;
-            border-radius: 6px; font-size: 0.95rem;
-        }
-        .btn {
-            width: 100%; padding: 12px; background: var(--primary); color: var(--white);
-            border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer;
-        }
-        .btn-green { background: var(--secondary); }
-        .btn-red { background: #c62828; width: auto; padding: 6px 12px; font-size: 0.85rem; }
-
-        /* Dashboard & Topbar */
-        #dashboard { display: none; }
-        .sub-bar {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: var(--white); padding: 10px 5%;
-            display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;
-        }
-        .container { max-width: 920px; margin: 20px auto; padding: 0 15px; }
-
-        /* Toolbox Navigation */
-        .toolbox { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
-        .tool-btn {
-            background: var(--white); border: 2px solid var(--primary); color: var(--primary);
-            padding: 10px 6px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
-        }
-        .tool-btn.active { background: var(--primary); color: var(--white); }
-
-        /* Panels */
-        .panel {
-            display: none; background: var(--white); padding: 20px;
-            border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-        }
-        .panel.active { display: block; }
-        .panel h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
-
-        /* Media & Scan Attachment Bar (ማስዋቢያዎች) */
-        .media-toolbar {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
-            margin-bottom: 15px; background: #f8fafc; padding: 10px;
-            border-radius: 8px; border: 1px dashed #90caf9;
-        }
-        .media-btn {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: var(--white); border: 1px solid #dce4ec; border-radius: 8px;
-            padding: 8px 4px; cursor: pointer; font-size: 0.78rem; font-weight: 600; color: var(--primary);
-            transition: 0.2s;
-        }
-        .media-btn:hover { background: #e3f2fd; border-color: var(--primary); }
-        .media-btn span.icon { font-size: 1.3rem; margin-bottom: 3px; }
-        
-        /* Attachment Preview Box */
-        #attachmentPreview {
-            display: none; background: #e8f5e9; border: 1px solid #a5d6a7;
-            padding: 10px; border-radius: 6px; margin-bottom: 14px; font-size: 0.85rem;
-        }
-        #attachmentPreview img { max-width: 100%; max-height: 180px; border-radius: 6px; margin-top: 8px; display: block; }
-
-        /* Cards */
-        .item-card {
-            background: var(--bg); padding: 15px; border-radius: 8px;
-            margin-bottom: 12px; border-left: 4px solid var(--secondary);
-        }
-        .badge {
-            display: inline-block; background: var(--accent); padding: 3px 8px;
-            border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 6px;
-        }
-        .media-tag {
-            display: inline-block; background: #e3f2fd; color: var(--primary);
-            padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-top: 8px;
-        }
-    </style>
-</head>
-<body>
-
-    <!DOCTYPE html>
-<html lang="am">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>የዞንና የወረዳዎች የመረጃ መለዋወጫ ፖርታል - ካማሺ ዞን</title>
     <style>
         :root { --primary: #0d47a1; --secondary: #2e7d32; --accent: #fbc02d; --bg: #f0f4f8; --white: #ffffff; }
@@ -187,10 +65,10 @@
 
     <div id="loginScreen" class="login-box">
         <h3 style="color:var(--primary); margin-bottom:15px;">🔐 የዞንና የወረዳዎች መግቢያ</h3>
-        <input type="text" id="loginUser" placeholder="የተጠቃሚ ስም (ለዞን: admin)" autocapitalize="none">
-        <input type="password" id="loginPass" placeholder="የይለፍ ቃል (ለዞን: kamashi2026)">
-        <button type="button" class="btn" onclick="handleLogin()">ግባ (Login)</button>
-        <p id="loginErr" style="color:red; margin-top:10px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+        <input type="text" id="loginUser" placeholder="የተጠቃሚ ስም (admin)" autocapitalize="none">
+        <input type="password" id="loginPass" placeholder="የይለፍ ቃል (kamashi2026)">
+        <button type="button" class="btn" id="loginSubmitBtn">ግባ (Login)</button>
+        <p id="loginErr" style="color:red; margin-top:10px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል! (admin እና kamashi2026 ይጠቀሙ)</p>
     </div>
 
     <div id="dashboard">
