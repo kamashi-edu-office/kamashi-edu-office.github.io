@@ -15,11 +15,11 @@
         .logo-titles p { font-size: 0.78rem; color: var(--secondary); font-weight: bold; }
 
         .login-box { max-width: 400px; margin: 45px auto; background: var(--white); padding: 28px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid var(--primary); }
-        input[type="text"], input[type="password"], input[type="email"], input[type="date"], input[type="url"], textarea, select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
-        .btn { width: 100%; padding: 11px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
+        input[type="text"], input[type="password"], input[type="email"], input[type="date"], textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #bbb; border-radius: 6px; font-size: 1rem; background: #fff; color: #222; }
+        .btn { width: 100%; padding: 12px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
         .btn-green { background: var(--secondary); }
         .btn-gold { background: var(--accent); color: #222; }
-        .btn-red { background: #c62828; width: auto; padding: 5px 10px; font-size: 0.8rem; }
+        .btn-red { background: #c62828; width: auto; padding: 6px 12px; font-size: 0.85rem; }
 
         #dashboard { display: none; }
         .sub-bar { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
@@ -33,18 +33,17 @@
         .panel.active { display: block; }
         .panel h3 { color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
 
-        /* MS Word Editor */
-        .word-toolbar { display: flex; flex-wrap: wrap; gap: 5px; background: #e3f2fd; padding: 8px; border: 1px solid #90caf9; border-bottom: none; border-radius: 6px 6px 0 0; }
-        .word-btn { background: var(--white); border: 1px solid #bbb; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-        .word-editor { min-height: 140px; border: 1px solid #90caf9; border-radius: 0 0 6px 6px; padding: 12px; background: var(--white); margin-bottom: 14px; outline: none; }
+        /* ቀላል የቅርጸት መምረጫ (Text Style Selector) */
+        .style-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; background: #e3f2fd; padding: 8px; border-radius: 6px; }
+        .style-bar select { margin-bottom: 0; width: auto; flex: 1; padding: 8px; font-size: 0.85rem; }
 
         /* Media Bar */
         .media-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #2e7d32; }
         .media-item { display: flex; flex-direction: column; align-items: center; background: var(--white); border: 1px solid #ddd; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: bold; color: var(--primary); text-align: center; }
 
         /* PowerPoint Slide Preview */
-        .ppt-slide { background: linear-gradient(135deg, #0d47a1, #1565c0); color: #fff; padding: 25px; border-radius: 10px; margin-bottom: 12px; border-left: 8px solid var(--accent); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .ppt-slide h4 { font-size: 1.2rem; color: var(--accent); margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 6px; }
+        .ppt-slide { background: linear-gradient(135deg, #0d47a1, #1565c0); color: #fff; padding: 20px; border-radius: 10px; margin-bottom: 12px; border-left: 8px solid var(--accent); }
+        .ppt-slide h4 { font-size: 1.15rem; color: var(--accent); margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 6px; }
 
         /* Excel Table */
         .excel-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -52,7 +51,7 @@
         table.excel-table { width: 100%; border-collapse: collapse; min-width: 500px; }
         table.excel-table th, table.excel-table td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 0.9rem; }
         table.excel-table th { background: #2e7d32; color: var(--white); }
-        table.excel-table td { background: #fff; outline: none; }
+        table.excel-table td { background: #fff; }
 
         .item-card { background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
         .badge { display: inline-block; background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px; }
@@ -89,7 +88,7 @@
 
         <div class="container">
             <div class="toolbox">
-                <button type="button" class="tool-btn active" onclick="switchTab('wordMediaTab', this)">📝 MS Word & ሚዲያ</button>
+                <button type="button" class="tool-btn active" onclick="switchTab('wordMediaTab', this)">📝 መጻፊያ & ሚዲያ</button>
                 <button type="button" class="tool-btn" onclick="switchTab('vacancyTab', this)">💼 የስራ መደብና ቅጥር</button>
                 <button type="button" class="tool-btn" onclick="switchTab('excelTab', this)">📊 MS Excel መስሪያ</button>
                 <button type="button" class="tool-btn" onclick="switchTab('pptTab', this)">📽️ PowerPoint መስሪያ</button>
@@ -98,28 +97,36 @@
                 <button type="button" class="tool-btn" id="woredaTabBtn" onclick="switchTab('woredaTab', this)">🏢 የወረዳዎች አካውንት</button>
             </div>
 
-            <!-- 1. MS Word መጻፊያ፣ ፎቶግራፍ፣ ቪዲዮ መለጠፊያና ሂደቶችን መላኪያ -->
+            <!-- 1. በስልክ ኪቦርድ በቀላሉ የሚጽፍ እና የሚለጥፍ ክፍል -->
             <div id="wordMediaTab" class="panel active">
-                <h3>📝 MS Word መጻፊያ፣ ፎቶ/ቪዲዮ መለጠፊያና ሂደቶችን መላኪያ</h3>
+                <h3>📝 መጻፊያ፣ ፎቶ/ቪዲዮ መለጠፊያና ሂደቶችን መላኪያ</h3>
                 <select id="docType">
-                    <option value="🔄 የስራ ሂደት መላኪያ (Workflow)">🔄 የስራ ሂደት መላኪያ</option>
                     <option value="📰 ዜና እና የመስክ ክንውን">📰 ዜና እና የመስክ ክንውን</option>
+                    <option value="🔄 የስራ ሂደት መላኪያ">🔄 የስራ ሂደት መላኪያ</option>
                     <option value="📄 ኦፊሴላዊ ደብዳቤ (MS Word)">📄 ኦፊሴላዊ ደብዳቤ (MS Word)</option>
                 </select>
-                <input type="text" id="docTitle" placeholder="የጽሑፉ ወይም የሂደቱ ርዕስ...">
+                <input type="text" id="docTitle" placeholder="የዜናው ወይም የጽሑፉ ርዕስ እዚህ ይጻፉ...">
 
-                <div class="word-toolbar">
-                    <button type="button" class="word-btn" onclick="formatDoc('bold')"><b>B</b></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('italic')"><i>I</i></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('underline')"><u>U</u></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('insertUnorderedList')">• ዝርዝር</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('justifyLeft')">ግራ</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('justifyCenter')">መሃል</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#0d47a1')">ሰማያዊ</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#c62828')">ቀይ</button>
+                <div class="style-bar">
+                    <select id="textWeight" onchange="applyTextStyle()">
+                        <option value="normal">መደበኛ ጽሑፍ (Normal)</option>
+                        <option value="bold">ደማቅ ጽሑፍ (Bold)</option>
+                    </select>
+                    <select id="textColor" onchange="applyTextStyle()">
+                        <option value="#222222">ጥቁር ቀለም</option>
+                        <option value="#0d47a1">ሰማያዊ ቀለም</option>
+                        <option value="#2e7d32">አረንጓዴ ቀለም</option>
+                        <option value="#c62828">ቀይ ቀለም</option>
+                    </select>
                 </div>
-                <div id="wordEditor" class="word-editor" contenteditable="true">ጽሑፍዎን ልክ እንደ Microsoft Word እዚህ ያዘጋጁ...</div>
+
+                <!-- ሙሉ በሙሉ በስልክ ኪቦርድ የሚሰራ Textarea -->
+                <textarea id="wordEditor" rows="6" placeholder="ጽሑፍዎን እዚህ ይጻፉ ወይም ኮፒ ያደረጉትን ጽሑፍ እዚህ ይለጥፉ (Paste)..."></textarea>
 
                 <div class="media-bar">
                     <label class="media-item">📷 ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="attachMedia(this, '📷 ካሜራ ፎቶ')"></label>
                     <label class="media-item">🖼️ ፎቶግራፍ<input type="file" accept="image/*" style="display:none;" onchange="attachMedia(this, '🖼️ ፎቶግራፍ')"></label>
+                    <label class="media-item">🎥 ቪዲዮ<input type="file" accept="video/*" style="display:none;" onchange="attachMedia(this, '🎥 ቪዲዮ')"></label>
+                    <label class="media-item">📕 PDF/ሰነድ<input type="file" accept=".pdf,.doc,.docx" style="display:none;" onchange="attachMedia(this, '📕 ሰነድ')"></label>
+                </div>
+                <p id="mediaStatus" style="color:#2e7d32; font-weight:bold; font-size:0.85rem; margin-bottom:10px;"></p>
