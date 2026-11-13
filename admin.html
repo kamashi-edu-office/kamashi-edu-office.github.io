@@ -33,19 +33,15 @@
         .panel.active { display: block; }
         .panel h3 { color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
 
-        /* ቀላል የቅርጸት መምረጫ (Text Style Selector) */
         .style-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; background: #e3f2fd; padding: 8px; border-radius: 6px; }
         .style-bar select { margin-bottom: 0; width: auto; flex: 1; padding: 8px; font-size: 0.85rem; }
 
-        /* Media Bar */
         .media-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #2e7d32; }
         .media-item { display: flex; flex-direction: column; align-items: center; background: var(--white); border: 1px solid #ddd; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: bold; color: var(--primary); text-align: center; }
 
-        /* PowerPoint Slide Preview */
         .ppt-slide { background: linear-gradient(135deg, #0d47a1, #1565c0); color: #fff; padding: 20px; border-radius: 10px; margin-bottom: 12px; border-left: 8px solid var(--accent); }
         .ppt-slide h4 { font-size: 1.15rem; color: var(--accent); margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 6px; }
 
-        /* Excel Table */
         .excel-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
         .excel-wrapper { overflow-x: auto; margin-bottom: 15px; border: 1px solid #ccc; }
         table.excel-table { width: 100%; border-collapse: collapse; min-width: 500px; }
@@ -97,7 +93,6 @@
                 <button type="button" class="tool-btn" id="woredaTabBtn" onclick="switchTab('woredaTab', this)">🏢 የወረዳዎች አካውንት</button>
             </div>
 
-            <!-- 1. በስልክ ኪቦርድ በቀላሉ የሚጽፍ እና የሚለጥፍ ክፍል -->
             <div id="wordMediaTab" class="panel active">
                 <h3>📝 መጻፊያ፣ ፎቶ/ቪዲዮ መለጠፊያና ሂደቶችን መላኪያ</h3>
                 <select id="docType">
@@ -120,7 +115,6 @@
                     </select>
                 </div>
 
-                <!-- ሙሉ በሙሉ በስልክ ኪቦርድ የሚሰራ Textarea -->
                 <textarea id="wordEditor" rows="6" placeholder="ጽሑፍዎን እዚህ ይጻፉ ወይም ኮፒ ያደረጉትን ጽሑፍ እዚህ ይለጥፉ (Paste)..."></textarea>
 
                 <div class="media-bar">
@@ -130,3 +124,10 @@
                     <label class="media-item">📕 PDF/ሰነድ<input type="file" accept=".pdf,.doc,.docx" style="display:none;" onchange="attachMedia(this, '📕 ሰነድ')"></label>
                 </div>
                 <p id="mediaStatus" style="color:#2e7d32; font-weight:bold; font-size:0.85rem; margin-bottom:10px;"></p>
+                <button type="button" class="btn btn-green" onclick="savePost()">ለጥፍ እና ሂደቱን ላክ (Publish & Send)</button>
+
+                <h3 style="margin-top:25px;">📋 የተለጠፉ ዜናዎች፣ ፎቶዎችና የተላኩ ሂደቶች</h3>
+                <div id="feedList"></div>
+            </div>
+
+            <div id="vacancyTab" class="panel">
