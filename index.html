@@ -13,230 +13,45 @@
             --text-dark: #222222;
             --white: #ffffff;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-            scroll-behavior: smooth;
-        }
-        body {
-            color: var(--text-dark);
-            background-color: var(--white);
-            line-height: 1.6;
-        }
-        .top-bar {
-            background-color: var(--secondary);
-            color: var(--white);
-            padding: 6px 5%;
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        header {
-            background-color: var(--white);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 5%;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .logo-icon {
-            background-color: var(--primary);
-            color: var(--white);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
-        .logo-text h1 {
-            font-size: 1rem;
-            color: var(--primary);
-            line-height: 1.3;
-        }
-        .logo-text p {
-            font-size: 0.78rem;
-            color: var(--secondary);
-            font-weight: bold;
-        }
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .menu-btn {
-            display: none;
-            background: none;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-        .hero {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--white);
-            text-align: center;
-            padding: 60px 5%;
-        }
-        .hero h2 {
-            font-size: 1.8rem;
-            margin-bottom: 12px;
-        }
-        .hero p {
-            font-size: 1rem;
-            max-width: 750px;
-            margin: 0 auto 25px auto;
-        }
-        .btn {
-            display: inline-block;
-            padding: 11px 24px;
-            background-color: var(--accent);
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        section {
-            padding: 50px 5%;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .section-title {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .section-title h2 {
-            font-size: 1.6rem;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-        .underline {
-            width: 60px;
-            height: 3px;
-            background-color: var(--secondary);
-            margin: auto;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background: var(--bg-light);
-            padding: 22px;
-            border-radius: 6px;
-            border-top: 3px solid var(--primary);
-        }
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-        .bg-alt {
-            background-color: var(--bg-light);
-            max-width: 100%;
-        }
-        .bg-alt .inner {
-            max-width: 1200px;
-            margin: auto;
-        }
-        .white-card {
-            background: var(--white);
-            padding: 22px;
-            border-radius: 6px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-top: 3px solid var(--secondary);
-        }
-        .news-tag {
-            display: inline-block;
-            background: var(--primary);
-            color: var(--white);
-            padding: 3px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .doc-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .doc-item {
-            background: var(--bg-light);
-            padding: 15px 20px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-left: 4px solid var(--secondary);
-        }
-        .doc-item a {
-            color: var(--primary);
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        .contact-info p {
-            margin-bottom: 14px;
-            font-size: 0.98rem;
-        }
-        form input, form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 0.95rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; scroll-behavior: smooth; }
+        body { color: var(--text-dark); background-color: var(--white); line-height: 1.6; }
+        .top-bar { background-color: var(--secondary); color: var(--white); padding: 6px 5%; font-size: 0.85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        header { background-color: var(--white); box-shadow: 0 2px 6px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 5%; max-width: 1200px; margin: auto; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { background-color: var(--primary); color: var(--white); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .logo-text h1 { font-size: 1rem; color: var(--primary); line-height: 1.3; }
+        .logo-text p { font-size: 0.78rem; color: var(--secondary); font-weight: bold; }
+        .nav-links { list-style: none; display: flex; gap: 15px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.9rem; }
+        .menu-btn { display: none; background: none; border: 1px solid var(--primary); color: var(--primary); padding: 5px 10px; border-radius: 4px; font-size: 1.1rem; cursor: pointer; }
+        .hero { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: var(--white); text-align: center; padding: 60px 5%; }
+        .hero h2 { font-size: 1.8rem; margin-bottom: 12px; }
+        .hero p { font-size: 1rem; max-width: 780px; margin: 0 auto 25px auto; }
+        .btn { display: inline-block; padding: 11px 24px; background-color: var(--accent); color: var(--text-dark); text-decoration: none; font-weight: bold; border-radius: 5px; border: none; cursor: pointer; font-size: 0.95rem; }
+        section { padding: 50px 5%; max-width: 1200px; margin: auto; }
+        .section-title { text-align: center; margin-bottom: 30px; }
+        .section-title h2 { font-size: 1.6rem; color: var(--primary); margin-bottom: 8px; }
+        .underline { width: 60px; height: 3px; background-color: var(--secondary); margin: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 20px; }
+        .card { background: var(--bg-light); padding: 22px; border-radius: 6px; border-top: 3px solid var(--primary); }
+        .card h3 { color: var(--primary); margin-bottom: 8px; font-size: 1.1rem; }
+        .creator-banner { background: linear-gradient(90deg, #e3f2fd, #e8f5e9); border: 2px solid var(--primary); border-radius: 10px; padding: 25px; margin-top: 30px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.06); }
+        .creator-banner h3 { color: var(--primary); font-size: 1.25rem; margin-bottom: 10px; }
+        .creator-name-highlight { display: inline-block; background: var(--primary); color: var(--accent); padding: 6px 18px; border-radius: 25px; font-weight: bold; font-size: 1.05rem; margin-top: 10px; }
+        .bg-alt { background-color: var(--bg-light); max-width: 100%; }
+        .bg-alt .inner { max-width: 1200px; margin: auto; }
+        .white-card { background: var(--white); padding: 22px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-top: 3px solid var(--secondary); }
+        .news-tag { display: inline-block; background: var(--primary); color: var(--white); padding: 3px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; }
+        .doc-list { display: flex; flex-direction: column; gap: 12px; }
+        .doc-item { background: var(--bg-light); padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--secondary); }
+        .doc-item a { color: var(--primary); font-weight: bold; text-decoration: none; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .contact-info p { margin-bottom: 14px; font-size: 0.98rem; }
+        form input, form textarea { width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.95rem; }
         @media (max-width: 768px) {
             .menu-btn { display: block; }
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                position: absolute;
-                top: 66px;
-                left: 0;
-                width: 100%;
-                background: var(--white);
-                padding: 15px 5%;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-                align-items: flex-start;
-            }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 66px; left: 0; width: 100%; background: var(--white); padding: 15px 5%; box-shadow: 0 4px 8px rgba(0,0,0,0.1); align-items: flex-start; }
             .nav-links.active { display: flex; }
         }
     </style>
@@ -261,6 +76,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">ዋና ገጽ</a></li>
                 <li><a href="#about">ስለ መምሪያው</a></li>
+                <li><a href="#site-purpose">ስለ ሳይቱ</a></li>
                 <li><a href="#services">አገልግሎቶች</a></li>
                 <li><a href="#news">ዜናና ማስታወቂያ</a></li>
                 <li><a href="#contact">ያግኙን</a></li>
@@ -275,6 +91,7 @@
         <a href="#services" class="btn">አገልግሎቶቻችንን ይመልከቱ</a>
     </div>
 
+    <!-- ስለ መምሪያው (የተቋሙ ዓላማ እና ግብ ተጨምሯል) -->
     <section id="about">
         <div class="section-title">
             <h2>ስለ መምሪያው</h2>
@@ -290,28 +107,56 @@
                 <p>የትምህርት ተደራሽነትንና ጥራትን በማሳደግ፣ የመንግስት ሰራተኞችን አቅም በመገንባት እና የሲቪል ሰርቪስ ማሻሻያ ፕሮግራሞችን በመተግበር ለዞኑ እድገት አስተዋጽኦ ማበርከት።</p>
             </div>
             <div class="card">
+                <h3>🏆 የተቋሙ ዓላማ እና ግብ</h3>
+                <p><strong>ዓላማ፦</strong> በዞኑ ስር በሚገኙ ሁሉም ወረዳዎችና ትምህርት ቤቶች ብቁ አመራር፣ ሙያዊ ብቃት ያላቸው መምህራንና ቀልጣፋ የሲቪል ሰርቪስ አሰራር መዘርጋት።<br>
+                <strong>ግብ፦</strong> የተማሪዎችን ውጤትና ስነ-ምግባር በላቀ ደረጃ ማሻሻል፣ ቴክኖሎጂን በመጠቀም ዘመናዊ የመረጃ አያያዝና የተገልጋይ እርካታን 100% ማድረስ።</p>
+            </div>
+            <div class="card">
                 <h3>💎 እሴቶቻችን</h3>
                 <p>ግልጽነትና ተጠያቂነት፣ ፍትሃዊነት፣ ለለውጥ ዝግጁነት፣ የላቀ የህዝብ አገልጋይነት ስሜት እና በቡድን የመስራት ባህል።</p>
             </div>
         </div>
     </section>
 
-    <section class="bg-alt" id="services">
+    <!-- አዲስ ክፍል፦ የዚህ ሳይት ዋና ዓላማ፣ ግብ፣ መግለጫ እና የፈጣሪው ስም -->
+    <section class="bg-alt" id="site-purpose">
         <div class="inner">
             <div class="section-title">
-                <h2>ዋና ዋና አገልግሎቶቻችን</h2>
+                <h2>ስለ ዲጂታል ሳይቱ ዓላማና መግለጫ</h2>
                 <div class="underline"></div>
             </div>
             <div class="grid">
                 <div class="white-card">
-                    <h3>📚 የትምህርት ጥራትና ተደራሽነት</h3>
-                    <p>በዞኑ ወረዳዎች የሚገኙ ትምህርት ቤቶችን ደረጃ ማሻሻል፣ የመማር ማስተማር ሂደትን መከታተልና ፈተናዎችን መምራት።</p>
+                    <h3>🌐 የዚህ ሳይት ዋና ዓላማ</h3>
+                    <p>በካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ እና በስሩ በሚገኙ ሁሉም ወረዳዎች፣ ትምህርት ቤቶች (1ኛ-12ኛ ክፍል) እና ቴክኒክና ሙያ ኮሌጆች መካከል ፈጣን፣ ዘመናዊ እና ወረቀት አልባ የመረጃ ልውውጥ ስርዓት መፍጠር ነው።</p>
                 </div>
                 <div class="white-card">
-                    <h3>👥 የሰው ሀብት ልማትና አቅም ግንባታ</h3>
-                    <p>ለመምህራን፣ ለትምህርት አመራሮችና ለመንግስት ሰራተኞች የአጭርና የረጅም ጊዜ ስልጠናዎችን ማመቻቸት።</p>
+                    <h3>🚀 የዚህ ሳይት ዋና ግብ</h3>
+                    <p>ወቅታዊ ሪፖርቶችን፣ የትምህርት ቤቶች ደረጃ መረጃዎችን፣ የስራ ማስታወቂያዎችን እና የህዝብ ግብረ መልሶችን በቀጥታ በዲጂታል መንገድ በማስተሳሰር የመረጃ መዘግየትን ማስቀረትና ሀገር አቀፍ ተወዳዳሪ የዲጂታል አሰራርን እውን ማድረግ ነው።</p>
                 </div>
                 <div class="white-card">
-                    <h3>⚖️ የሲቪል ሰርቪስ ሪፎርም</h3>
-                    <p>የመንግስት ሰራተኞች ምልመላ፣ ምደባ፣ ዝውውር እና ጥቅማጥቅም በህግና መመሪያ መሰረት መፈጸሙን መቆጣጠር።</p>
+                    <h3>🏅 አጠቃላይ ስለ ሳይቱ አጭር መግለጫ</h3>
+                    <p>ይህ ድረ-ገጽ ለመወዳደርና በሀገር አቀፍ ደረጃ በትልቅ ደረጃ መሸለም እንዲችል ሆኖ በዘመናዊ የዌብ ቴክኖሎጂ የተገነባ፣ ከዞን እስከ ወረዳና ትምህርት ቤት ያለውን የመረጃ ፍሰት በአንድ ማዕከል የሚያገናኝ ፈር ቀዳጅ ዲጂታል ፖርታል ነው።</p>
                 </div>
+            </div>
+
+            <div class="creator-banner">
+                <h3>✨ የፈጠራ ባለቤትነትና እውቅና መግለጫ ✨</h3>
+                <p>ይህ ዘመናዊ የዞንና የወረዳዎች የመረጃ መለዋወጫ ዲጂታል ድረ-ገጽ በሀገር አቀፍ ደረጃ ለውድድርና ለታላቅ ሽልማት እንዲበቃ ተደርጎ በልዩ ዲዛይንና ቴክኖሎጂ የተፈጠረ ሥራ ነው።</p>
+                <div class="creator-name-highlight">
+                    💡 የሲስተሙ ፈጣሪና ባለቤት፦ ዮሐንስ ሞሴ (የካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ ICT ባለሙያ)
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="section-title">
+            <h2>ዋና ዋና አገልግሎቶቻችን</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h3>📚 የትምህርት ጥራትና ተደራሽነት</h3>
+                <p>በዞኑ ወረዳዎች የሚገኙ ትምህርት ቤቶችን ደረጃ ማሻሻል፣ የመማር ማስተማር ሂደትን መከታተልና ፈተናዎችን መምራት።</p>
+            </div>
