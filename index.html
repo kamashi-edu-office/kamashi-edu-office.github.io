@@ -3,126 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>የዞንና የወረዳዎች የመረጃ መለዋወጫ ፖርታል - ካማሺ ዞን</title>
+    <title>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</title>
     <style>
-        :root { --primary: #0d47a1; --secondary: #2e7d32; --accent: #fbc02d; --bg: #f0f4f8; --white: #ffffff; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background: var(--bg); color: #222; line-height: 1.5; }
-
-        .brand-header { background: var(--white); padding: 12px 5%; box-shadow: 0 2px 6px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 12px; }
-        .logo-circle { background: var(--primary); color: var(--white); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-        .logo-titles h1 { font-size: 0.98rem; color: var(--primary); }
-        .logo-titles p { font-size: 0.78rem; color: var(--secondary); font-weight: bold; }
-
-        .login-box { max-width: 400px; margin: 45px auto; background: var(--white); padding: 28px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; border-top: 4px solid var(--primary); }
-        input[type="text"], input[type="password"], select { width: 100%; padding: 11px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95rem; }
-        .btn { width: 100%; padding: 11px; background: var(--primary); color: var(--white); border: none; border-radius: 6px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
-        .btn-green { background: var(--secondary); }
-        .btn-gold { background: var(--accent); color: #222; }
-        .btn-red { background: #c62828; width: auto; padding: 5px 10px; font-size: 0.8rem; }
-
-        #dashboard { display: none; }
-        .sub-bar { background: linear-gradient(90deg, var(--primary), var(--secondary)); color: var(--white); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-        .container { max-width: 1050px; margin: 20px auto; padding: 0 12px; }
-        .toolbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; margin-bottom: 18px; }
-        .tool-btn { background: var(--white); border: 2px solid var(--primary); color: var(--primary); padding: 10px 6px; border-radius: 8px; font-weight: bold; font-size: 0.82rem; cursor: pointer; }
-        .tool-btn.active { background: var(--primary); color: var(--white); }
-
-        .panel { display: none; background: var(--white); padding: 18px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
-        .panel.active { display: block; }
-        .panel h3 { color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--bg); padding-bottom: 8px; font-size: 1.05rem; }
-
-        .word-toolbar { display: flex; flex-wrap: wrap; gap: 5px; background: #e3f2fd; padding: 8px; border: 1px solid #90caf9; border-bottom: none; border-radius: 6px 6px 0 0; }
-        .word-btn { background: var(--white); border: 1px solid #bbb; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-        .word-editor { min-height: 150px; border: 1px solid #90caf9; border-radius: 0 0 6px 6px; padding: 12px; background: var(--white); margin-bottom: 14px; outline: none; }
-
-        .media-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px dashed #2e7d32; }
-        .media-item { display: flex; flex-direction: column; align-items: center; background: var(--white); border: 1px solid #ddd; padding: 8px 4px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: bold; color: var(--primary); }
-
-        .excel-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
-        .excel-wrapper { overflow-x: auto; margin-bottom: 15px; border: 1px solid #ccc; }
-        table.excel-table { width: 100%; border-collapse: collapse; min-width: 500px; }
-        table.excel-table th, table.excel-table td { border: 1px solid #bbb; padding: 8px; text-align: left; font-size: 0.9rem; }
-        table.excel-table th { background: #2e7d32; color: var(--white); }
-        table.excel-table td { background: #fff; outline: none; }
-
-        .item-card { background: var(--bg); padding: 14px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid var(--primary); }
-        .badge { display: inline-block; background: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold; margin-bottom: 6px; }
-        .share-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-        .share-link { padding: 4px 10px; border-radius: 4px; color: #fff; text-decoration: none; font-size: 0.78rem; font-weight: bold; }
-        .dev-footer { text-align: center; padding: 20px; font-size: 0.82rem; color: #444; margin-top: 30px; border-top: 1px solid #ddd; background: #fff; }
+        :root {
+            --primary: #0d47a1;
+            --secondary: #2e7d32;
+            --accent: #fbc02d;
+            --bg-light: #f4f7f6;
+            --text-dark: #222222;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        body {
+            color: var(--text-dark);
+            background-color: var(--white);
+            line-height: 1.6;
+        }
+        .top-bar {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 6px 5%;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            background-color: var(--primary);
+            color: var(--white);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .logo-text h1 {
+            font-size: 1rem;
+            color: var(--primary);
+            line-height: 1.3;
+        }
+        .logo-text p {
+            font-size: 0.78rem;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            text-align: center;
+            padding: 60px 5%;
+        }
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 1rem;
+            max-width: 750px;
+            margin: 0 auto 25px auto;
+        }
+        .btn {
+            display: inline-block;
+            padding: 11px 24px;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        section {
+            padding: 50px 5%;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .section-title h2 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .underline {
+            width: 60px;
+            height: 3px;
+            background-color: var(--secondary);
+            margin: auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: var(--bg-light);
+            padding: 22px;
+            border-radius: 6px;
+            border-top: 3px solid var(--primary);
+        }
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .bg-alt {
+            background-color: var(--bg-light);
+            max-width: 100%;
+        }
+        .bg-alt .inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .white-card {
+            background: var(--white);
+            padding: 22px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-top: 3px solid var(--secondary);
+        }
+        .news-tag {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--white);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .doc-item {
+            background: var(--bg-light);
+            padding: 15px 20px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--secondary);
+        }
+        .doc-item a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .contact-info p {
+            margin-bottom: 14px;
+            font-size: 0.98rem;
+        }
+        form input, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+        @media (max-width: 768px) {
+            .menu-btn { display: block; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 66px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 15px 5%;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                align-items: flex-start;
+            }
+            .nav-links.active { display: flex; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="brand-header">
-        <div class="logo-circle">🎓</div>
-        <div class="logo-titles">
-            <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
-            <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት — የመረጃ መለዋወጫ ሲስተም</p>
-        </div>
+    <div class="top-bar">
+        <span>📍 ካማሺ ከተማ፣ ቤኒሻንጉል ጉሙዝ ክልል</span>
+        <span>📞 +251 57 771 XXXX | ሰኞ - አርብ: 2:30 - 11:30</span>
     </div>
 
-    <div id="loginScreen" class="login-box">
-        <h3 style="color:var(--primary); margin-bottom:15px;">🔐 የዞንና የወረዳዎች መግቢያ</h3>
-        <input type="text" id="loginUser" placeholder="የተጠቃሚ ስም (ለዞን: admin)" autocapitalize="none">
-        <input type="password" id="loginPass" placeholder="የይለፍ ቃል (ለዞን: kamashi2026)">
-        <button type="button" class="btn" onclick="handleLogin()">ግባ (Login)</button>
-        <p id="loginErr" style="color:red; margin-top:10px; display:none; font-weight:bold;">❌ የተሳሳተ ስም ወይም የይለፍ ቃል!</p>
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <div class="logo-icon">🎓</div>
+                <div class="logo-text">
+                    <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
+                    <p>ቤኒሻንጉል ጉሙዝ ብሔራዊ ክልላዊ መንግስት</p>
+                </div>
+            </div>
+            <button class="menu-btn" onclick="document.getElementById('navLinks').classList.toggle('active')">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">ዋና ገጽ</a></li>
+                <li><a href="#about">ስለ መምሪያው</a></li>
+                <li><a href="#services">አገልግሎቶች</a></li>
+                <li><a href="#news">ዜናና ማስታወቂያ</a></li>
+                <li><a href="#contact">ያግኙን</a></li>
+                <li><a href="admin.html" style="background:#0d47a1; color:#ffffff; padding:6px 12px; border-radius:4px;">🔐 መግቢያ</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="hero" id="home">
+        <h2>ጥራት ያለው ትምህርትና ብቁ ሲቪል ሰርቪስ ለዞናችን ልማት!</h2>
+        <p>የካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ በዞኑ ውስጥ ፍትሃዊና ጥራት ያለው ትምህርትን በማስፋፋት እንዲሁም ቀልጣፋ የመንግስት አገልግሎት በመገንባት የህዝቡን ተጠቃሚነት ያረጋግጣል።</p>
+        <a href="#services" class="btn">አገልግሎቶቻችንን ይመልከቱ</a>
     </div>
 
-    <div id="dashboard">
-        <div class="sub-bar">
-            <span id="welcomeUser"><strong>👤 እንኳን ደህና መጡ</strong></span>
-            <div>
-                <a href="index.html" style="color:#fbc02d; margin-right:12px; text-decoration:none; font-weight:bold;">🌐 ዋናው ገጽ</a>
-                <button type="button" class="btn btn-red" onclick="location.reload()">ውጣ</button>
+    <section id="about">
+        <div class="section-title">
+            <h2>ስለ መምሪያው</h2>
+            <div class="underline"></div>
+        </div>
+        <div class="grid">
+            <div class="card">
+                <h3>👁️ ራዕይ</h3>
+                <p>በካማሺ ዞን ጥራት ያለው ትምህርት ተረጋግጦ፣ በስነ-ምግባር የታነፀ ብቁ ዜጋ ተፈጥሮ እና ዘመናዊና ቀልጣፋ የሲቪል ሰርቪስ አገልግሎት ሰፍኖ ማየት።</p>
+            </div>
+            <div class="card">
+                <h3>🎯 ተልዕኮ</h3>
+                <p>የትምህርት ተደራሽነትንና ጥራትን በማሳደግ፣ የመንግስት ሰራተኞችን አቅም በመገንባት እና የሲቪል ሰርቪስ ማሻሻያ ፕሮግራሞችን በመተግበር ለዞኑ እድገት አስተዋጽኦ ማበርከት።</p>
+            </div>
+            <div class="card">
+                <h3>💎 እሴቶቻችን</h3>
+                <p>ግልጽነትና ተጠያቂነት፣ ፍትሃዊነት፣ ለለውጥ ዝግጁነት፣ የላቀ የህዝብ አገልጋይነት ስሜት እና በቡድን የመስራት ባህል።</p>
             </div>
         </div>
+    </section>
 
-        <div class="container">
-            <div class="toolbox">
-                <button type="button" class="tool-btn active" onclick="switchTab('wordTab', this)">📝 ወርድ (Word) መጻፊያ</button>
-                <button type="button" class="tool-btn" onclick="switchTab('excelTab', this)">📊 ኤክሴል (Excel) መስሪያ</button>
-                <button type="button" class="tool-btn" onclick="switchTab('feedbackTab', this)">💬 ግብረ መልስ መለዋወጫ</button>
-                <button type="button" class="tool-btn" id="woredaTabBtn" onclick="switchTab('woredaTab', this)">🏢 የወረዳዎች አካውንት</button>
+    <section class="bg-alt" id="services">
+        <div class="inner">
+            <div class="section-title">
+                <h2>ዋና ዋና አገልግሎቶቻችን</h2>
+                <div class="underline"></div>
             </div>
-
-            <div id="wordTab" class="panel active">
-                <h3>📝 መጻፊያ፣ ዜና መለጠፊያና ሚዲያ (MS Word & Media)</h3>
-                <select id="docCategory">
-                    <option value="📢 የስራ ማስታወቂያ">📢 የስራ ማስታወቂያ</option>
-                    <option value="📰 የተሰራ ሥራ / ዜና">📰 የተሰራ ሥራ / ዜና</option>
-                    <option value="📄 ኦፊሴላዊ ደብዳቤ / መመሪያ">📄 ኦፊሴላዊ ደብዳቤ / መመሪያ</option>
-                </select>
-                <input type="text" id="docTitle" placeholder="የዜናው ወይም የሰነዱ ርዕስ...">
-
-                <div class="word-toolbar">
-                    <button type="button" class="word-btn" onclick="formatDoc('bold')"><b>B</b></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('italic')"><i>I</i></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('underline')"><u>U</u></button>
-                    <button type="button" class="word-btn" onclick="formatDoc('insertUnorderedList')">• ዝርዝር</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('justifyLeft')">ግራ</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('justifyCenter')">መሃል</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#0d47a1')">ሰማያዊ</button>
-                    <button type="button" class="word-btn" onclick="formatDoc('foreColor', '#c62828')">ቀይ</button>
+            <div class="grid">
+                <div class="white-card">
+                    <h3>📚 የትምህርት ጥራትና ተደራሽነት</h3>
+                    <p>በዞኑ ወረዳዎች የሚገኙ ትምህርት ቤቶችን ደረጃ ማሻሻል፣ የመማር ማስተማር ሂደትን መከታተልና ፈተናዎችን መምራት።</p>
                 </div>
-                <div id="wordEditor" class="word-editor" contenteditable="true">ጽሑፍዎን ልክ እንደ ማይክሮሶፍት ወርድ እዚህ ይጻፉ...</div>
-
-                <div class="media-bar">
-                    <label class="media-item">📷 ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="attachMedia(this, '📷 ካሜራ ፎቶ')"></label>
-                    <label class="media-item">🖼️ ፎቶግራፍ<input type="file" accept="image/*" style="display:none;" onchange="attachMedia(this, '🖼️ ፎቶ')"></label>
-                    <label class="media-item">🎥 ቪዲዮ<input type="file" accept="video/*" style="display:none;" onchange="attachMedia(this, '🎥 ቪዲዮ')"></label>
-                    <label class="media-item">📕 PDF ሰነድ<input type="file" accept=".pdf" style="display:none;" onchange="attachMedia(this, '📕 PDF ፋይል')"></label>
+                <div class="white-card">
+                    <h3>👥 የሰው ሀብት ልማትና አቅም ግንባታ</h3>
+                    <p>ለመምህራን፣ ለትምህርት አመራሮችና ለመንግስት ሰራተኞች የአጭርና የረጅም ጊዜ ስልጠናዎችን ማመቻቸት።</p>
                 </div>
-                <p id="mediaStatus" style="color:#2e7d32; font-weight:bold; font-size:0.85rem; margin-bottom:10px;"></p>
-                <button type="button" class="btn btn-green" onclick="savePost()">ዜናውን / መረጃውን ፖስት አድርግ (Publish)</button>
-
-                <h3 style="margin-top:25px;">📋 የተለጠፉ ዜናዎችና የማጋሪያ ሊንኮች</h3>
-                <div id="feedList"></div>
-            </div>
-
-            <div id="excelTab" class="panel">
-                <h3>📊 የኤክሴል ሰንጠረዥ ማዘጋጃና ማስተካከያ (Excel Editor)</h3>
-                <div class="excel-controls">
-                    <button type="button" class="btn btn-green" style="width:auto;" onclick="addExcelRow()">+ ረድፍ ጨምር</button>
+                <div class="white-card">
+                    <h3>⚖️ የሲቪል ሰርቪስ ሪፎርም</h3>
+                    <p>የመንግስት ሰራተኞች ምልመላ፣ ምደባ፣ ዝውውር እና ጥቅማጥቅም በህግና መመሪያ መሰረት መፈጸሙን መቆጣጠር።</p>
+                </div>
