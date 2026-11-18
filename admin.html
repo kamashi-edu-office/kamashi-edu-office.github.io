@@ -7,7 +7,6 @@
     <style>
         :root {
             --primary: #0a3d62;
-            --primary-light: #1e6091;
             --secondary: #1e8449;
             --accent: #f1c40f;
             --bg: #f4f6f9;
@@ -18,7 +17,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); line-height: 1.6; font-size: 16px; }
 
-        /* የላይኛው ባነር (Header) */
         .brand-header {
             background: var(--card-bg);
             padding: 14px 16px;
@@ -39,12 +37,10 @@
             justify-content: center;
             font-size: 1.5rem;
             flex-shrink: 0;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
         }
         .logo-titles h1 { font-size: 1.05rem; color: var(--primary); font-weight: 800; line-height: 1.25; }
         .logo-titles p { font-size: 0.8rem; color: var(--secondary); font-weight: 600; margin-top: 2px; }
 
-        /* የመግቢያ ሳጥን (Login Box) */
         .login-box {
             max-width: 420px;
             margin: 35px 16px;
@@ -65,7 +61,6 @@
             border-radius: 10px;
             font-size: 1rem;
             background: #fafbfc;
-            transition: 0.2s;
         }
         input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); background: #fff; }
 
@@ -80,15 +75,11 @@
             font-weight: 700;
             cursor: pointer;
             margin-bottom: 10px;
-            box-shadow: 0 4px 10px rgba(10, 61, 98, 0.2);
-            transition: transform 0.15s;
         }
-        .btn:active { transform: scale(0.98); }
-        .btn-gold { background: linear-gradient(135deg, #f39c12, #f1c40f); color: #1a1a1a; box-shadow: 0 4px 10px rgba(241, 196, 15, 0.3); }
+        .btn-gold { background: linear-gradient(135deg, #f39c12, #f1c40f); color: #1a1a1a; }
         .btn-green { background: var(--secondary); }
         .btn-red { background: #c0392b; width: auto; padding: 7px 14px; font-size: 0.85rem; margin: 0; }
 
-        /* ዳሽቦርድ (Dashboard) */
         #dashboard { display: none; }
         .sub-bar {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
@@ -101,7 +92,6 @@
         }
         .container { max-width: 1100px; margin: 16px auto; padding: 0 14px; }
 
-        /* የስታቲስቲክስ ካርዶች (KPI Stats) */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -119,9 +109,8 @@
         .stat-card.green { border-left-color: var(--secondary); }
         .stat-card.gold { border-left-color: #f39c12; }
         .stat-card h4 { font-size: 0.8rem; color: #666; }
-        .stat-card .num { font-size: 1.4rem; font-weight: 800; color: var(--primary); margin-top: 2px; }
+        .stat-card .num { font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-top: 2px; }
 
-        /* የመገልገያ ቁልፎች (Menu Tabs) */
         .toolbox {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -139,11 +128,9 @@
             font-size: 0.88rem;
             cursor: pointer;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
         }
         .tool-btn.active { background: var(--primary); color: #fff; }
 
-        /* የመስሪያ ፓነሎች (Panels) */
         .panel {
             display: none;
             background: var(--card-bg);
@@ -154,7 +141,6 @@
         .panel.active { display: block; }
         .panel h3 { color: var(--primary); margin-bottom: 16px; border-bottom: 2px solid var(--bg); padding-bottom: 10px; font-size: 1.1rem; }
 
-        /* የፋይል መጫኛ ሳጥን (Media Upload) */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -172,9 +158,9 @@
             font-weight: 700;
             color: var(--primary);
             cursor: pointer;
+            display: block;
         }
 
-        /* Excel ሰንጠረዥ */
         .table-wrap { overflow-x: auto; margin-bottom: 14px; border-radius: 8px; border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; min-width: 450px; }
         th, td { border: 1px solid var(--border); padding: 10px; text-align: left; font-size: 0.9rem; }
@@ -197,7 +183,6 @@
     </div>
 </div>
 
-<!-- የመግቢያ ሳጥን -->
 <div id="loginSection" class="login-box">
     <h2 style="color:var(--primary); margin-bottom:6px; font-size:1.3rem;">🔐 የመስሪያ ቤቶች መግቢያ</h2>
     <p style="font-size:0.85rem; color:#666; margin-bottom:18px;">ለዞን፣ ለወረዳዎችና ለተቋማት የተዘጋጀ ዲጂታል ፖርታል</p>
@@ -209,7 +194,6 @@
     <a href="index.html" style="display:block; margin-top:12px; font-size:0.88rem; color:var(--primary); font-weight:600; text-decoration:none;">← ወደ ዋናው የመረጃ ገጽ ተመለስ</a>
 </div>
 
-<!-- ዋናው ዳሽቦርድ -->
 <div id="dashboard">
     <div class="sub-bar">
         <span>👋 እንኳን ደህና መጡ፣ <strong>ዋና አስተዳዳሪ</strong></span>
@@ -217,7 +201,6 @@
     </div>
 
     <div class="container">
-        <!-- የስታቲስቲክስ ካርዶች -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h4>ተቋማት / ወረዳዎች</h4>
@@ -237,8 +220,18 @@
             </div>
         </div>
 
-        <!-- ዋና ዋና መገልገያዎች -->
         <div class="toolbox">
-            <button class="tool-btn active" onclick="openTab('newsPanel', this)">📰 መረጃና ፋይል መላኪያ</button>
-            <button class="tool-btn" onclick="openTab('excelPanel', this)">📊 Excel ሰንጠረዥ</button>
-            <button class="tool-btn" onclick="openTab('woredaPanel', this)">🏢 የወረዳዎች አካውንት</button>
+            <button type="button" class="tool-btn active" onclick="openTab('newsPanel', this)">📰 መረጃና ፋይል መላኪያ</button>
+            <button type="button" class="tool-btn" onclick="openTab('excelPanel', this)">📊 Excel ሰንጠረዥ</button>
+            <button type="button" class="tool-btn" onclick="openTab('woredaPanel', this)">🏢 የወረዳዎች አካውንት</button>
+            <button type="button" class="tool-btn" onclick="openTab('feedbackPanel', this)">💬 ግብረመልስና መልዕክት</button>
+            <button type="button" class="tool-btn" onclick="openTab('sharePanel', this)">🔗 በማህበራዊ ሚዲያ አጋራ</button>
+        </div>
+
+        <div id="newsPanel" class="panel active">
+            <h3>📰 ደብዳቤ፣ ማስታወቂያና ፋይሎች መለጠፊያ</h3>
+            <select id="postCategory">
+                <option value="አስቸኳይ ማስታወቂያ">📌 አስቸኳይ ማስታወቂያ</option>
+                <option value="ኦፊሴላዊ ደብዳቤ">📄 ኦፊሴላዊ ደብዳቤ (Word)</option>
+                <option value="የስራ እንቅስቃሴ ሪፖርት">📸 የስራ እንቅስቃሴ ፎቶ/ቪዲዮ</option>
+                <option value="የጨረታና ቅጥር ማስታወቂያ">📢 የጨረታና ቅጥር ማስታወቂያ</option>
