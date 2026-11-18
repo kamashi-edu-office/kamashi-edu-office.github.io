@@ -3,195 +3,118 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ካማሺ ዞን — ሁለገብ ዲጂታል ፖርታል</title>
-<script>
-var currentFile = null;
-
-function login() {
-    var u = document.getElementById("user").value.trim();
-    var p = document.getElementById("pass").value.trim();
-    if (u === "admin" && (p === "1234" || p === "admin123")) showDash();
-    else alert("❌ የተሳሳተ መግቢያ ስም ወይም የይለፍ ቃል!");
-}
-
-function showDash() {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("dash").style.display = "block";
-    document.getElementById("sec1").style.display = "block";
-    loadAll();
-}
-
-function switchTab(id, btn) {
-    document.getElementById("sec1").style.display = "none";
-    document.getElementById("sec2").style.display = "none";
-    document.getElementById("sec3").style.display = "none";
-    var btns = document.querySelectorAll(".tab-btn");
-    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
-    document.getElementById(id).style.display = "block";
-    btn.classList.add("active");
-}
-
-function handleFile(input, type) {
-    if (!input.files || !input.files.length) return;
-    var file = input.files[0];
-    document.getElementById("fileBadge").innerText = "📎 የተያያዘ ፋይል፦ " + file.name;
-
-    if (type === "img") {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = new Image();
-            img.onload = function() {
-                var canvas = document.createElement("canvas");
-                var maxW = 500;
-                var scale = maxW / img.width;
-                canvas.width = maxW;
-                canvas.height = img.height * scale;
-                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-                currentFile = { type: "img", name: file.name, data: canvas.toDataURL("image/jpeg", 0.7) };
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    } else {
-        currentFile = { type: type, name: file.name, data: "" };
-    }
-}
-
-function saveDept() {
-    var s = document.getElementById("sector").value;
-    var t = document.getElementById("dTitle").value.trim();
-    var b = document.getElementById("dBody").value.trim();
-    if (!t || !b) return alert("እባክዎ ርዕስና መልዕክት ይሙሉ!");
-
-    var list = JSON.parse(localStorage.getItem("k_dept") || "[]");
-    list.unshift({ id: Date.now(), s: s, t: t, b: b, f: currentFile, d: new Date().toLocaleDateString() });
-    try {
-        localStorage.setItem("k_dept", JSON.stringify(list));
-    } catch (e) {
-        alert("⚠️ የማከማቻ ቦታ ስለሞላ የድሮ ፎቶዎችን ያጥፉ!");
-        return;
-    }
-
-    document.getElementById("dTitle").value = "";
-    document.getElementById("dBody").value = "";
-    document.getElementById("fileBadge").innerText = "";
-    currentFile = null;
-    loadAll();
-    alert("✅ መልዕክቱ በተሳካ ሁኔታ ተመዝግቧል!");
-}
-
-function delItem(key, id) {
-    var list = JSON.parse(localStorage.getItem(key) || "[]").filter(function(x) { return x.id !== id; });
-    localStorage.setItem(key, JSON.stringify(list));
-    loadAll();
-}
-
-function shareText(title, body) {
-    var msg = "📢 " + title + "\n\n" + body + "\n\n🔗 ካማሺ ዞን ዲጂታል ፖርታል: https://github.io";
-    if (navigator.share) {
-        navigator.share({ title: title, text: msg });
-    } else {
-        window.open("https://t.me/share/url?url=https://github.io&text=" + encodeURIComponent(msg), "_blank");
-    }
-}
-
-function nativeShare() {
-    if (navigator.share) {
-        navigator.share({
-            title: "ካማሺ ዞን ዲጂታል ፖርታል",
-            text: "የካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ ዲጂታል ፖርታል",
-            url: "https://github.io"
-        });
-    } else {
-        alert("ሊንኩን ኮፒ አድርገው ያጋሩ፦ https://github.io");
-    }
-}
-
-function saveStu() {
-    var ty = document.getElementById("sType").value;
-    var n = document.getElementById("sName").value.trim();
-    var g = document.getElementById("sGrade").value.trim();
-    var no = document.getElementById("sNote").value.trim();
-    if (!n || !g) return alert("እባክዎ የተማሪውን ስምና ክፍል ይሙሉ!");
-    var list = JSON.parse(localStorage.getItem("k_stu") || "[]");
-    list.unshift({ id: Date.now(), ty: ty, n: n, g: g, no: no, d: new Date().toLocaleDateString() });
-    localStorage.setItem("k_stu", JSON.stringify(list));
-    document.getElementById("sName").value = "";
-    document.getElementById("sGrade").value = "";
-    document.getElementById("sNote").value = "";
-    loadAll();
-    alert("✅ የተማሪው መረጃ ተመዝግቧል!");
-}
-
-function loadAll() {
-    var dList = JSON.parse(localStorage.getItem("k_dept") || "[]");
-    document.getElementById("deptOut").innerHTML = dList.map(function(i) {
-        var mediaHtml = "";
-        if (i.f) {
-            if (i.f.type === "img" && i.f.data) mediaHtml = "<img src='" + i.f.data + "' class='preview-img'>";
-            else if (i.f.type === "vid") mediaHtml = "<p style='color:#0a3d62; font-size:0.85rem; margin-top:6px;'>🎥 የተያያዘ ቪዲዮ፦ " + i.f.name + "</p>";
-            else mediaHtml = "<p style='color:#0a3d62; font-size:0.85rem; margin-top:6px;'>📁 የተያያዘ ፋይል፦ " + i.f.name + "</p>";
-        }
-        return "<div class='item'>" +
-               "<div style='display:flex; justify-content:space-between;'><strong>" + i.s + "</strong><button class='btn-red' style='padding:2px 8px;' onclick='delItem(\"k_dept\"," + i.id + ")'>🗑️ አጥፋ</button></div>" +
-               "<small style='color:#666;'>" + i.d + "</small><br><b>" + i.t + "</b><p>" + i.b + "</p>" + mediaHtml +
-               "<div class='share-row'><button type='button' class='share-btn' style='background:#0088cc;' onclick='shareText(\"" + i.t.replace(/"/g, '') + "\", \"" + i.b.replace(/"/g, '') + "\")'>📤 መልዕክቱን ሸር አድርግ (Share)</button></div>" +
-               "</div>";
-    }).join("");
-
-    var sList = JSON.parse(localStorage.getItem("k_stu") || "[]");
-    document.getElementById("stuOut").innerHTML = sList.map(function(i) {
-        return "<div class='item'>" +
-               "<div style='display:flex; justify-content:space-between;'><strong>" + i.ty + "</strong><button class='btn-red' style='padding:2px 8px;' onclick='delItem(\"k_stu\"," + i.id + ")'>🗑️ አጥፋ</button></div>" +
-               "<small style='color:#666;'>" + i.d + "</small><br>👤 <b>" + i.n + "</b> — " + i.g + "<br>" + i.no + "</div>";
-    }).join("");
-}
-</script>
+<title>ካማሺ ዞን ዲጂታል ፖርታል</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
-body { background: #f0f4f8; color: #222; }
-.header { background: linear-gradient(90deg, #0a3d62, #1e8449); color: #fff; padding: 15px; text-align: center; }
-.box { max-width: 420px; margin: 30px auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 92%; }
-input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
-.btn { width: 100%; padding: 12px; background: #0a3d62; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
-.btn-gold { background: #f1c40f; color: #111; }
-.btn-green { background: #1e8449; }
-.btn-red { background: #c0392b; padding: 6px 12px; width: auto; font-size: 0.85rem; }
-#dash { display: none; max-width: 850px; margin: 15px auto; padding: 0 12px; }
-.card { background: #fff; padding: 16px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.item { background: #f8fafc; padding: 14px; border-left: 4px solid #1e8449; margin-top: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
-.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-.tab-btn { padding: 11px 6px; border: 1.5px solid #0a3d62; background: #fff; color: #0a3d62; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
-.tab-btn.active { background: #0a3d62; color: #fff; }
-.media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
-.media-lbl { display: block; background: #e3f2fd; border: 1.5px dashed #0a3d62; color: #0a3d62; padding: 10px 6px; text-align: center; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
-.preview-img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 8px; display: block; }
-.share-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.share-btn { padding: 6px 10px; border-radius: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; font-weight: bold; border: none; cursor: pointer; }
+*{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
+body{background:#f0f4f8;color:#222}
+.hd{background:#0a3d62;color:#fff;padding:14px;text-align:center}
+.bx{max-width:420px;margin:25px auto;background:#fff;padding:20px;border-radius:10px;width:92%}
+input,select,textarea{width:100%;padding:11px;margin-bottom:10px;border:1px solid #bbb;border-radius:7px;font-size:1rem}
+.btn{width:100%;padding:12px;background:#0a3d62;color:#fff;border:none;border-radius:7px;font-weight:bold;cursor:pointer;margin-bottom:8px}
+.gold{background:#f1c40f;color:#111}
+.grn{background:#1e8449}
+.red{background:#c0392b;width:auto;padding:6px 12px}
+#dash{display:none;max-width:800px;margin:12px auto;padding:0 10px}
+.card{background:#fff;padding:15px;border-radius:10px;margin-bottom:12px}
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tb{flex:1;padding:10px 4px;border:1px solid #0a3d62;background:#fff;color:#0a3d62;font-weight:bold;border-radius:7px;font-size:0.82rem}
+.tb.act{background:#0a3d62;color:#fff}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.mlbl{background:#e3f2fd;border:1px dashed #0a3d62;color:#0a3d62;padding:9px;text-align:center;border-radius:7px;font-size:0.82rem;font-weight:bold;display:block}
+.itm{background:#f8fafc;padding:12px;border-left:4px solid #1e8449;margin-top:10px;border-radius:6px;border:1px solid #ddd}
+img.prev{max-width:100%;max-height:200px;margin-top:8px;border-radius:6px;display:block}
 </style>
 </head>
 <body>
 
-<div class="header">
-    <h3>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h3>
-    <p style="font-size:0.82rem; opacity:0.9;">ቤኒሻንጉል ጉሙዝ ክልል — ሁለገብ የመረጃና ፋይል መለዋወጫ ሲስተም</p>
-</div>
+<div class="hd"><h3>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h3></div>
 
-<div id="loginBox" class="box">
-    <h3 style="text-align:center; color:#0a3d62; margin-bottom:15px;">🔐 የመስሪያ ቤቶች መግቢያ</h3>
-    <input type="text" id="user" placeholder="የተጠቃሚ ስም (admin)">
-    <input type="password" id="pass" placeholder="የይለፍ ቃል (1234)">
-    <button type="button" class="btn" onclick="login()">ግባ (Login)</button>
-    <button type="button" class="btn btn-gold" onclick="showDash()">⚡ በዋና አስተዳዳሪ በፍጥነት ግባ</button>
-    <a href="index.html" style="display:block; text-align:center; margin-top:10px; color:#0a3d62; font-weight:bold;">← ወደ ዋናው ገጽ ተመለስ</a>
+<div id="lBox" class="bx">
+<h3 style="text-align:center;color:#0a3d62;margin-bottom:12px">🔐 የመስሪያ ቤቶች መግቢያ</h3>
+<input type="text" id="u" placeholder="የተጠቃሚ ስም (admin)">
+<input type="password" id="p" placeholder="የይለፍ ቃል (1234)">
+<button type="button" class="btn" onclick="go()">ግባ (Login)</button>
+<button type="button" class="btn gold" onclick="openD()">⚡ በዋና አስተዳዳሪ በፍጥነት ግባ</button>
+<a href="index.html" style="display:block;text-align:center;margin-top:8px;color:#0a3d62">← ወደ ዋናው ገጽ ተመለስ</a>
 </div>
 
 <div id="dash">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <strong>👋 እንኳን ደህና መጡ (Admin)</strong>
-        <button type="button" class="btn btn-red" onclick="location.reload()">ውጣ</button>
-    </div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<strong>👋 እንኳን ደህና መጡ (Admin)</strong>
+<button type="button" class="btn red" onclick="location.reload()">ውጣ</button>
+</div>
 
-    <div class="tabs">
-        <button type="button" class="tab-btn active" onclick="switchTab('sec1', this)">🏢 የዘርፎች ቅጽ (9)</button>
-        <button type="button" class="tab-btn" onclick="switchTab('sec2', this)">🎓 የተማሪዎች ቅጽ (3)</button>
+<div class="tabs">
+<button type="button" class="tb act" onclick="tab('s1',this)">🏢 የዘርፎች ቅጽ</button>
+<button type="button" class="tb" onclick="tab('s2',this)">🎓 የተማሪዎች ቅጽ</button>
+<button type="button" class="tb" onclick="tab('s3',this)">🔗 ሸር ማድረጊያ</button>
+</div>
+
+<div id="s1" class="card">
+<h4 style="color:#0a3d62;margin-bottom:10px">🏢 የዘርፎች መጻጻፊያና ፋይል መላኪያ</h4>
+<select id="sec">
+<option>1. የመርሱ ዘርፍ</option>
+<option>2. የመምህራን ሙያ ፍቃድና እድሳት ዘርፍ</option>
+<option>3. የተማሪዎች ምዝገባና ፈተና ማደራጃ ዘርፍ</option>
+<option>4. የአይሲቲ (ICT) ዘርፍ</option>
+<option>5. የሰው ሀብት ስራ አመራር ቡድን</option>
+<option>6. የሰው ሀብት ስራ አመራር አፈፃፀም ክትትል ግምገማ ቡድን</option>
+<option>7. የሰው ሀብት ልማት ዘርፍ</option>
+<option>8. የለውጥ ዘርፍ</option>
+<option>9. የስነምግባር መከታተያ ዘርፍ</option>
+</select>
+<input type="text" id="dt" placeholder="የጉዳዩ ርዕስ...">
+<textarea id="db" rows="3" placeholder="ዝርዝር መልዕክት..."></textarea>
+
+<div class="mgrid">
+<label class="mlbl">📷 ፎቶ ካሜራ<input type="file" accept="image/*" capture="environment" hidden onchange="addF(this,'img')"></label>
+<label class="mlbl">🎥 ቪዲዮ ካሜራ<input type="file" accept="video/*" capture="environment" hidden onchange="addF(this,'vid')"></label>
+<label class="mlbl">🖼️ ፎቶ አፕሎድ<input type="file" accept="image/*" hidden onchange="addF(this,'img')"></label>
+<label class="mlbl">📁 ፋይል አፕሎድ<input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" hidden onchange="addF(this,'doc')"></label>
+</div>
+<p id="fInfo" style="color:#1e8449;font-size:0.85rem;font-weight:bold;margin-bottom:8px"></p>
+
+<button type="button" class="btn grn" onclick="svD()">💾 መዝግብና አስቀምጥ</button>
+<div id="dOut"></div>
+</div>
+
+<div id="s2" class="card" style="display:none">
+<h4 style="color:#0a3d62;margin-bottom:10px">🎓 የተማሪዎች መከታተያ ቅጽ</h4>
+<select id="st">
+<option>📝 የተማሪዎች ቅበላ መመዝገቢያ ቅጽ</option>
+<option>⚠️ ያቋረጡ ተማሪዎች መከታተያ ቅጽ</option>
+<option>✅ መማር ላይ ያሉ ተማሪዎች መከታተያ ቅጽ</option>
+</select>
+<input type="text" id="sn" placeholder="የተማሪው ሙሉ ስም...">
+<input type="text" id="sg" placeholder="ክፍል እና ትምህርት ቤት...">
+<textarea id="sno" rows="2" placeholder="ተጨማሪ ማብራሪያ / ምክንያት..."></textarea>
+<button type="button" class="btn grn" onclick="svS()">💾 የተማሪውን መረጃ መዝግብ</button>
+<div id="sOut"></div>
+</div>
+
+<div id="s3" class="card" style="display:none">
+<h4 style="color:#0a3d62;margin-bottom:10px">🔗 ፖርታሉን ለሌሎች ያጋሩ (Share)</h4>
+<button type="button" class="btn" onclick="shAll()">📤 በስልክዎ ላይ ባሉ አፖች አጋራ</button>
+<a href="https://t.me" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;background:#0088cc">✈️ በTelegram አጋራ</a>
+<a href="https://whatsapp.com" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;background:#25D366">📱 በWhatsApp አጋራ</a>
+</div>
+</div>
+
+<script>
+var cFile=null;
+function go(){if(document.getElementById("u").value.trim()==="admin"&&document.getElementById("p").value.trim()==="1234")openD();else alert("የተሳሳተ መረጃ!");}
+function openD(){document.getElementById("lBox").style.display="none";document.getElementById("dash").style.display="block";ld();}
+function tab(id,b){["s1","s2","s3"].forEach(function(x){document.getElementById(x).style.display="none"});document.querySelectorAll(".tb").forEach(function(x){x.classList.remove("act")});document.getElementById(id).style.display="block";b.classList.add("act");}
+function addF(inp,ty){if(!inp.files||!inp.files[0])return;var f=inp.files[0];document.getElementById("fInfo").innerText="📎 የተመረጠ፦ "+f.name;if(ty==="img"){var r=new FileReader();r.onload=function(e){var im=new Image();im.onload=function(){var c=document.createElement("canvas");var w=400;c.width=w;c.height=im.height*(w/im.width);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cFile={ty:"img",nm:f.name,dt:c.toDataURL("image/jpeg",0.6)};};im.src=e.target.result;};r.readAsDataURL(f);}else{cFile={ty:ty,nm:f.name,dt:""};}}
+function svD(){var s=document.getElementById("sec").value,t=document.getElementById("dt").value,b=document.getElementById("db").value;if(!t||!b)return alert("ርዕስና መልዕክት ይሙሉ!");var l=JSON.parse(localStorage.getItem("kd")||"[]");l.unshift({id:Date.now(),s:s,t:t,b:b,f:cFile,d:new Date().toLocaleDateString()});try{localStorage.setItem("kd",JSON.stringify(l));}catch(e){return alert("ቦታ ሞልቷል፣ የድሮ ፎቶዎችን ያጥፉ!");}document.getElementById("dt").value="";document.getElementById("db").value="";document.getElementById("fInfo").innerText="";cFile=null;ld();}
+function svS(){var ty=document.getElementById("st").value,n=document.getElementById("sn").value,g=document.getElementById("sg").value,no=document.getElementById("sno").value;if(!n||!g)return alert("ስምና ክፍል ይሙሉ!");var l=JSON.parse(localStorage.getItem("ks")||"[]");l.unshift({id:Date.now(),ty:ty,n:n,g:g,no:no,d:new Date().toLocaleDateString()});localStorage.setItem("ks",JSON.stringify(l));document.getElementById("sn").value="";document.getElementById("sg").value="";document.getElementById("sno").value="";ld();}
+function del(k,id){var l=JSON.parse(localStorage.getItem(k)||"[]").filter(function(x){return x.id!==id});localStorage.setItem(k,JSON.stringify(l));ld();}
+function shAll(){if(navigator.share)navigator.share({title:"ካማሺ ዞን ፖርታል",url:"https://github.io"});else alert("https://github.io");}
+function shTxt(t,b){var m=t+"\n"+b+"\nhttps://github.io";if(navigator.share)navigator.share({title:t,text:m});else window.open("https://t.me&text="+encodeURIComponent(m));}
+function ld(){
+document.getElementById("dOut").innerHTML=JSON.parse(localStorage.getItem("kd")||"[]").map(function(i){var m="";if(i.f){if(i.f.ty==="img")m="<img src='"+i.f.dt+"' class='prev'>";else m="<p style='color:#0a3d62;font-size:0.85rem'>📎 ፋይል/ቪዲዮ፦ "+i.f.nm+"</p>";}return "<div class='itm'><div style='display:flex;justify-content:space-between'><b>"+i.s+"</b><button class='red' style='padding:2px 6px' onclick='del(\"kd\","+i.id+")'>🗑️</button></div><small>"+i.d+"</small><br><b>"+i.t+"</b><p>"+i.b+"</p>"+m+"<button type='button' class='btn' style='margin-top:8px;padding:6px;font-size:0.85rem;background:#0088cc' onclick='shTxt(\""+i.t.replace(/"/g,'')+"\",\""+i.b.replace(/"/g,'')+"\")'>📤 ሸር አድርግ (Share)</button></div>";}).join("");
+document.getElementById("sOut").innerHTML=JSON.parse(localStorage.getItem("ks")||"[]").map(function(i){return "<div class='itm'><div style='display:flex;justify-content:space-between'><b>"+i.ty+"</b><button class='red' style='padding:2px 6px' onclick='del(\"ks\","+i.id+")'>🗑️</button></div><small>"+i.d+"</small><br>👤 <b>"+i.n+"</b> — "+i.g+"<br>"+i.no+"</div>";}).join("");
+}
+</script>
+</body>
+</html>
