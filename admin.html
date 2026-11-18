@@ -3,26 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ካማሺ ዞን — ዲጂታል ፖርታል</title>
+<title>ካማሺ ዞን — ዲጂታል ፖርታል (Admin)</title>
 <script>
+var STORAGE_KEY = "kamashi_news_data";
+
 function checkLogin() {
     var u = document.getElementById("username").value.trim();
     var p = document.getElementById("password").value.trim();
     if (u === "admin" && (p === "1234" || p === "admin123" || p === "kamashi2026")) {
         document.getElementById("loginSection").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
+        renderAdminPosts();
     } else {
         document.getElementById("errorMsg").style.display = "block";
     }
 }
+
 function quickLogin() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
+    renderAdminPosts();
 }
+
 function logout() {
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("loginSection").style.display = "block";
 }
+
 function openTab(id, btn) {
     var panels = document.querySelectorAll(".panel");
     for (var i = 0; i < panels.length; i++) panels[i].style.display = "none";
@@ -31,16 +38,56 @@ function openTab(id, btn) {
     document.getElementById(id).style.display = "block";
     btn.classList.add("active");
 }
+
+function getSavedPosts() {
+    var data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
 function addPost() {
     var cat = document.getElementById("postCat").value;
-    var title = document.getElementById("newsTitle").value;
-    var body = document.getElementById("newsBody").value;
+    var title = document.getElementById("newsTitle").value.trim();
+    var body = document.getElementById("newsBody").value.trim();
     if (!title || !body) { alert("እባክዎ ርዕስና ዝርዝር መልዕክት ይጻፉ!"); return; }
-    var list = document.getElementById("postList");
-    list.innerHTML = "<div class='card'><span class='badge'>" + cat + "</span><h4>" + title + "</h4><p>" + body + "</p></div>" + list.innerHTML;
+
+    var posts = getSavedPosts();
+    var today = new Date().toLocaleDateString('am-ET');
+    posts.unshift({ id: Date.now(), category: cat, title: title, body: body, date: today });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+
     document.getElementById("newsTitle").value = "";
     document.getElementById("newsBody").value = "";
+    renderAdminPosts();
+    alert("✅ መረጃው በቋሚነት ተቀምጧል! በዋናው ገጽ (index.html) ላይም ይታያል።");
 }
+
+function deletePost(id) {
+    var posts = getSavedPosts().filter(function(item) { return item.id !== id; });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    renderAdminPosts();
+}
+
+function renderAdminPosts() {
+    var posts = getSavedPosts();
+    var list = document.getElementById("postList");
+    document.getElementById("postCount").innerText = posts.length + " መረጃዎች";
+    if (posts.length === 0) {
+        list.innerHTML = "<p style='color:#666; margin-top:12px;'>እስካሁን የተመዘገበ መረጃ የለም።</p>";
+        return;
+    }
+    var html = "";
+    for (var i = 0; i < posts.length; i++) {
+        html += "<div class='card'>" +
+                "<div style='display:flex; justify-content:space-between; align-items:center;'>" +
+                "<span class='badge'>" + posts[i].category + " | " + posts[i].date + "</span>" +
+                "<button type='button' class='btn-del' onclick='deletePost(" + posts[i].id + ")'>🗑️ አጥፋ</button>" +
+                "</div>" +
+                "<h4 style='margin:6px 0; color:#0a3d62;'>" + posts[i].title + "</h4>" +
+                "<p>" + posts[i].body + "</p></div>";
+    }
+    list.innerHTML = html;
+}
+
 function addRow() {
     var tbody = document.getElementById("excelBody");
     var n = tbody.rows.length + 1;
@@ -61,20 +108,21 @@ input, textarea, select { width: 100%; padding: 13px; margin-bottom: 12px; borde
 .btn-gold { background: #f1c40f; color: #111; }
 .btn-green { background: #1e8449; }
 .btn-red { background: #c0392b; width: auto; padding: 7px 14px; font-size: 0.85rem; margin: 0; }
+.btn-del { background: #c0392b; color: #fff; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; cursor: pointer; }
 #dashboard { display: none; }
 .topbar { background: linear-gradient(90deg, #0a3d62, #1e8449); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
 .wrap { max-width: 1000px; margin: 16px auto; padding: 0 12px; }
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat { background: #fff; padding: 14px; border-radius: 12px; border-left: 4px solid #0a3d62; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .stat h4 { font-size: 0.8rem; color: #666; }
-.stat div { font-size: 1.3rem; font-weight: bold; color: #0a3d62; }
+.stat div { font-size: 1.25rem; font-weight: bold; color: #0a3d62; }
 .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
 .tool-btn { background: #fff; border: 1.5px solid #0a3d62; color: #0a3d62; padding: 12px 6px; border-radius: 10px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
 .tool-btn.active { background: #0a3d62; color: #fff; }
 .panel { background: #fff; padding: 18px; border-radius: 14px; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
 .panel h3 { color: #0a3d62; margin-bottom: 14px; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; }
 .card { background: #f4f6f9; padding: 14px; border-radius: 10px; margin-top: 12px; border-left: 4px solid #1e8449; }
-.badge { background: #f1c40f; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; display: inline-block; margin-bottom: 4px; }
+.badge { background: #f1c40f; padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; display: inline-block; }
 table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
 th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
 th { background: #1e8449; color: #fff; }
@@ -110,27 +158,28 @@ th { background: #1e8449; color: #fff; }
 
     <div class="wrap">
         <div class="stats">
-            <div class="stat"><h4>ወረዳዎች / ተቋማት</h4><div>5 ወረዳዎች</div></div>
-            <div class="stat" style="border-color:#1e8449;"><h4>የሲስተም ሁኔታ</h4><div style="color:#1e8449;">🟢 ንቁ (Active)</div></div>
+            <div class="stat"><h4>የተመዘገቡ ዜናዎች</h4><div id="postCount">0 መረጃዎች</div></div>
+            <div class="stat" style="border-color:#1e8449;"><h4>የመረጃ ማከማቻ</h4><div style="color:#1e8449;">💾 ቋሚ (Saved)</div></div>
         </div>
 
         <div class="tabs">
             <button type="button" class="tool-btn active" onclick="openTab('p1', this)">📰 መረጃ መለጠፊያ</button>
             <button type="button" class="tool-btn" onclick="openTab('p2', this)">📊 Excel ሰንጠረዥ</button>
             <button type="button" class="tool-btn" onclick="openTab('p3', this)">🏢 የወረዳዎች መረጃ</button>
-            <button type="button" class="tool-btn" onclick="openTab('p4', this)">🔗 በሚዲያ አጋራ</button>
+            <button type="button" class="tool-btn" onclick="openTab('p4', this)">🔗 ዋናውን ገጽ እይ</button>
         </div>
 
         <div id="p1" class="panel">
-            <h3>📰 ደብዳቤና ማስታወቂያ መለጠፊያ</h3>
+            <h3>📰 ደብዳቤና ማስታወቂያ መለጠፊያ (በindex.html ላይ ይታያል)</h3>
             <select id="postCat">
                 <option value="አስቸኳይ ማስታወቂያ">📌 አስቸኳይ ማስታወቂያ</option>
                 <option value="ኦፊሴላዊ ደብዳቤ">📄 ኦፊሴላዊ ደብዳቤ</option>
                 <option value="የስራ እንቅስቃሴ ሪፖርት">📸 የስራ እንቅስቃሴ ሪፖርት</option>
+                <option value="የቅጥርና ጨረታ ማስታወቂያ">📢 የቅጥርና ጨረታ ማስታወቂያ</option>
             </select>
             <input type="text" id="newsTitle" placeholder="የመልዕክቱ ርዕስ...">
             <textarea id="newsBody" rows="4" placeholder="ዝርዝር መልዕክቱን እዚህ ይጻፉ..."></textarea>
-            <button type="button" class="btn btn-green" onclick="addPost()">🚀 መረጃውን አትም</button>
+            <button type="button" class="btn btn-green" onclick="addPost()">🚀 መረጃውን አትምና አስቀምጥ</button>
             <div id="postList"></div>
         </div>
 
@@ -138,29 +187,3 @@ th { background: #1e8449; color: #fff; }
             <h3>📊 የExcel መረጃ መመዝገቢያ</h3>
             <div style="overflow-x:auto;">
                 <table>
-                    <thead><tr><th>ተ.ቁ</th><th>ወረዳ / ተቋም</th><th>ባለሙያ ብዛት</th><th>ሁኔታ</th></tr></thead>
-                    <tbody id="excelBody">
-                        <tr><td contenteditable="true">1</td><td contenteditable="true">ካማሺ ወረዳ</td><td contenteditable="true">45</td><td contenteditable="true">ተጠናቋል</td></tr>
-                        <tr><td contenteditable="true">2</td><td contenteditable="true">ያሶ ወረዳ</td><td contenteditable="true">38</td><td contenteditable="true">በሂደት ላይ</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <button type="button" class="btn" onclick="addRow()">➕ አዲስ ረድፍ ጨምር</button>
-        </div>
-
-        <div id="p3" class="panel" style="display:none;">
-            <h3>🏢 በዞኑ ስር የሚገኙ ወረዳዎች</h3>
-            <div class="card"><strong>1. ካማሺ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
-            <div class="card"><strong>2. ያሶ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
-            <div class="card"><strong>3. ቤሎ ጀጋንፎይ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
-            <div class="card"><strong>4. አጋሎ ሜጢ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
-            <div class="card"><strong>5. ሲዳል ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
-        </div>
-
-        <div id="p4" class="panel" style="display:none;">
-            <h3>🔗 ፖርታሉን ለሌሎች ያጋሩ</h3>
-            <a href="https://t.me ዞን ዲጂታል ፖርታል" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#0088cc;">✈️ በTelegram አጋራ</a>
-            <a href="https://whatsapp.com" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#25D366;">📱 በWhatsApp አጋራ</a>
-        </div>
-    </div>
-
