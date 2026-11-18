@@ -17,6 +17,7 @@ function login() {
 function showDash() {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("dash").style.display = "block";
+    document.getElementById("sec1").style.display = "block";
     loadAll();
 }
 
@@ -32,7 +33,7 @@ function switchTab(id, btn) {
 
 function handleFile(input, type) {
     if (!input.files || !input.files.length) return;
-    var file = input.files;
+    var file = input.files[0];
     document.getElementById("fileBadge").innerText = "📎 የተያያዘ ፋይል፦ " + file.name;
 
     if (type === "img") {
@@ -76,6 +77,7 @@ function saveDept() {
     document.getElementById("fileBadge").innerText = "";
     currentFile = null;
     loadAll();
+    alert("✅ መልዕክቱ በተሳካ ሁኔታ ተመዝግቧል!");
 }
 
 function delItem(key, id) {
@@ -118,6 +120,7 @@ function saveStu() {
     document.getElementById("sGrade").value = "";
     document.getElementById("sNote").value = "";
     loadAll();
+    alert("✅ የተማሪው መረጃ ተመዝግቧል!");
 }
 
 function loadAll() {
@@ -192,6 +195,3 @@ input[type="text"], input[type="password"], select, textarea { width: 100%; padd
     <div class="tabs">
         <button type="button" class="tab-btn active" onclick="switchTab('sec1', this)">🏢 የዘርፎች ቅጽ (9)</button>
         <button type="button" class="tab-btn" onclick="switchTab('sec2', this)">🎓 የተማሪዎች ቅጽ (3)</button>
-        <button type="button" class="tab-btn" onclick="switchTab('sec3', this)">🔗 ሸር ማድረጊያ</button>
-    </div>
-
