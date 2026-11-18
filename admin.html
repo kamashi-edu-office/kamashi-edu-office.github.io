@@ -3,29 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ካማሺ ዞን — መግቢያና ዳሽቦርድ</title>
+<title>ካማሺ ዞን — ሁለገብ ዲጂታል ፖርታል</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 body { background: #f0f4f8; color: #222; }
-.header { background: #0a3d62; color: #fff; padding: 15px; text-align: center; }
+.header { background: linear-gradient(90deg, #0a3d62, #1e8449); color: #fff; padding: 15px; text-align: center; }
 .box { max-width: 420px; margin: 30px auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 92%; }
-input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+input[type="text"], input[type="password"], select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
 .btn { width: 100%; padding: 12px; background: #0a3d62; color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
 .btn-gold { background: #f1c40f; color: #111; }
 .btn-green { background: #1e8449; }
 .btn-red { background: #c0392b; padding: 6px 12px; width: auto; font-size: 0.85rem; }
-#dash { display: none; max-width: 800px; margin: 15px auto; padding: 0 12px; }
-.card { background: #fff; padding: 16px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.item { background: #f8fafc; padding: 12px; border-left: 4px solid #1e8449; margin-top: 10px; border-radius: 6px; }
-.tabs { display: flex; gap: 8px; margin-bottom: 15px; }
-.tab-btn { flex: 1; padding: 10px; border: 1px solid #0a3d62; background: #fff; color: #0a3d62; font-weight: bold; border-radius: 8px; cursor: pointer; }
+#dash { display: none; max-width: 850px; margin: 15px auto; padding: 0 12px; }
+.card { background: #fff; padding: 16px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.item { background: #f8fafc; padding: 14px; border-left: 4px solid #1e8449; margin-top: 12px; border-radius: 8px; border: 1px solid #e2e8f0; }
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+.tab-btn { padding: 11px 6px; border: 1.5px solid #0a3d62; background: #fff; color: #0a3d62; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
 .tab-btn.active { background: #0a3d62; color: #fff; }
+.media-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+.media-lbl { display: block; background: #e3f2fd; border: 1.5px dashed #0a3d62; color: #0a3d62; padding: 10px 6px; text-align: center; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
+.preview-img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 8px; display: block; }
+.share-row { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.share-btn { padding: 6px 10px; border-radius: 6px; text-decoration: none; color: #fff; font-size: 0.8rem; font-weight: bold; border: none; cursor: pointer; }
 </style>
 </head>
 <body>
 
 <div class="header">
     <h3>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h3>
+    <p style="font-size:0.82rem; opacity:0.9;">ቤኒሻንጉል ጉሙዝ ክልል — ሁለገብ የመረጃና ፋይል መለዋወጫ ሲስተም</p>
 </div>
 
 <div id="loginBox" class="box">
@@ -34,7 +40,7 @@ input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; borde
     <input type="password" id="pass" placeholder="የይለፍ ቃል (1234)">
     <button type="button" class="btn" onclick="login()">ግባ (Login)</button>
     <button type="button" class="btn btn-gold" onclick="showDash()">⚡ በዋና አስተዳዳሪ በፍጥነት ግባ</button>
-    <a href="index.html" style="display:block; text-align:center; margin-top:10px; color:#0a3d62;">← ወደ ዋናው ገጽ ተመለስ</a>
+    <a href="index.html" style="display:block; text-align:center; margin-top:10px; color:#0a3d62; font-weight:bold;">← ወደ ዋናው ገጽ ተመለስ</a>
 </div>
 
 <div id="dash">
@@ -46,10 +52,11 @@ input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; borde
     <div class="tabs">
         <button type="button" class="tab-btn active" onclick="switchTab('sec1', this)">🏢 የዘርፎች ቅጽ (9)</button>
         <button type="button" class="tab-btn" onclick="switchTab('sec2', this)">🎓 የተማሪዎች ቅጽ (3)</button>
+        <button type="button" class="tab-btn" onclick="switchTab('sec3', this)">🔗 ሸር ማድረጊያ</button>
     </div>
 
     <div id="sec1" class="card">
-        <h4 style="color:#0a3d62; margin-bottom:10px;">🏢 የዘርፎችና ቡድኖች መጻጻፊያ ቅጽ</h4>
+        <h4 style="color:#0a3d62; margin-bottom:10px;">🏢 የዘርፎች መጻጻፊያ፣ ፎቶ፣ ቪዲዮና ፋይል መላኪያ</h4>
         <select id="sector">
             <option>1. የመርሱ ዘርፍ</option>
             <option>2. የመምህራን ሙያ ፍቃድና እድሳት ዘርፍ</option>
@@ -63,6 +70,14 @@ input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; borde
         </select>
         <input type="text" id="dTitle" placeholder="የጉዳዩ ርዕስ...">
         <textarea id="dBody" rows="3" placeholder="ዝርዝር መልዕክት..."></textarea>
+
+            <label class="media-lbl">📷 ፎቶ ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleFile(this, 'img')"></label>
+            <label class="media-lbl">🎥 ቪዲዮ ካሜራ<input type="file" accept="video/*" capture="environment" style="display:none;" onchange="handleFile(this, 'vid')"></label>
+            <label class="media-lbl">🖼️ ፎቶ አፕሎድ<input type="file" accept="image/*" style="display:none;" onchange="handleFile(this, 'img')"></label>
+            <label class="media-lbl">📁 ፋይል አፕሎድ (PDF/Word)<input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" style="display:none;" onchange="handleFile(this, 'doc')"></label>
+        </div>
+        <p id="fileBadge" style="font-size:0.85rem; color:#1e8449; font-weight:bold; margin-bottom:10px;"></p>
+
         <button type="button" class="btn btn-green" onclick="saveDept()">💾 መዝግብና አስቀምጥ</button>
         <div id="deptOut"></div>
     </div>
@@ -80,64 +95,84 @@ input, select, textarea { width: 100%; padding: 12px; margin-bottom: 12px; borde
         <button type="button" class="btn btn-green" onclick="saveStu()">💾 የተማሪውን መረጃ መዝግብ</button>
         <div id="stuOut"></div>
     </div>
+
+    <div id="sec3" class="card" style="display:none;">
+        <h4 style="color:#0a3d62; margin-bottom:10px;">🔗 ድረ-ገጹን ለሌሎች ያጋሩ (Share)</h4>
+        <p style="font-size:0.9rem; margin-bottom:12px;">ይህንን ፖርታል ለወረዳዎችና ለስራ ባልደረቦች በቀላሉ ያጋሩ፦</p>
+        <button type="button" class="btn" style="background:#0a3d62;" onclick="nativeShare()">📤 በስልክዎ ላይ ባሉ አፖች አጋራ (Share)</button>
+        <a href="https://t.me ዞን ዲጂታል ፖርታል" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#0088cc;">✈️ በTelegram አጋራ</a>
+        <a href="https://whatsapp.com ዞን ዲጂታል ፖርታል፡ https://github.io" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#25D366;">📱 በWhatsApp አጋራ</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.io" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#1877F2;">📘 በFacebook አጋራ</a>
+    </div>
 </div>
 
 <script>
+var currentFile = null;
+
 function login() {
     var u = document.getElementById("user").value.trim();
     var p = document.getElementById("pass").value.trim();
     if (u === "admin" && (p === "1234" || p === "admin123")) showDash();
     else alert("❌ የተሳሳተ መግቢያ ስም ወይም የይለፍ ቃል!");
 }
+
 function showDash() {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("dash").style.display = "block";
     loadAll();
 }
+
 function switchTab(id, btn) {
     document.getElementById("sec1").style.display = "none";
     document.getElementById("sec2").style.display = "none";
+    document.getElementById("sec3").style.display = "none";
     var btns = document.querySelectorAll(".tab-btn");
     for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
     document.getElementById(id).style.display = "block";
     btn.classList.add("active");
 }
+
+function handleFile(input, type) {
+    if (!input.files || !input.files) return;
+    var file = input.files;
+    document.getElementById("fileBadge").innerText = "📎 የተያያዘ ፋይል፦ " + file.name;
+
+    if (type === "img") {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement("canvas");
+                var maxW = 500;
+                var scale = maxW / img.width;
+                canvas.width = maxW;
+                canvas.height = img.height * scale;
+                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                currentFile = { type: "img", name: file.name, data: canvas.toDataURL("image/jpeg", 0.7) };
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        currentFile = { type: type, name: file.name, data: "" };
+    }
+}
+
 function saveDept() {
     var s = document.getElementById("sector").value;
-    var t = document.getElementById("dTitle").value;
-    var b = document.getElementById("dBody").value;
+    var t = document.getElementById("dTitle").value.trim();
+    var b = document.getElementById("dBody").value.trim();
     if (!t || !b) return alert("እባክዎ ርዕስና መልዕክት ይሙሉ!");
+
     var list = JSON.parse(localStorage.getItem("k_dept") || "[]");
-    list.unshift({ s: s, t: t, b: b, d: new Date().toLocaleDateString() });
-    localStorage.setItem("k_dept", JSON.stringify(list));
+    list.unshift({ id: Date.now(), s: s, t: t, b: b, f: currentFile, d: new Date().toLocaleDateString() });
+    try {
+        localStorage.setItem("k_dept", JSON.stringify(list));
+    } catch (e) {
+        alert("⚠️ የማከማቻ ቦታ ስለሞላ የድሮ ፎቶዎችን ያጥፉ!");
+        return;
+    }
+
     document.getElementById("dTitle").value = "";
     document.getElementById("dBody").value = "";
-    loadAll();
-}
-function saveStu() {
-    var ty = document.getElementById("sType").value;
-    var n = document.getElementById("sName").value;
-    var g = document.getElementById("sGrade").value;
-    var no = document.getElementById("sNote").value;
-    if (!n || !g) return alert("እባክዎ የተማሪውን ስምና ክፍል ይሙሉ!");
-    var list = JSON.parse(localStorage.getItem("k_stu") || "[]");
-    list.unshift({ ty: ty, n: n, g: g, no: no, d: new Date().toLocaleDateString() });
-    localStorage.setItem("k_stu", JSON.stringify(list));
-    document.getElementById("sName").value = "";
-    document.getElementById("sGrade").value = "";
-    document.getElementById("sNote").value = "";
-    loadAll();
-}
-function loadAll() {
-    var dList = JSON.parse(localStorage.getItem("k_dept") || "[]");
-    document.getElementById("deptOut").innerHTML = dList.map(function(i) {
-        return "<div class='item'><strong>" + i.s + "</strong> (" + i.d + ")<br><b>" + i.t + "</b>: " + i.b + "</div>";
-    }).join("");
-    var sList = JSON.parse(localStorage.getItem("k_stu") || "[]");
-    document.getElementById("stuOut").innerHTML = sList.map(function(i) {
-        return "<div class='item'><strong>" + i.ty + "</strong> (" + i.d + ")<br>👤 <b>" + i.n + "</b> — " + i.g + "<br>" + i.no + "</div>";
-    }).join("");
-}
-</script>
-</body>
-</html>
+    document.getElementById("fileBadge").innerText = "";
