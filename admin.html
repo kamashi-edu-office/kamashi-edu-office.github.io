@@ -3,26 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ካማሺ ዞን — ዲጂታል ፖርታል (Admin)</title>
+<title>ካማሺ ዞን — ሁለገብ የዘርፎችና የተማሪዎች ዲጂታል ፖርታል</title>
 <script>
-var STORAGE_KEY = "kamashi_news_data";
+var DEPT_KEY = "kamashi_dept_forms";
+var STU_KEY = "kamashi_student_forms";
+var NEWS_KEY = "kamashi_news_data";
 
 function checkLogin() {
     var u = document.getElementById("username").value.trim();
     var p = document.getElementById("password").value.trim();
     if (u === "admin" && (p === "1234" || p === "admin123" || p === "kamashi2026")) {
-        document.getElementById("loginSection").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        renderAdminPosts();
+        openDashboard();
     } else {
         document.getElementById("errorMsg").style.display = "block";
     }
 }
 
 function quickLogin() {
+    openDashboard();
+}
+
+function openDashboard() {
     document.getElementById("loginSection").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
-    renderAdminPosts();
+    renderDeptRecords();
+    renderStudentRecords();
 }
 
 function logout() {
@@ -39,60 +44,134 @@ function openTab(id, btn) {
     btn.classList.add("active");
 }
 
-function getSavedPosts() {
-    var data = localStorage.getItem(STORAGE_KEY);
-    return data ? JSON.parse(data) : [];
+function getData(key) {
+    var d = localStorage.getItem(key);
+    return d ? JSON.parse(d) : [];
 }
 
-function addPost() {
-    var cat = document.getElementById("postCat").value;
-    var title = document.getElementById("newsTitle").value.trim();
-    var body = document.getElementById("newsBody").value.trim();
-    if (!title || !body) { alert("እባክዎ ርዕስና ዝርዝር መልዕክት ይጻፉ!"); return; }
+function saveDeptForm() {
+    var sector = document.getElementById("deptSector").value;
+    var woreda = document.getElementById("deptWoreda").value;
+    var title = document.getElementById("deptTitle").value.trim();
+    var desc = document.getElementById("deptDesc").value.trim();
+    var publish = document.getElementById("publishPublic").checked;
 
-    var posts = getSavedPosts();
+    if (!title || !desc) { alert("እባክዎ የጉዳዩን ርዕስና ዝርዝር ተግባር ይሙሉ!"); return; }
+
     var today = new Date().toLocaleDateString('am-ET');
-    posts.unshift({ id: Date.now(), category: cat, title: title, body: body, date: today });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    var record = { id: Date.now(), sector: sector, woreda: woreda, title: title, desc: desc, date: today };
+    
+    var list = getData(DEPT_KEY);
+    list.unshift(record);
+    localStorage.setItem(DEPT_KEY, JSON.stringify(list));
 
-    document.getElementById("newsTitle").value = "";
-    document.getElementById("newsBody").value = "";
-    renderAdminPosts();
-    alert("✅ መረጃው በቋሚነት ተቀምጧል! በዋናው ገጽ (index.html) ላይም ይታያል።");
+    if (publish) {
+        var news = getData(NEWS_KEY);
+        news.unshift({ id: record.id, category: sector + " (" + woreda + ")", title: title, body: desc, date: today });
+        localStorage.setItem(NEWS_KEY, JSON.stringify(news));
+    }
+
+    document.getElementById("deptTitle").value = "";
+    document.getElementById("deptDesc").value = "";
+    renderDeptRecords();
+    alert("✅ የዘርፉ መጻጻፊያ ቅጽ በቋሚነት ተመዝግቧል!");
 }
 
-function deletePost(id) {
-    var posts = getSavedPosts().filter(function(item) { return item.id !== id; });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-    renderAdminPosts();
+function deleteDept(id) {
+    var list = getData(DEPT_KEY).filter(function(item) { return item.id !== id; });
+    localStorage.setItem(DEPT_KEY, JSON.stringify(list));
+    renderDeptRecords();
 }
 
-function renderAdminPosts() {
-    var posts = getSavedPosts();
-    var list = document.getElementById("postList");
-    document.getElementById("postCount").innerText = posts.length + " መረጃዎች";
-    if (posts.length === 0) {
-        list.innerHTML = "<p style='color:#666; margin-top:12px;'>እስካሁን የተመዘገበ መረጃ የለም።</p>";
+function renderDeptRecords() {
+    var list = getData(DEPT_KEY);
+    var filter = document.getElementById("filterSector").value;
+    var container = document.getElementById("deptList");
+    document.getElementById("deptCount").innerText = list.length + " መዝገቦች";
+
+    var filtered = filter === "ALL" ? list : list.filter(function(i) { return i.sector === filter; });
+
+    if (filtered.length === 0) {
+        container.innerHTML = "<p style='color:#666; margin-top:12px;'>በዚህ ዘርፍ የተመዘገበ መጻጻፊያ የለም።</p>";
         return;
     }
+
     var html = "";
-    for (var i = 0; i < posts.length; i++) {
+    for (var i = 0; i < filtered.length; i++) {
+        html += "<div class='card'>" +
+                "<div style='display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;'>" +
+                "<span class='badge'>" + filtered[i].sector + " — " + filtered[i].woreda + " (" + filtered[i].date + ")</span>" +
+                "<button type='button' class='btn-del' onclick='deleteDept(" + filtered[i].id + ")'>🗑️ አጥፋ</button>" +
+                "</div>" +
+                "<h4 style='margin:6px 0; color:#0a3d62;'>" + filtered[i].title + "</h4>" +
+                "<p>" + filtered[i].desc + "</p></div>";
+    }
+    container.innerHTML = html;
+}
+
+function saveStudentForm() {
+    var formType = document.getElementById("stuFormType").value;
+    var stuName = document.getElementById("stuName").value.trim();
+    var stuGender = document.getElementById("stuGender").value;
+    var stuGrade = document.getElementById("stuGrade").value.trim();
+    var stuSchool = document.getElementById("stuSchool").value.trim();
+    var stuNote = document.getElementById("stuNote").value.trim();
+
+    if (!stuName || !stuGrade || !stuSchool) { alert("እባክዎ የተማሪውን ሙሉ ስም፣ ክፍል እና ትምህርት ቤት ያስገቡ!"); return; }
+
+    var today = new Date().toLocaleDateString('am-ET');
+    var list = getData(STU_KEY);
+    list.unshift({ id: Date.now(), formType: formType, name: stuName, gender: stuGender, grade: stuGrade, school: stuSchool, note: stuNote, date: today });
+    localStorage.setItem(STU_KEY, JSON.stringify(list));
+
+    document.getElementById("stuName").value = "";
+    document.getElementById("stuGrade").value = "";
+    document.getElementById("stuSchool").value = "";
+    document.getElementById("stuNote").value = "";
+    renderStudentRecords();
+    alert("✅ የተማሪው መረጃ በቋሚነት ተመዝግቧል!");
+}
+
+function deleteStudent(id) {
+    var list = getData(STU_KEY).filter(function(item) { return item.id !== id; });
+    localStorage.setItem(STU_KEY, JSON.stringify(list));
+    renderStudentRecords();
+}
+
+function renderStudentRecords() {
+    var list = getData(STU_KEY);
+    var filter = document.getElementById("filterStuType").value;
+    var container = document.getElementById("stuList");
+    document.getElementById("stuCount").innerText = list.length + " ተማሪዎች";
+
+    var filtered = filter === "ALL" ? list : list.filter(function(i) { return i.formType === filter; });
+
+    if (filtered.length === 0) {
+        container.innerHTML = "<p style='color:#666; margin-top:12px;'>የተመዘገበ የተማሪ መረጃ የለም።</p>";
+        return;
+    }
+
+    var html = "";
+    for (var i = 0; i < filtered.length; i++) {
+        var badgeColor = filtered[i].formType.indexOf("ያቋረጡ") !== -1 ? "background:#ffcdd2; color:#b71c1c;" : (filtered[i].formType.indexOf("ቅበላ") !== -1 ? "background:#c8e6c9; color:#1b5e20;" : "background:#fff9c4; color:#f57f17;");
         html += "<div class='card'>" +
                 "<div style='display:flex; justify-content:space-between; align-items:center;'>" +
-                "<span class='badge'>" + posts[i].category + " | " + posts[i].date + "</span>" +
-                "<button type='button' class='btn-del' onclick='deletePost(" + posts[i].id + ")'>🗑️ አጥፋ</button>" +
+                "<span class='badge' style='" + badgeColor + "'>" + filtered[i].formType + " (" + filtered[i].date + ")</span>" +
+                "<button type='button' class='btn-del' onclick='deleteStudent(" + filtered[i].id + ")'>🗑️ አጥፋ</button>" +
                 "</div>" +
-                "<h4 style='margin:6px 0; color:#0a3d62;'>" + posts[i].title + "</h4>" +
-                "<p>" + posts[i].body + "</p></div>";
+                "<h4 style='margin:6px 0; color:#0a3d62;'>👤 " + filtered[i].name + " (" + filtered[i].gender + ")</h4>" +
+                "<p style='font-size:0.9rem;'><strong>ክፍል፦</strong> " + filtered[i].grade + " | <strong>ት/ቤት/ወረዳ፦</strong> " + filtered[i].school + "</p>" +
+                (filtered[i].note ? "<p style='font-size:0.88rem; color:#444; margin-top:4px;'><strong>ማብራሪያ/ምክንያት፦</strong> " + filtered[i].note + "</p>" : "") +
+                "</div>";
     }
-    list.innerHTML = html;
+    container.innerHTML = html;
 }
 
 function addRow() {
     var tbody = document.getElementById("excelBody");
     var n = tbody.rows.length + 1;
     var row = tbody.insertRow();
-    row.innerHTML = "<td contenteditable='true'>" + n + "</td><td contenteditable='true'>አዲስ ወረዳ</td><td contenteditable='true'>0</td><td contenteditable='true'>በሂደት ላይ</td>";
+    row.innerHTML = "<td contenteditable='true'>" + n + "</td><td contenteditable='true'>አዲስ ዘርፍ/ወረዳ</td><td contenteditable='true'>0</td><td contenteditable='true'>ተከናውኗል</td>";
 }
 </script>
 <style>
@@ -103,7 +182,8 @@ body { background: #f0f4f8; color: #222; font-size: 16px; }
 .header h1 { font-size: 1rem; color: #0a3d62; }
 .header p { font-size: 0.8rem; color: #1e8449; font-weight: bold; }
 .login-box { max-width: 400px; margin: 35px auto; background: #fff; padding: 26px 20px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); text-align: center; border-top: 5px solid #0a3d62; width: 92%; }
-input, textarea, select { width: 100%; padding: 13px; margin-bottom: 12px; border: 1.5px solid #ccc; border-radius: 10px; font-size: 1rem; }
+input[type="text"], input[type="password"], textarea, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1.5px solid #ccc; border-radius: 10px; font-size: 0.98rem; background: #fff; }
+label.chk { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin-bottom: 12px; font-weight: bold; color: #0a3d62; cursor: pointer; }
 .btn { width: 100%; padding: 13px; background: #0a3d62; color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
 .btn-gold { background: #f1c40f; color: #111; }
 .btn-green { background: #1e8449; }
@@ -115,75 +195,5 @@ input, textarea, select { width: 100%; padding: 13px; margin-bottom: 12px; borde
 .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat { background: #fff; padding: 14px; border-radius: 12px; border-left: 4px solid #0a3d62; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 .stat h4 { font-size: 0.8rem; color: #666; }
-.stat div { font-size: 1.25rem; font-weight: bold; color: #0a3d62; }
+.stat div { font-size: 1.2rem; font-weight: bold; color: #0a3d62; }
 .tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
-.tool-btn { background: #fff; border: 1.5px solid #0a3d62; color: #0a3d62; padding: 12px 6px; border-radius: 10px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
-.tool-btn.active { background: #0a3d62; color: #fff; }
-.panel { background: #fff; padding: 18px; border-radius: 14px; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
-.panel h3 { color: #0a3d62; margin-bottom: 14px; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; }
-.card { background: #f4f6f9; padding: 14px; border-radius: 10px; margin-top: 12px; border-left: 4px solid #1e8449; }
-.badge { background: #f1c40f; padding: 3px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; display: inline-block; }
-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-th { background: #1e8449; color: #fff; }
-.footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #555; }
-.dev { display: inline-block; background: #0a3d62; color: #f1c40f; padding: 6px 14px; border-radius: 20px; font-weight: bold; margin-top: 6px; }
-</style>
-</head>
-<body>
-
-<div class="header">
-    <div class="logo">🎓</div>
-    <div>
-        <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
-        <p>ቤኒሻንጉል ጉሙዝ ክልል — ሁለገብ ዲጂታል ፖርታል</p>
-    </div>
-</div>
-
-<div id="loginSection" class="login-box">
-    <h2 style="color:#0a3d62; margin-bottom:8px;">🔐 የመስሪያ ቤቶች መግቢያ</h2>
-    <p id="errorMsg" style="color:#c0392b; font-weight:bold; display:none; margin-bottom:10px;">❌ የተሳሳተ መግቢያ መረጃ!</p>
-    <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)">
-    <input type="password" id="password" placeholder="የይለፍ ቃል (1234)">
-    <button type="button" class="btn" onclick="checkLogin()">ግባ (Login)</button>
-    <button type="button" class="btn btn-gold" onclick="quickLogin()">⚡ በዋና አስተዳዳሪ (Admin) በፍጥነት ግባ</button>
-    <a href="index.html" style="display:block; margin-top:10px; color:#0a3d62; font-weight:bold; text-decoration:none;">← ወደ ዋናው ገጽ ተመለስ</a>
-</div>
-
-<div id="dashboard">
-    <div class="topbar">
-        <span>👋 እንኳን ደህና መጡ፣ <strong>ዋና አስተዳዳሪ</strong></span>
-        <button type="button" class="btn btn-red" onclick="logout()">ውጣ</button>
-    </div>
-
-    <div class="wrap">
-        <div class="stats">
-            <div class="stat"><h4>የተመዘገቡ ዜናዎች</h4><div id="postCount">0 መረጃዎች</div></div>
-            <div class="stat" style="border-color:#1e8449;"><h4>የመረጃ ማከማቻ</h4><div style="color:#1e8449;">💾 ቋሚ (Saved)</div></div>
-        </div>
-
-        <div class="tabs">
-            <button type="button" class="tool-btn active" onclick="openTab('p1', this)">📰 መረጃ መለጠፊያ</button>
-            <button type="button" class="tool-btn" onclick="openTab('p2', this)">📊 Excel ሰንጠረዥ</button>
-            <button type="button" class="tool-btn" onclick="openTab('p3', this)">🏢 የወረዳዎች መረጃ</button>
-            <button type="button" class="tool-btn" onclick="openTab('p4', this)">🔗 ዋናውን ገጽ እይ</button>
-        </div>
-
-        <div id="p1" class="panel">
-            <h3>📰 ደብዳቤና ማስታወቂያ መለጠፊያ (በindex.html ላይ ይታያል)</h3>
-            <select id="postCat">
-                <option value="አስቸኳይ ማስታወቂያ">📌 አስቸኳይ ማስታወቂያ</option>
-                <option value="ኦፊሴላዊ ደብዳቤ">📄 ኦፊሴላዊ ደብዳቤ</option>
-                <option value="የስራ እንቅስቃሴ ሪፖርት">📸 የስራ እንቅስቃሴ ሪፖርት</option>
-                <option value="የቅጥርና ጨረታ ማስታወቂያ">📢 የቅጥርና ጨረታ ማስታወቂያ</option>
-            </select>
-            <input type="text" id="newsTitle" placeholder="የመልዕክቱ ርዕስ...">
-            <textarea id="newsBody" rows="4" placeholder="ዝርዝር መልዕክቱን እዚህ ይጻፉ..."></textarea>
-            <button type="button" class="btn btn-green" onclick="addPost()">🚀 መረጃውን አትምና አስቀምጥ</button>
-            <div id="postList"></div>
-        </div>
-
-        <div id="p2" class="panel" style="display:none;">
-            <h3>📊 የExcel መረጃ መመዝገቢያ</h3>
-            <div style="overflow-x:auto;">
-                <table>
