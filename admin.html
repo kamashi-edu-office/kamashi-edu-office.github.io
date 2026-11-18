@@ -1,237 +1,166 @@
 <!DOCTYPE html>
 <html lang="am">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ካማሺ ዞን — ሁለገብ ዲጂታል ፖርታል</title>
-    <style>
-        :root {
-            --primary: #0a3d62;
-            --secondary: #1e8449;
-            --accent: #f1c40f;
-            --bg: #f4f6f9;
-            --card-bg: #ffffff;
-            --text: #2c3e50;
-            --border: #dce1e7;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-        body { background: var(--bg); color: var(--text); line-height: 1.6; font-size: 16px; }
-
-        .brand-header {
-            background: var(--card-bg);
-            padding: 14px 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 3px solid var(--primary);
-        }
-        .logo-circle {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #fff;
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            flex-shrink: 0;
-        }
-        .logo-titles h1 { font-size: 1.05rem; color: var(--primary); font-weight: 800; line-height: 1.25; }
-        .logo-titles p { font-size: 0.8rem; color: var(--secondary); font-weight: 600; margin-top: 2px; }
-
-        .login-box {
-            max-width: 420px;
-            margin: 35px 16px;
-            background: var(--card-bg);
-            padding: 28px 22px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            text-align: center;
-            border-top: 5px solid var(--primary);
-        }
-        @media (min-width: 460px) { .login-box { margin: 45px auto; } }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 13px 14px;
-            margin-bottom: 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            font-size: 1rem;
-            background: #fafbfc;
-        }
-        input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); background: #fff; }
-
-        .btn {
-            width: 100%;
-            padding: 13px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-        .btn-gold { background: linear-gradient(135deg, #f39c12, #f1c40f); color: #1a1a1a; }
-        .btn-green { background: var(--secondary); }
-        .btn-red { background: #c0392b; width: auto; padding: 7px 14px; font-size: 0.85rem; margin: 0; }
-
-        #dashboard { display: none; }
-        .sub-bar {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: #fff;
-            padding: 12px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.92rem;
-        }
-        .container { max-width: 1100px; margin: 16px auto; padding: 0 14px; }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
-        .stat-card {
-            background: var(--card-bg);
-            padding: 14px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--primary);
-        }
-        .stat-card.green { border-left-color: var(--secondary); }
-        .stat-card.gold { border-left-color: #f39c12; }
-        .stat-card h4 { font-size: 0.8rem; color: #666; }
-        .stat-card .num { font-size: 1.35rem; font-weight: 800; color: var(--primary); margin-top: 2px; }
-
-        .toolbox {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        @media (min-width: 768px) { .toolbox { grid-template-columns: repeat(5, 1fr); } }
-        .tool-btn {
-            background: var(--card-bg);
-            border: 1.5px solid var(--primary);
-            color: var(--primary);
-            padding: 12px 8px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            text-align: center;
-        }
-        .tool-btn.active { background: var(--primary); color: #fff; }
-
-        .panel {
-            display: none;
-            background: var(--card-bg);
-            padding: 20px 16px;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        }
-        .panel.active { display: block; }
-        .panel h3 { color: var(--primary); margin-bottom: 16px; border-bottom: 2px solid var(--bg); padding-bottom: 10px; font-size: 1.1rem; }
-
-        .media-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        @media (min-width: 600px) { .media-grid { grid-template-columns: repeat(4, 1fr); } }
-        .media-btn {
-            background: #f0f7ff;
-            border: 1.5px dashed var(--primary);
-            padding: 12px 8px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary);
-            cursor: pointer;
-            display: block;
-        }
-
-        .table-wrap { overflow-x: auto; margin-bottom: 14px; border-radius: 8px; border: 1px solid var(--border); }
-        table { width: 100%; border-collapse: collapse; min-width: 450px; }
-        th, td { border: 1px solid var(--border); padding: 10px; text-align: left; font-size: 0.9rem; }
-        th { background: var(--secondary); color: #fff; }
-
-        .item-card { background: var(--bg); padding: 15px; border-radius: 10px; margin-bottom: 12px; border-left: 4px solid var(--secondary); }
-        .badge { display: inline-block; background: var(--accent); color: #111; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px; }
-        .error-msg { color: #c0392b; font-size: 0.9rem; font-weight: bold; margin-bottom: 12px; display: none; }
-        .dev-footer { text-align: center; padding: 24px 12px; font-size: 0.85rem; color: #555; }
-        .dev-badge { display: inline-block; background: var(--primary); color: var(--accent); padding: 6px 16px; border-radius: 20px; font-weight: bold; margin-top: 6px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ካማሺ ዞን — ዲጂታል ፖርታል</title>
+<script>
+function checkLogin() {
+    var u = document.getElementById("username").value.trim();
+    var p = document.getElementById("password").value.trim();
+    if (u === "admin" && (p === "1234" || p === "admin123" || p === "kamashi2026")) {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+    } else {
+        document.getElementById("errorMsg").style.display = "block";
+    }
+}
+function quickLogin() {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+}
+function logout() {
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+}
+function openTab(id, btn) {
+    var panels = document.querySelectorAll(".panel");
+    for (var i = 0; i < panels.length; i++) panels[i].style.display = "none";
+    var btns = document.querySelectorAll(".tool-btn");
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+    document.getElementById(id).style.display = "block";
+    btn.classList.add("active");
+}
+function addPost() {
+    var cat = document.getElementById("postCat").value;
+    var title = document.getElementById("newsTitle").value;
+    var body = document.getElementById("newsBody").value;
+    if (!title || !body) { alert("እባክዎ ርዕስና ዝርዝር መልዕክት ይጻፉ!"); return; }
+    var list = document.getElementById("postList");
+    list.innerHTML = "<div class='card'><span class='badge'>" + cat + "</span><h4>" + title + "</h4><p>" + body + "</p></div>" + list.innerHTML;
+    document.getElementById("newsTitle").value = "";
+    document.getElementById("newsBody").value = "";
+}
+function addRow() {
+    var tbody = document.getElementById("excelBody");
+    var n = tbody.rows.length + 1;
+    var row = tbody.insertRow();
+    row.innerHTML = "<td contenteditable='true'>" + n + "</td><td contenteditable='true'>አዲስ ወረዳ</td><td contenteditable='true'>0</td><td contenteditable='true'>በሂደት ላይ</td>";
+}
+</script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
+body { background: #f0f4f8; color: #222; font-size: 16px; }
+.header { background: #fff; padding: 14px; display: flex; align-items: center; gap: 12px; border-bottom: 3px solid #0a3d62; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.logo { background: linear-gradient(135deg, #0a3d62, #1e8449); color: #fff; width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+.header h1 { font-size: 1rem; color: #0a3d62; }
+.header p { font-size: 0.8rem; color: #1e8449; font-weight: bold; }
+.login-box { max-width: 400px; margin: 35px auto; background: #fff; padding: 26px 20px; border-radius: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); text-align: center; border-top: 5px solid #0a3d62; width: 92%; }
+input, textarea, select { width: 100%; padding: 13px; margin-bottom: 12px; border: 1.5px solid #ccc; border-radius: 10px; font-size: 1rem; }
+.btn { width: 100%; padding: 13px; background: #0a3d62; color: #fff; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
+.btn-gold { background: #f1c40f; color: #111; }
+.btn-green { background: #1e8449; }
+.btn-red { background: #c0392b; width: auto; padding: 7px 14px; font-size: 0.85rem; margin: 0; }
+#dashboard { display: none; }
+.topbar { background: linear-gradient(90deg, #0a3d62, #1e8449); color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+.wrap { max-width: 1000px; margin: 16px auto; padding: 0 12px; }
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat { background: #fff; padding: 14px; border-radius: 12px; border-left: 4px solid #0a3d62; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.stat h4 { font-size: 0.8rem; color: #666; }
+.stat div { font-size: 1.3rem; font-weight: bold; color: #0a3d62; }
+.tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+.tool-btn { background: #fff; border: 1.5px solid #0a3d62; color: #0a3d62; padding: 12px 6px; border-radius: 10px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
+.tool-btn.active { background: #0a3d62; color: #fff; }
+.panel { background: #fff; padding: 18px; border-radius: 14px; box-shadow: 0 3px 12px rgba(0,0,0,0.06); }
+.panel h3 { color: #0a3d62; margin-bottom: 14px; border-bottom: 2px solid #f0f4f8; padding-bottom: 8px; }
+.card { background: #f4f6f9; padding: 14px; border-radius: 10px; margin-top: 12px; border-left: 4px solid #1e8449; }
+.badge { background: #f1c40f; padding: 2px 8px; border-radius: 6px; font-size: 0.78rem; font-weight: bold; display: inline-block; margin-bottom: 4px; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+th { background: #1e8449; color: #fff; }
+.footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #555; }
+.dev { display: inline-block; background: #0a3d62; color: #f1c40f; padding: 6px 14px; border-radius: 20px; font-weight: bold; margin-top: 6px; }
+</style>
 </head>
 <body>
 
-<div class="brand-header">
-    <div class="logo-circle">🎓</div>
-    <div class="logo-titles">
+<div class="header">
+    <div class="logo">🎓</div>
+    <div>
         <h1>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h1>
-        <p>ቤኒሻንጉል ጉሙዝ ክልል — ዘመናዊ የመረጃ መለዋወጫ ሲስተም</p>
+        <p>ቤኒሻንጉል ጉሙዝ ክልል — ሁለገብ ዲጂታል ፖርታል</p>
     </div>
 </div>
 
 <div id="loginSection" class="login-box">
-    <h2 style="color:var(--primary); margin-bottom:6px; font-size:1.3rem;">🔐 የመስሪያ ቤቶች መግቢያ</h2>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:18px;">ለዞን፣ ለወረዳዎችና ለተቋማት የተዘጋጀ ዲጂታል ፖርታል</p>
-    <p id="errorMsg" class="error-msg">❌ የተሳሳተ የተጠቃሚ ስም ወይም የይለፍ ቃል!</p>
+    <h2 style="color:#0a3d62; margin-bottom:8px;">🔐 የመስሪያ ቤቶች መግቢያ</h2>
+    <p id="errorMsg" style="color:#c0392b; font-weight:bold; display:none; margin-bottom:10px;">❌ የተሳሳተ መግቢያ መረጃ!</p>
     <input type="text" id="username" placeholder="የተጠቃሚ ስም (admin)">
     <input type="password" id="password" placeholder="የይለፍ ቃል (1234)">
     <button type="button" class="btn" onclick="checkLogin()">ግባ (Login)</button>
     <button type="button" class="btn btn-gold" onclick="quickLogin()">⚡ በዋና አስተዳዳሪ (Admin) በፍጥነት ግባ</button>
-    <a href="index.html" style="display:block; margin-top:12px; font-size:0.88rem; color:var(--primary); font-weight:600; text-decoration:none;">← ወደ ዋናው የመረጃ ገጽ ተመለስ</a>
+    <a href="index.html" style="display:block; margin-top:10px; color:#0a3d62; font-weight:bold; text-decoration:none;">← ወደ ዋናው ገጽ ተመለስ</a>
 </div>
 
 <div id="dashboard">
-    <div class="sub-bar">
+    <div class="topbar">
         <span>👋 እንኳን ደህና መጡ፣ <strong>ዋና አስተዳዳሪ</strong></span>
-        <button type="button" class="btn btn-red" onclick="logout()">ውጣ (Logout)</button>
+        <button type="button" class="btn btn-red" onclick="logout()">ውጣ</button>
     </div>
 
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h4>ተቋማት / ወረዳዎች</h4>
-                <div class="num">5 ወረዳዎች</div>
-            </div>
-            <div class="stat-card green">
-                <h4>የተመዘገቡ መረጃዎች</h4>
-                <div class="num" id="statPosts">12</div>
-            </div>
-            <div class="stat-card gold">
-                <h4>የደረሱ ሪፖርቶች</h4>
-                <div class="num">28</div>
-            </div>
-            <div class="stat-card">
-                <h4>የሲስተም ሁኔታ</h4>
-                <div class="num" style="color:var(--secondary); font-size:1.1rem;">🟢 ንቁ (Active)</div>
-            </div>
+    <div class="wrap">
+        <div class="stats">
+            <div class="stat"><h4>ወረዳዎች / ተቋማት</h4><div>5 ወረዳዎች</div></div>
+            <div class="stat" style="border-color:#1e8449;"><h4>የሲስተም ሁኔታ</h4><div style="color:#1e8449;">🟢 ንቁ (Active)</div></div>
         </div>
 
-        <div class="toolbox">
-            <button type="button" class="tool-btn active" onclick="openTab('newsPanel', this)">📰 መረጃና ፋይል መላኪያ</button>
-            <button type="button" class="tool-btn" onclick="openTab('excelPanel', this)">📊 Excel ሰንጠረዥ</button>
-            <button type="button" class="tool-btn" onclick="openTab('woredaPanel', this)">🏢 የወረዳዎች አካውንት</button>
-            <button type="button" class="tool-btn" onclick="openTab('feedbackPanel', this)">💬 ግብረመልስና መልዕክት</button>
-            <button type="button" class="tool-btn" onclick="openTab('sharePanel', this)">🔗 በማህበራዊ ሚዲያ አጋራ</button>
+        <div class="tabs">
+            <button type="button" class="tool-btn active" onclick="openTab('p1', this)">📰 መረጃ መለጠፊያ</button>
+            <button type="button" class="tool-btn" onclick="openTab('p2', this)">📊 Excel ሰንጠረዥ</button>
+            <button type="button" class="tool-btn" onclick="openTab('p3', this)">🏢 የወረዳዎች መረጃ</button>
+            <button type="button" class="tool-btn" onclick="openTab('p4', this)">🔗 በሚዲያ አጋራ</button>
         </div>
 
-        <div id="newsPanel" class="panel active">
-            <h3>📰 ደብዳቤ፣ ማስታወቂያና ፋይሎች መለጠፊያ</h3>
-            <select id="postCategory">
+        <div id="p1" class="panel">
+            <h3>📰 ደብዳቤና ማስታወቂያ መለጠፊያ</h3>
+            <select id="postCat">
                 <option value="አስቸኳይ ማስታወቂያ">📌 አስቸኳይ ማስታወቂያ</option>
-                <option value="ኦፊሴላዊ ደብዳቤ">📄 ኦፊሴላዊ ደብዳቤ (Word)</option>
-                <option value="የስራ እንቅስቃሴ ሪፖርት">📸 የስራ እንቅስቃሴ ፎቶ/ቪዲዮ</option>
-                <option value="የጨረታና ቅጥር ማስታወቂያ">📢 የጨረታና ቅጥር ማስታወቂያ</option>
+                <option value="ኦፊሴላዊ ደብዳቤ">📄 ኦፊሴላዊ ደብዳቤ</option>
+                <option value="የስራ እንቅስቃሴ ሪፖርት">📸 የስራ እንቅስቃሴ ሪፖርት</option>
+            </select>
+            <input type="text" id="newsTitle" placeholder="የመልዕክቱ ርዕስ...">
+            <textarea id="newsBody" rows="4" placeholder="ዝርዝር መልዕክቱን እዚህ ይጻፉ..."></textarea>
+            <button type="button" class="btn btn-green" onclick="addPost()">🚀 መረጃውን አትም</button>
+            <div id="postList"></div>
+        </div>
+
+        <div id="p2" class="panel" style="display:none;">
+            <h3>📊 የExcel መረጃ መመዝገቢያ</h3>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead><tr><th>ተ.ቁ</th><th>ወረዳ / ተቋም</th><th>ባለሙያ ብዛት</th><th>ሁኔታ</th></tr></thead>
+                    <tbody id="excelBody">
+                        <tr><td contenteditable="true">1</td><td contenteditable="true">ካማሺ ወረዳ</td><td contenteditable="true">45</td><td contenteditable="true">ተጠናቋል</td></tr>
+                        <tr><td contenteditable="true">2</td><td contenteditable="true">ያሶ ወረዳ</td><td contenteditable="true">38</td><td contenteditable="true">በሂደት ላይ</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <button type="button" class="btn" onclick="addRow()">➕ አዲስ ረድፍ ጨምር</button>
+        </div>
+
+        <div id="p3" class="panel" style="display:none;">
+            <h3>🏢 በዞኑ ስር የሚገኙ ወረዳዎች</h3>
+            <div class="card"><strong>1. ካማሺ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
+            <div class="card"><strong>2. ያሶ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
+            <div class="card"><strong>3. ቤሎ ጀጋንፎይ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
+            <div class="card"><strong>4. አጋሎ ሜጢ ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
+            <div class="card"><strong>5. ሲዳል ወረዳ</strong> — የትምህርትና ሲቪል ሰርቪስ ጽ/ቤት</div>
+        </div>
+
+        <div id="p4" class="panel" style="display:none;">
+            <h3>🔗 ፖርታሉን ለሌሎች ያጋሩ</h3>
+            <a href="https://t.me ዞን ዲጂታል ፖርታል" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#0088cc;">✈️ በTelegram አጋራ</a>
+            <a href="https://whatsapp.com" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#25D366;">📱 በWhatsApp አጋራ</a>
+        </div>
+    </div>
+
