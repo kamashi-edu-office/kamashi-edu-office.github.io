@@ -4,6 +4,146 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ካማሺ ዞን — ሁለገብ ዲጂታል ፖርታል</title>
+<script>
+var currentFile = null;
+
+function login() {
+    var u = document.getElementById("user").value.trim();
+    var p = document.getElementById("pass").value.trim();
+    if (u === "admin" && (p === "1234" || p === "admin123")) showDash();
+    else alert("❌ የተሳሳተ መግቢያ ስም ወይም የይለፍ ቃል!");
+}
+
+function showDash() {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("dash").style.display = "block";
+    loadAll();
+}
+
+function switchTab(id, btn) {
+    document.getElementById("sec1").style.display = "none";
+    document.getElementById("sec2").style.display = "none";
+    document.getElementById("sec3").style.display = "none";
+    var btns = document.querySelectorAll(".tab-btn");
+    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+    document.getElementById(id).style.display = "block";
+    btn.classList.add("active");
+}
+
+function handleFile(input, type) {
+    if (!input.files || !input.files.length) return;
+    var file = input.files;
+    document.getElementById("fileBadge").innerText = "📎 የተያያዘ ፋይል፦ " + file.name;
+
+    if (type === "img") {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = new Image();
+            img.onload = function() {
+                var canvas = document.createElement("canvas");
+                var maxW = 500;
+                var scale = maxW / img.width;
+                canvas.width = maxW;
+                canvas.height = img.height * scale;
+                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+                currentFile = { type: "img", name: file.name, data: canvas.toDataURL("image/jpeg", 0.7) };
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        currentFile = { type: type, name: file.name, data: "" };
+    }
+}
+
+function saveDept() {
+    var s = document.getElementById("sector").value;
+    var t = document.getElementById("dTitle").value.trim();
+    var b = document.getElementById("dBody").value.trim();
+    if (!t || !b) return alert("እባክዎ ርዕስና መልዕክት ይሙሉ!");
+
+    var list = JSON.parse(localStorage.getItem("k_dept") || "[]");
+    list.unshift({ id: Date.now(), s: s, t: t, b: b, f: currentFile, d: new Date().toLocaleDateString() });
+    try {
+        localStorage.setItem("k_dept", JSON.stringify(list));
+    } catch (e) {
+        alert("⚠️ የማከማቻ ቦታ ስለሞላ የድሮ ፎቶዎችን ያጥፉ!");
+        return;
+    }
+
+    document.getElementById("dTitle").value = "";
+    document.getElementById("dBody").value = "";
+    document.getElementById("fileBadge").innerText = "";
+    currentFile = null;
+    loadAll();
+}
+
+function delItem(key, id) {
+    var list = JSON.parse(localStorage.getItem(key) || "[]").filter(function(x) { return x.id !== id; });
+    localStorage.setItem(key, JSON.stringify(list));
+    loadAll();
+}
+
+function shareText(title, body) {
+    var msg = "📢 " + title + "\n\n" + body + "\n\n🔗 ካማሺ ዞን ዲጂታል ፖርታል: https://github.io";
+    if (navigator.share) {
+        navigator.share({ title: title, text: msg });
+    } else {
+        window.open("https://t.me/share/url?url=https://github.io&text=" + encodeURIComponent(msg), "_blank");
+    }
+}
+
+function nativeShare() {
+    if (navigator.share) {
+        navigator.share({
+            title: "ካማሺ ዞን ዲጂታል ፖርታል",
+            text: "የካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ ዲጂታል ፖርታል",
+            url: "https://github.io"
+        });
+    } else {
+        alert("ሊንኩን ኮፒ አድርገው ያጋሩ፦ https://github.io");
+    }
+}
+
+function saveStu() {
+    var ty = document.getElementById("sType").value;
+    var n = document.getElementById("sName").value.trim();
+    var g = document.getElementById("sGrade").value.trim();
+    var no = document.getElementById("sNote").value.trim();
+    if (!n || !g) return alert("እባክዎ የተማሪውን ስምና ክፍል ይሙሉ!");
+    var list = JSON.parse(localStorage.getItem("k_stu") || "[]");
+    list.unshift({ id: Date.now(), ty: ty, n: n, g: g, no: no, d: new Date().toLocaleDateString() });
+    localStorage.setItem("k_stu", JSON.stringify(list));
+    document.getElementById("sName").value = "";
+    document.getElementById("sGrade").value = "";
+    document.getElementById("sNote").value = "";
+    loadAll();
+}
+
+function loadAll() {
+    var dList = JSON.parse(localStorage.getItem("k_dept") || "[]");
+    document.getElementById("deptOut").innerHTML = dList.map(function(i) {
+        var mediaHtml = "";
+        if (i.f) {
+            if (i.f.type === "img" && i.f.data) mediaHtml = "<img src='" + i.f.data + "' class='preview-img'>";
+            else if (i.f.type === "vid") mediaHtml = "<p style='color:#0a3d62; font-size:0.85rem; margin-top:6px;'>🎥 የተያያዘ ቪዲዮ፦ " + i.f.name + "</p>";
+            else mediaHtml = "<p style='color:#0a3d62; font-size:0.85rem; margin-top:6px;'>📁 የተያያዘ ፋይል፦ " + i.f.name + "</p>";
+        }
+        return "<div class='item'>" +
+               "<div style='display:flex; justify-content:space-between;'><strong>" + i.s + "</strong><button class='btn-red' style='padding:2px 8px;' onclick='delItem(\"k_dept\"," + i.id + ")'>🗑️ አጥፋ</button></div>" +
+               "<small style='color:#666;'>" + i.d + "</small><br><b>" + i.t + "</b><p>" + i.b + "</p>" + mediaHtml +
+               "<div class='share-row'><button type='button' class='share-btn' style='background:#0088cc;' onclick='shareText(\"" + i.t.replace(/"/g, '') + "\", \"" + i.b.replace(/"/g, '') + "\")'>📤 መልዕክቱን ሸር አድርግ (Share)</button></div>" +
+               "</div>";
+    }).join("");
+
+    var sList = JSON.parse(localStorage.getItem("k_stu") || "[]");
+    document.getElementById("stuOut").innerHTML = sList.map(function(i) {
+        return "<div class='item'>" +
+               "<div style='display:flex; justify-content:space-between;'><strong>" + i.ty + "</strong><button class='btn-red' style='padding:2px 8px;' onclick='delItem(\"k_stu\"," + i.id + ")'>🗑️ አጥፋ</button></div>" +
+               "<small style='color:#666;'>" + i.d + "</small><br>👤 <b>" + i.n + "</b> — " + i.g + "<br>" + i.no + "</div>";
+    }).join("");
+}
+</script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, sans-serif; }
 body { background: #f0f4f8; color: #222; }
@@ -55,124 +195,3 @@ input[type="text"], input[type="password"], select, textarea { width: 100%; padd
         <button type="button" class="tab-btn" onclick="switchTab('sec3', this)">🔗 ሸር ማድረጊያ</button>
     </div>
 
-    <div id="sec1" class="card">
-        <h4 style="color:#0a3d62; margin-bottom:10px;">🏢 የዘርፎች መጻጻፊያ፣ ፎቶ፣ ቪዲዮና ፋይል መላኪያ</h4>
-        <select id="sector">
-            <option>1. የመርሱ ዘርፍ</option>
-            <option>2. የመምህራን ሙያ ፍቃድና እድሳት ዘርፍ</option>
-            <option>3. የተማሪዎች ምዝገባና ፈተና ማደራጃ ዘርፍ</option>
-            <option>4. የአይሲቲ (ICT) ዘርፍ</option>
-            <option>5. የሰው ሀብት ስራ አመራር ቡድን</option>
-            <option>6. የሰው ሀብት ስራ አመራር አፈፃፀም ክትትል ግምገማ ቡድን</option>
-            <option>7. የሰው ሀብት ልማት ዘርፍ</option>
-            <option>8. የለውጥ ዘርፍ</option>
-            <option>9. የስነምግባር መከታተያ ዘርፍ</option>
-        </select>
-        <input type="text" id="dTitle" placeholder="የጉዳዩ ርዕስ...">
-        <textarea id="dBody" rows="3" placeholder="ዝርዝር መልዕክት..."></textarea>
-
-            <label class="media-lbl">📷 ፎቶ ካሜራ<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleFile(this, 'img')"></label>
-            <label class="media-lbl">🎥 ቪዲዮ ካሜራ<input type="file" accept="video/*" capture="environment" style="display:none;" onchange="handleFile(this, 'vid')"></label>
-            <label class="media-lbl">🖼️ ፎቶ አፕሎድ<input type="file" accept="image/*" style="display:none;" onchange="handleFile(this, 'img')"></label>
-            <label class="media-lbl">📁 ፋይል አፕሎድ (PDF/Word)<input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx" style="display:none;" onchange="handleFile(this, 'doc')"></label>
-        </div>
-        <p id="fileBadge" style="font-size:0.85rem; color:#1e8449; font-weight:bold; margin-bottom:10px;"></p>
-
-        <button type="button" class="btn btn-green" onclick="saveDept()">💾 መዝግብና አስቀምጥ</button>
-        <div id="deptOut"></div>
-    </div>
-
-    <div id="sec2" class="card" style="display:none;">
-        <h4 style="color:#0a3d62; margin-bottom:10px;">🎓 የተማሪዎች መከታተያ ቅጽ</h4>
-        <select id="sType">
-            <option>📝 የተማሪዎች ቅበላ መመዝገቢያ ቅጽ</option>
-            <option>⚠️ ያቋረጡ ተማሪዎች መከታተያ ቅጽ</option>
-            <option>✅ መማር ላይ ያሉ ተማሪዎች መከታተያ ቅጽ</option>
-        </select>
-        <input type="text" id="sName" placeholder="የተማሪው ሙሉ ስም...">
-        <input type="text" id="sGrade" placeholder="ክፍል እና ትምህርት ቤት...">
-        <textarea id="sNote" rows="2" placeholder="ተጨማሪ ማብራሪያ / ምክንያት..."></textarea>
-        <button type="button" class="btn btn-green" onclick="saveStu()">💾 የተማሪውን መረጃ መዝግብ</button>
-        <div id="stuOut"></div>
-    </div>
-
-    <div id="sec3" class="card" style="display:none;">
-        <h4 style="color:#0a3d62; margin-bottom:10px;">🔗 ድረ-ገጹን ለሌሎች ያጋሩ (Share)</h4>
-        <p style="font-size:0.9rem; margin-bottom:12px;">ይህንን ፖርታል ለወረዳዎችና ለስራ ባልደረቦች በቀላሉ ያጋሩ፦</p>
-        <button type="button" class="btn" style="background:#0a3d62;" onclick="nativeShare()">📤 በስልክዎ ላይ ባሉ አፖች አጋራ (Share)</button>
-        <a href="https://t.me ዞን ዲጂታል ፖርታል" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#0088cc;">✈️ በTelegram አጋራ</a>
-        <a href="https://whatsapp.com ዞን ዲጂታል ፖርታል፡ https://github.io" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#25D366;">📱 በWhatsApp አጋራ</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://github.io" target="_blank" class="btn" style="display:block; text-align:center; text-decoration:none; background:#1877F2;">📘 በFacebook አጋራ</a>
-    </div>
-</div>
-
-<script>
-var currentFile = null;
-
-function login() {
-    var u = document.getElementById("user").value.trim();
-    var p = document.getElementById("pass").value.trim();
-    if (u === "admin" && (p === "1234" || p === "admin123")) showDash();
-    else alert("❌ የተሳሳተ መግቢያ ስም ወይም የይለፍ ቃል!");
-}
-
-function showDash() {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("dash").style.display = "block";
-    loadAll();
-}
-
-function switchTab(id, btn) {
-    document.getElementById("sec1").style.display = "none";
-    document.getElementById("sec2").style.display = "none";
-    document.getElementById("sec3").style.display = "none";
-    var btns = document.querySelectorAll(".tab-btn");
-    for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
-    document.getElementById(id).style.display = "block";
-    btn.classList.add("active");
-}
-
-function handleFile(input, type) {
-    if (!input.files || !input.files) return;
-    var file = input.files;
-    document.getElementById("fileBadge").innerText = "📎 የተያያዘ ፋይል፦ " + file.name;
-
-    if (type === "img") {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var img = new Image();
-            img.onload = function() {
-                var canvas = document.createElement("canvas");
-                var maxW = 500;
-                var scale = maxW / img.width;
-                canvas.width = maxW;
-                canvas.height = img.height * scale;
-                canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-                currentFile = { type: "img", name: file.name, data: canvas.toDataURL("image/jpeg", 0.7) };
-            };
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    } else {
-        currentFile = { type: type, name: file.name, data: "" };
-    }
-}
-
-function saveDept() {
-    var s = document.getElementById("sector").value;
-    var t = document.getElementById("dTitle").value.trim();
-    var b = document.getElementById("dBody").value.trim();
-    if (!t || !b) return alert("እባክዎ ርዕስና መልዕክት ይሙሉ!");
-
-    var list = JSON.parse(localStorage.getItem("k_dept") || "[]");
-    list.unshift({ id: Date.now(), s: s, t: t, b: b, f: currentFile, d: new Date().toLocaleDateString() });
-    try {
-        localStorage.setItem("k_dept", JSON.stringify(list));
-    } catch (e) {
-        alert("⚠️ የማከማቻ ቦታ ስለሞላ የድሮ ፎቶዎችን ያጥፉ!");
-        return;
-    }
-
-    document.getElementById("dTitle").value = "";
-    document.getElementById("dBody").value = "";
-    document.getElementById("fileBadge").innerText = "";
