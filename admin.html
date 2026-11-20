@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ካማሺ ዞን ዲጂታል ፖርታል</title>
+<script>
+var cFile=null,sFile="";
+function go(){if(document.getElementById("u").value.trim()==="admin"&&document.getElementById("p").value.trim()==="1234")openD();else alert("❌ የተሳሳተ መረጃ!");}
+function openD(){document.getElementById("lBox").style.display="none";document.getElementById("dash").style.display="block";ld();}
+function tab(id,b){["s1","s2","s3"].forEach(function(x){document.getElementById(x).style.display="none"});document.querySelectorAll(".tb").forEach(function(x){x.classList.remove("act")});document.getElementById(id).style.display="block";b.classList.add("act");}
+function addF(inp,ty){if(!inp.files||!inp.files[0])return;var f=inp.files[0];document.getElementById("fInfo").innerText="📎 የተመረጠ፦ "+f.name;if(ty==="img"){var r=new FileReader();r.onload=function(e){var im=new Image();im.onload=function(){var c=document.createElement("canvas");var w=400;c.width=w;c.height=im.height*(w/im.width);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cFile={ty:"img",nm:f.name,dt:c.toDataURL("image/jpeg",0.6)};};im.src=e.target.result;};r.readAsDataURL(f);}else{cFile={ty:ty,nm:f.name,dt:""};}}
+function addStuF(inp,tp){if(!inp.files||!inp.files[0])return;sFile=tp+" ፋይል: "+inp.files[0].name;document.getElementById("sfInfo").innerText="📎 የተጫነ "+sFile;}
+function svD(){var s=document.getElementById("sec").value,t=document.getElementById("dt").value,b=document.getElementById("db").value;if(!t||!b)return alert("ርዕስና መልዕክት ይሙሉ!");var l=JSON.parse(localStorage.getItem("kd")||"[]");l.unshift({id:Date.now(),s:s,t:t,b:b,f:cFile,d:new Date().toLocaleDateString()});try{localStorage.setItem("kd",JSON.stringify(l));}catch(e){return alert("ቦታ ሞልቷል፣ የድሮ ፎቶዎችን ያጥፉ!");}document.getElementById("dt").value="";document.getElementById("db").value="";document.getElementById("fInfo").innerText="";cFile=null;ld();}
+function svS(){var ty=document.getElementById("st").value,n=document.getElementById("sn").value,g=document.getElementById("sg").value,no=document.getElementById("sno").value;if(!n&&!sFile)return alert("የተማሪውን ስም ወይም ፋይል ያስገቡ!");var l=JSON.parse(localStorage.getItem("ks")||"[]");l.unshift({id:Date.now(),ty:ty,n:n||"በፋይል የገባ መረጃ",g:g||"-",no:no,sf:sFile,d:new Date().toLocaleDateString()});localStorage.setItem("ks",JSON.stringify(l));document.getElementById("sn").value="";document.getElementById("sg").value="";document.getElementById("sno").value="";document.getElementById("sfInfo").innerText="";sFile="";ld();}
+function expExcel(){var l=JSON.parse(localStorage.getItem("ks")||"[]");if(!l.length)return alert("መጀመሪያ የተማሪ መረጃ ይመዝግቡ!");var csv="\uFEFFየቅጽ አይነት,የተማሪው ሙሉ ስም,ክፍል እና ት/ቤት,ማብራሪያ,ቀን\n"+l.map(function(i){return '"'+i.ty+'","'+i.n+'","'+i.g+'","'+i.no+'","'+i.d+'"';}).join("\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="Kamashi_Students.csv";a.click();}
+function expWord(){var l=JSON.parse(localStorage.getItem("ks")||"[]");if(!l.length)return alert("መጀመሪያ የተማሪ መረጃ ይመዝግቡ!");var doc="<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'></head><body><h2 style='text-align:center'>ካማሺ ዞን ትምህርት፣ አቅም ግንባታና ሲቪል ሰርቪስ መምሪያ</h2><h3 style='text-align:center'>የተማሪዎች ዝርዝር መረጃ ሪፖርት</h3><table border='1' style='width:100%;border-collapse:collapse'><tr><th>የቅጽ አይነት</th><th>የተማሪው ስም</th><th>ክፍል እና ት/ቤት</th><th>ማብራሪያ</th><th>ቀን</th></tr>"+l.map(function(i){return "<tr><td>"+i.ty+"</td><td>"+i.n+"</td><td>"+i.g+"</td><td>"+i.no+"</td><td>"+i.d+"</td></tr>";}).join("")+"</table></body></html>";var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(['\ufeff',doc],{type:"application/msword"}));a.download="Kamashi_Students.doc";a.click();}
+function del(k,id){var l=JSON.parse(localStorage.getItem(k)||"[]").filter(function(x){return x.id!==id});localStorage.setItem(k,JSON.stringify(l));ld();}
+function shAll(){if(navigator.share)navigator.share({title:"ካማሺ ዞን ፖርታል",url:"https://github.io"});else alert("https://github.io");}
+function shTxt(t,b){var m=t+"\n"+b+"\nhttps://github.io";if(navigator.share)navigator.share({title:t,text:m});else window.open("https://t.me/share/url?url=https://github.io&text="+encodeURIComponent(m));}
+function ld(){
+document.getElementById("dOut").innerHTML=JSON.parse(localStorage.getItem("kd")||"[]").map(function(i){var m="";if(i.f){if(i.f.ty==="img")m="<img src='"+i.f.dt+"' class='prev'>";else m="<p style='color:#0a3d62;font-size:0.85rem'>📎 ፋይል/ቪዲዮ፦ "+i.f.nm+"</p>";}return "<div class='itm'><div style='display:flex;justify-content:space-between'><b>"+i.s+"</b><button class='red' style='padding:2px 6px' onclick='del(\"kd\","+i.id+")'>🗑️</button></div><small>"+i.d+"</small><br><b>"+i.t+"</b><p>"+i.b+"</p>"+m+"<button type='button' class='btn' style='margin-top:8px;padding:6px;font-size:0.85rem;background:#0088cc' onclick='shTxt(\""+i.t.replace(/"/g,'')+"\",\""+i.b.replace(/"/g,'')+"\")'>📤 ሸር አድርግ (Share)</button></div>";}).join("");
+document.getElementById("sOut").innerHTML=JSON.parse(localStorage.getItem("ks")||"[]").map(function(i){var fl=i.sf?"<p style='color:#0a3d62;font-size:0.85rem'>📂 የተያያዘ "+i.sf+"</p>":"";return "<div class='itm'><div style='display:flex;justify-content:space-between'><b>"+i.ty+"</b><button class='red' style='padding:2px 6px' onclick='del(\"ks\","+i.id+")'>🗑️</button></div><small>"+i.d+"</small><br>👤 <b>"+i.n+"</b> — "+i.g+"<br>"+i.no+fl+"<button type='button' class='btn' style='margin-top:8px;padding:6px;font-size:0.85rem;background:#0088cc' onclick='shTxt(\""+i.ty+" - "+i.n.replace(/"/g,'')+"\",\""+i.g.replace(/"/g,'')+"\")'>📤 ሸር አድርግ (Share)</button></div>";}).join("");
+}
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:sans-serif}
 body{background:#f0f4f8;color:#222}
@@ -79,51 +98,3 @@ img.prev{max-width:100%;max-height:200px;margin-top:8px;border-radius:6px;displa
 <div id="dOut"></div>
 </div>
 
-<div id="s2" class="card" style="display:none">
-<h4 style="color:#0a3d62;margin-bottom:10px">🎓 የተማሪዎች መመዝገቢያ (Excel & Word)</h4>
-<select id="st">
-<option>📝 የተማሪዎች ቅበላ መመዝገቢያ ቅጽ</option>
-<option>⚠️ ያቋረጡ ተማሪዎች መከታተያ ቅጽ</option>
-<option>✅ መማር ላይ ያሉ ተማሪዎች መከታተያ ቅጽ</option>
-</select>
-<input type="text" id="sn" placeholder="የተማሪው ሙሉ ስም...">
-<input type="text" id="sg" placeholder="ክፍል እና ትምህርት ቤት...">
-<textarea id="sno" rows="2" placeholder="ተጨማሪ ማብራሪያ / ምክንያት..."></textarea>
-
-<div class="mgrid">
-<label class="mlbl">📊 Excel ፋይል ጫን<input type="file" accept=".xls,.xlsx,.csv" hidden onchange="addStuF(this,'Excel')"></label>
-<label class="mlbl">📄 Word ፋይል ጫን<input type="file" accept=".doc,.docx" hidden onchange="addStuF(this,'Word')"></label>
-</div>
-<p id="sfInfo" style="color:#1e8449;font-size:0.85rem;font-weight:bold;margin-bottom:8px"></p>
-
-<button type="button" class="btn grn" onclick="svS()">💾 የተማሪውን መረጃ መዝግብ</button>
-
-<div class="doc-box">
-<p style="font-size:0.85rem;font-weight:bold;color:#0a3d62;margin-bottom:8px">📥 የተመዘገቡ ተማሪዎችን በፋይል አዘጋጅቶ ማውረጃ (Create Excel & Word)፦</p>
-<div class="mgrid" style="margin-bottom:0">
-<button type="button" class="btn" style="background:#1e8449;margin:0;font-size:0.85rem" onclick="expExcel()">📊 Excel ፍጠር (.csv)</button>
-<button type="button" class="btn" style="background:#0a3d62;margin:0;font-size:0.85rem" onclick="expWord()">📄 Word ፍጠር (.doc)</button>
-</div>
-</div>
-
-<div id="sOut"></div>
-</div>
-
-<div id="s3" class="card" style="display:none">
-<h4 style="color:#0a3d62;margin-bottom:10px">🔗 ፖርታሉን ለሌሎች ያጋሩ (Share)</h4>
-<button type="button" class="btn" onclick="shAll()">📤 በስልክዎ ላይ ባሉ አፖች አጋራ</button>
-<a href="https://t.me" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;background:#0088cc">✈️ በTelegram አጋራ</a>
-<a href="https://whatsapp.com" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;background:#25D366">📱 በWhatsApp አጋራ</a>
-</div>
-</div>
-
-<script>
-var cFile=null,sFile="";
-function go(){if(document.getElementById("u").value.trim()==="admin"&&document.getElementById("p").value.trim()==="1234")openD();else alert("የተሳሳተ መረጃ!");}
-function openD(){document.getElementById("lBox").style.display="none";document.getElementById("dash").style.display="block";ld();}
-function tab(id,b){["s1","s2","s3"].forEach(function(x){document.getElementById(x).style.display="none"});document.querySelectorAll(".tb").forEach(function(x){x.classList.remove("act")});document.getElementById(id).style.display="block";b.classList.add("act");}
-function addF(inp,ty){if(!inp.files||!inp.files)return;var f=inp.files;document.getElementById("fInfo").innerText="📎 የተመረጠ፦ "+f.name;if(ty==="img"){var r=new FileReader();r.onload=function(e){var im=new Image();im.onload=function(){var c=document.createElement("canvas");var w=400;c.width=w;c.height=im.height*(w/im.width);c.getContext("2d").drawImage(im,0,0,c.width,c.height);cFile={ty:"img",nm:f.name,dt:c.toDataURL("image/jpeg",0.6)};};im.src=e.target.result;};r.readAsDataURL(f);}else{cFile={ty:ty,nm:f.name,dt:""};}}
-function addStuF(inp,tp){if(!inp.files||!inp.files)return;sFile=tp+" ፋይል: "+inp.files.name;document.getElementById("sfInfo").innerText="📎 የተጫነ "+sFile;}
-function svD(){var s=document.getElementById("sec").value,t=document.getElementById("dt").value,b=document.getElementById("db").value;if(!t||!b)return alert("ርዕስና መልዕክት ይሙሉ!");var l=JSON.parse(localStorage.getItem("kd")||"[]");l.unshift({id:Date.now(),s:s,t:t,b:b,f:cFile,d:new Date().toLocaleDateString()});try{localStorage.setItem("kd",JSON.stringify(l));}catch(e){return alert("ቦታ ሞልቷል፣ የድሮ ፎቶዎችን ያጥፉ!");}document.getElementById("dt").value="";document.getElementById("db").value="";document.getElementById("fInfo").innerText="";cFile=null;ld();}
-function svS(){var ty=document.getElementById("st").value,n=document.getElementById("sn").value,g=document.getElementById("sg").value,no=document.getElementById("sno").value;if(!n&&!sFile)return alert("የተማሪውን ስም ወይም ፋይል ያስገቡ!");var l=JSON.parse(localStorage.getItem("ks")||"[]");l.unshift({id:Date.now(),ty:ty,n:n||"በፋይል የገባ መረጃ",g:g||"-",no:no,sf:sFile,d:new Date().toLocaleDateString()});localStorage.setItem("ks",JSON.stringify(l));document.getElementById("sn").value="";document.getElementById("sg").value="";document.getElementById("sno").value="";document.getElementById("sfInfo").innerText="";sFile="";ld();}
-function expExcel(){var l=JSON.parse(localStorage.getItem("ks")||"[]");if(!l.length)return alert("መጀመሪያ የተማሪ መረጃ ይመዝግቡ!");var csv="\uFEFFየቅጽ አይነት,የተማሪው ሙሉ ስም,ክፍል እና ት/ቤት,ማብራሪያ,ቀን\n"+l.map(function(i){return '"'+i.ty+'","'+i.n+'","'+i.g+'","'+i.no+'","'+i.d+'"';}).join("\n");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="Kamashi_Students.csv";a.click();}
